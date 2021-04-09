@@ -1,0 +1,6 @@
+compiler
+parser.tab.h
+parser.tab.c
+parser.output
+lex.yy.c
+*.swp
