@@ -1,3 +1,8 @@
+rm lex.yy.c parser.tab.c parser.tab.h compiler parser.output
+echo "[Flex] Processing ..."
 flex -o lex.yy.c lexer.l
+echo "[Bison] Processing ..."
 bison -d -o parser.tab.c parser.y -v
-g++-8 -Wno-register -O2 -lm -std=c++17 lex.yy.c parser.tab.c compiler.cpp -o compiler
+echo "[GCC] Compiling ..."
+g++-8 -Wno-register -O2 -lm -std=c++17 *.c *.cpp -o compiler -g -Wall
+echo "[Info] Finished"

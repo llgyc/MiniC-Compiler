@@ -1,19 +1,16 @@
 %option noyywrap
+%option noinput
+%option nounput
 
 %{
 
 #include <stdlib.h>
 
+#include "ast.hpp"
 #include "parser.tab.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-    int yylex(void);
-    void yyerror(const char *);
-#ifdef __cplusplus
-}
-#endif
+extern int yylex(void);
+extern void yyerror(BaseASTNode **, const char *);
 
 %}
 
