@@ -1,12 +1,13 @@
 %option noyywrap
 %option noinput
 %option nounput
+%option yylineno
 
 %{
 
 #include <stdlib.h>
 
-#include "ast.hpp"
+#include "context.hpp"
 #include "parser.tab.h"
 
 extern int yylex(void);

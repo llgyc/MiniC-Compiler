@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "ast.hpp"
+#include "context.hpp"
 #include "operator.hpp"
 
+extern int yylineno;
 extern int yylex(void);
 extern void yyerror(BaseASTNode **, const char *);
 extern int yyparse(BaseASTNode **);
@@ -307,12 +308,12 @@ extern int yyparse(BaseASTNode **);
         : PrimaryExp
         | IDENT '(' ')'
           { std::string ident;
-            $$ = new FunCallASTNode(ident);
+            $$ = new FunCallASTNode(yylineno, ident);
           }
         | IDENT '(' FuncRParams ')'
           { std::string ident;
             ASTNodePtr ptr($3);
-            $$ = new FunCallASTNode(ident, std::move(ptr));
+            $$ = new FunCallASTNode(yylineno, ident, std::move(ptr));
           }
         | '+' UnaryExp 
           { ASTNodePtr ptr($2);

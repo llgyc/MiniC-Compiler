@@ -3,9 +3,9 @@
 #include <cstring>
 #include <cassert>
 
-#include "ast.hpp"
-#include "utils.hpp"
+#include "context.hpp"
 
+extern int yylineno;
 extern std::FILE *yyin;
 extern int yyparse(BaseASTNode **);
 
@@ -18,24 +18,30 @@ static void print_usage() {
 
 ASTNodePtr ast_root;
 
+Context eeyore_generation_context;
+
+eeyore::Program ir1;
 
 void SysY_to_Eeyore(int argc, char *argv[]) {
     // SysY to Eeyore
     yyin = fopen(argv[3], "r");
+    yylineno = 1;
     BaseASTNode *root_ptr = nullptr;
     yyparse(&root_ptr);
     assert(root_ptr != nullptr);
     ast_root.reset(root_ptr);
+    ast_root->generateEeyoreCode(eeyore_generation_context, ir1);
+    //ir1->dumpCode();
 }
 
 int main(int argc, char *argv[]) {
     
-    if (argc < 4 || argc > 5 || !strcmp(argv[1], "-S")) {
+    if (argc < 5 || argc > 6 || strcmp(argv[1], "-S")) {
         print_usage();
         return 0;
     }
 
-    if (argc == 4) { 
+    if (argc == 5) { 
         if (strcmp(argv[3], "-o")) {
             print_usage();
             return 0;
@@ -44,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     }
     
-    if (argc == 5) {
+    if (argc == 6) {
         if (strcmp(argv[4], "-o")) {
             print_usage();
             return 0;
