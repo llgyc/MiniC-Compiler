@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstring>
 #include <cassert>
@@ -31,7 +32,8 @@ void SysY_to_Eeyore(int argc, char *argv[]) {
     assert(root_ptr != nullptr);
     ast_root.reset(root_ptr);
     ast_root->generateEeyoreCode(eeyore_generation_context, ir1);
-    //ir1->dumpCode();
+    std::ofstream ofs(argv[5]);
+    ir1.dumpCode(ofs);
 }
 
 int main(int argc, char *argv[]) {

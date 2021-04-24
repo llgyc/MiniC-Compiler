@@ -23,6 +23,9 @@ public:
     virtual ~BaseASTNode() = default;
     virtual void generateEeyoreCode(Context &ctx, eeyore::Program &prog) = 0;
     virtual std::optional<int> eval(Context &ctx) const { return std::nullopt; }
+    std::vector<int> &true_list() { return true_list_; }
+    std::vector<int> &false_list() { return false_list_; }
+    std::vector<int> &next_list() { return next_list_; }
 
 private:
     std::vector<int> true_list_;
@@ -162,7 +165,9 @@ public:
         const_index_list_(std::move(const_index_list)),
         init_val_(std::move(init_val)) {}
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
-    const ASTNodePtr &init_val() { return init_val_; }
+    const std::string &ident() const { return ident_; }
+    const ASTNodePtr &const_index_list() const { return const_index_list_; }
+    const ASTNodePtr &init_val() const { return init_val_; }
 
 private:
     std::string ident_;
@@ -186,7 +191,7 @@ public:
         init_val_list_ -> push_back(std::move(init_val));
     }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
-    const ASTPtrListPtr &init_val_list() { return init_val_list_; }
+    const ASTPtrListPtr &init_val_list() const { return init_val_list_; }
 
 private:
     ASTPtrListPtr init_val_list_;
@@ -212,6 +217,9 @@ public:
         func_f_params_(std::move(func_f_params)),
         block_(std::move(block)) {}
     ReturnType return_type() const { return return_type_; }
+    const std::string &ident() const { return ident_; }
+    const ASTNodePtr &func_f_params() const  { return func_f_params_; }
+    const ASTNodePtr &block() const { return block_; }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
 
 private:
@@ -234,6 +242,7 @@ public:
         func_f_params_ -> push_back(std::move(func_f_param));
     }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const ASTPtrListPtr &func_f_params() const { return func_f_params_; }
 
 private:
     ASTPtrListPtr func_f_params_;
@@ -246,6 +255,8 @@ public:
     FuncFParamASTNode(const std::string &ident, ASTNodePtr const_index_list) :
         ident_(ident), const_index_list_(std::move(const_index_list)) {}
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const std::string &ident() const { return ident_; }
+    const ASTNodePtr &const_index_list() const { return const_index_list_; }
        
 private:
     std::string ident_;
@@ -265,6 +276,7 @@ public:
             block_items_ -> push_back(std::move(block_item));
     }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const ASTPtrListPtr &block_items() const { return block_items_; }
  
 private:
     ASTPtrListPtr block_items_;
@@ -275,6 +287,8 @@ public:
     AssignASTNode(ASTNodePtr lval, ASTNodePtr exp) : 
         lval_(std::move(lval)), exp_(std::move(exp)) {}
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const ASTNodePtr &lval() const { return lval_; }
+    const ASTNodePtr &exp() const { return exp_; }
    
 private:
     ASTNodePtr lval_;
@@ -292,6 +306,9 @@ public:
         then_(std::move(then)),
         else_then_(std::move(else_then)) {}
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const ASTNodePtr &cond() const { return cond_; }
+    const ASTNodePtr &then() const { return then_; }
+    const ASTNodePtr &else_then() const { return else_then_; }
 
 private:
     ASTNodePtr cond_;
@@ -305,6 +322,8 @@ public:
         cond_(std::move(cond)),
         stmt_(std::move(stmt)) {}
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const ASTNodePtr &cond() const { return cond_; }
+    const ASTNodePtr &stmt() const { return stmt_; }
 
 private:
     ASTNodePtr cond_;
@@ -331,6 +350,7 @@ public:
     ReturnASTNode(ASTNodePtr exp) :
         exp_(std::move(exp)) {}
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const ASTNodePtr &exp() const { return exp_; }
 
 private:
     ASTNodePtr exp_;
@@ -342,6 +362,8 @@ public:
         ident_(ident), index_list_(std::move(index_list)) {}
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
     std::optional<int> eval(Context &ctx) const override;
+    const std::string &ident() const { return ident_; }
+    const ASTNodePtr &index_list() const { return index_list_; }
 
 private:
     std::string ident_;
@@ -373,6 +395,8 @@ public:
     Operator op() const { return op_; }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
     std::optional<int> eval(Context &ctx) const override;
+    const ASTNodePtr &lhs() const { return lhs_; }
+    const ASTNodePtr &rhs() const { return rhs_; } 
 
 private:
     Operator op_;
@@ -388,6 +412,8 @@ public:
         lineno_(lineno), ident_(ident), func_r_params_(std::move(func_r_params)) {}
     int lineno() const { return lineno_; }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const std::string &ident() const { return ident_; }
+    const ASTNodePtr &func_r_params() const { return func_r_params_; }
 
 private:
     int lineno_;
@@ -408,6 +434,7 @@ public:
         func_r_params_ -> push_back(std::move(exp));
     }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
+    const ASTPtrListPtr &func_r_params() const { return func_r_params_; }
 
 private:
     ASTPtrListPtr func_r_params_;
@@ -431,6 +458,7 @@ public:
     Operator op() const { return op_; }
     void generateEeyoreCode(Context &ctx, eeyore::Program &prog) override;
     std::optional<int> eval(Context &ctx) const override;
+    const ASTNodePtr &operand() const { return operand_; }
 
 private:
     Operator op_;

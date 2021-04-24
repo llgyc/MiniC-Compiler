@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <cassert>
+#include <ostream>
 #include <optional>
 #include <unordered_map>
 
@@ -14,6 +16,10 @@ namespace eeyore {
 class InstBase {
 public:
     virtual ~InstBase() = default;
+    virtual void updateGoto(int id) {
+        assert(false);
+    }
+    virtual void dumpCode(std::ostream &os, int label_init_id) const = 0;
 };
 
 using InstPtr = std::shared_ptr<InstBase>;
@@ -22,6 +28,10 @@ using InstPtrList = std::vector<InstPtr>;
 class VarBase {
 public:
     virtual ~VarBase() = default;
+    virtual void dumpCode(std::ostream &os) const = 0;
+    virtual void dumpVariableDeclaration(std::ostream &os) const {
+        assert(false);
+    }
 };
 
 using VarPtr = std::shared_ptr<VarBase>;
@@ -36,6 +46,7 @@ class AssignInst : public InstBase {
 public:
     AssignInst(VarPtr lhs, VarPtr rhs) : 
         lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     VarPtr lhs_;
@@ -48,6 +59,7 @@ public:
         lhs_var_(std::move(lhs_var)), 
         lhs_index_(std::move(lhs_index)),
         rhs_(std::move(rhs)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     VarPtr lhs_var_;
@@ -61,6 +73,7 @@ public:
         lhs_(std::move(lhs)),
         rhs_var_(std::move(rhs_var)),
         rhs_index_(std::move(rhs_index)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     VarPtr lhs_;
@@ -75,6 +88,7 @@ public:
         lhs_(std::move(lhs)),
         rhs_1_(std::move(rhs_1)),
         rhs_2_(std::move(rhs_2)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     Operator op_;
@@ -87,6 +101,7 @@ class UnaryInst : public InstBase {
 public:
     UnaryInst(Operator op, VarPtr lhs, VarPtr rhs) :
         op_(op), lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     Operator op_;
@@ -101,6 +116,10 @@ public:
         cond_1_(std::move(cond_1)), 
         cond_2_(std::move(cond_2)), 
         label_id_(-1) {}
+    void updateGoto(int id) override {
+        label_id_ = id;
+    }
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     Operator op_;
@@ -112,6 +131,11 @@ private:
 class JumpInst : public InstBase {
 public:
     JumpInst() : label_id_(-1) {}
+    JumpInst(int id) : label_id_(id) {}
+    void updateGoto(int id) override {
+        label_id_ = id;
+    }
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     int label_id_; 
@@ -120,6 +144,7 @@ private:
 class ParamInst : public InstBase {
 public:
     ParamInst(VarPtr param) : param_(std::move(param)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     VarPtr param_;
@@ -129,6 +154,7 @@ class AssignCallInst : public InstBase {
 public:
     AssignCallInst(FuncPtr func, int lineno, VarPtr store = nullptr) :
         func_(std::move(func)), lineno_(lineno), store_(std::move(store)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     FuncPtr func_;
@@ -139,6 +165,7 @@ private:
 class ReturnInst : public InstBase {
 public:
     ReturnInst(VarPtr ret = nullptr) : ret_(std::move(ret)) {}
+    void dumpCode(std::ostream &os, int label_init_id) const override;
 
 private:
     VarPtr ret_;
@@ -159,6 +186,8 @@ public:
     }
     void pushWidth(int w) { widths_.push_back(w); }
     const std::vector<int> &widths() const { return widths_; }
+    void dumpCode(std::ostream &os) const override;
+    void dumpVariableDeclaration(std::ostream &os) const override;
 
 private:
     int id_;
@@ -173,6 +202,8 @@ using NativePtr = std::shared_ptr<NativeVar>;
 class TempVar : public VarBase {
 public:
     TempVar(int id) : id_(id) {}
+    void dumpCode(std::ostream &os) const override;
+    void dumpVariableDeclaration(std::ostream &os) const override;
 
 private:
     int id_;
@@ -185,6 +216,7 @@ public:
     ParamVar(int id) : id_(id) {}
     void pushWidth(int w) { widths_.push_back(w); }
     const std::vector<int> &widths() const { return widths_; }
+    void dumpCode(std::ostream &os) const override;
 
 private:
     int id_;
@@ -197,6 +229,7 @@ using ParamPtr = std::shared_ptr<ParamVar>;
 class IntValue : public VarBase {
 public:
     IntValue(int val) : val_(val) {}
+    void dumpCode(std::ostream &os) const override;
 
 private:
     int val_;
@@ -206,18 +239,19 @@ private:
 // TopLayer
 class FunctionDef {
 public:
-    FunctionDef(const std::string &name, 
-        int native_init_id, 
-        int label_init_id) : 
+    FunctionDef(const std::string &name, int native_init_id, bool has_return) : 
+        has_return_(has_return),
         name_(name),
         native_init_id_(native_init_id),
-        label_init_id_(label_init_id) {}
+        label_init_id_(0) {}
     void pushInst(InstPtr inst) {
         insts_.push_back(std::move(inst));
     }
-    void pushParam(VarPtr param) {
-        params_.push_back(std::move(param));
+    void setLabelInit(int init_id) {
+        label_init_id_ = init_id;
     }
+    bool need_return() const { return has_return_; }
+    int instNum() const { return insts_.size(); }
     int nativeNum() const { return native_.size(); }
     int tempNum() const { return temp_.size(); }
     int paramNum() const { return params_.size(); }
@@ -232,9 +266,26 @@ public:
         temp_.push_back(ptr);
         return ptr;
     }
+    ParamPtr addParam() {
+        auto ptr = std::make_shared<ParamVar>(params_.size());
+        params_.push_back(ptr);
+        return ptr;
+    }
     VarPtr getLastTemp() { return temp_.back(); }
+    void backpatch(const std::vector<int> &list, int pos) {
+        if (list.empty()) return;
+        label_pos_.push_back(pos);
+        for (auto id : list) {
+            insts_[id]->updateGoto(pos);
+        }
+    }
+    void dumpVariableDeclarations(std::ostream &os) const;
+    void dumpInstructions(std::ostream &os) const;
+    void dumpCode(std::ostream &os) const;
+    const std::string &name() const { return name_; }
     
 private:
+    bool has_return_;
     std::string name_; 
     int native_init_id_;
     int label_init_id_;
@@ -249,7 +300,8 @@ private:
 class Program {
 public:
     void pushFunction(FuncPtr func) { funcs_.push_back(std::move(func)); }
-//  void dumpCode const ();
+    void dumpCode(std::ostream &os) const;
+
 private:
     FuncList funcs_;
 };

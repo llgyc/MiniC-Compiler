@@ -37,60 +37,56 @@ using ScopePtrList = std::vector<ScopePtr>;
 
 using ArrayConst = std::pair<int, std::optional<int> >;
 using ArrayConstList = std::vector<ArrayConst>;
-using ArrayVar = std::pair<int, eeyore::TempVar>;
+using ArrayVar = std::pair<int, eeyore::VarPtr>;
 using ArrayVarList = std::vector<ArrayVar>;
 
 class Context {
 public:
     Context() {
         newScope();
-        std::shared_ptr<eeyore::ParamVar> param;
-        global_ctx_ = std::make_shared<eeyore::FunctionDef>("$global$", 0, 0);
+        eeyore::ParamPtr param;
+        global_ctx_ = std::make_shared<eeyore::FunctionDef>("$global$", 0, false);
         cur_func_ = global_ctx_;
+        cur_loop_ = nullptr;
         
         // int getint()
         lib_funcs_.insert({"getint", 
-            std::make_shared<eeyore::FunctionDef>("getint", 0, 0)});
+            std::make_shared<eeyore::FunctionDef>("getint", 0, true)});
 
         // int getch()
         lib_funcs_.insert({"getch", 
-            std::make_shared<eeyore::FunctionDef>("getch", 0, 0)});
+            std::make_shared<eeyore::FunctionDef>("getch", 0, true)});
 
         // int getarray(int [])
         lib_funcs_.insert({"getarray", 
-            std::make_shared<eeyore::FunctionDef>("getarray", 0, 0)});
-        param = std::make_shared<eeyore::ParamVar>(0);
+            std::make_shared<eeyore::FunctionDef>("getarray", 0, true)});
+        param = lib_funcs_["getarray"]->addParam();
         param->pushWidth(0);
-        lib_funcs_["getarray"]->pushParam(std::move(param));
        
         // void putint(int)
         lib_funcs_.insert({"putint",
-            std::make_shared<eeyore::FunctionDef>("putint", 0, 0)});
-        param = std::make_shared<eeyore::ParamVar>(0);
-        lib_funcs_["putint"]->pushParam(std::move(param));
+            std::make_shared<eeyore::FunctionDef>("putint", 0, false)});
+        param = lib_funcs_["putint"]->addParam(); 
 
         // void putch(int)
         lib_funcs_.insert({"putch",
-            std::make_shared<eeyore::FunctionDef>("putch", 0, 0)});
-        param = std::make_shared<eeyore::ParamVar>(0);
-        lib_funcs_["putch"]->pushParam(std::move(param));
+            std::make_shared<eeyore::FunctionDef>("putch", 0, false)});
+        param = lib_funcs_["putch"]->addParam();
         
         // void putarray(int, int[])
         lib_funcs_.insert({"putarray",
-            std::make_shared<eeyore::FunctionDef>("putarray", 0, 0)});
-        param = std::make_shared<eeyore::ParamVar>(0);
-        lib_funcs_["putarray"]->pushParam(std::move(param));
-        param = std::make_shared<eeyore::ParamVar>(1);
+            std::make_shared<eeyore::FunctionDef>("putarray", 0, false)});
+        param = lib_funcs_["putarray"]->addParam();
+        param = lib_funcs_["putarray"]->addParam(); 
         param->pushWidth(0);
-        lib_funcs_["putarray"]->pushParam(std::move(param));
 
         // starttime() _sysy_starttime(__LINE__)
         lib_funcs_.insert({"starttime",
-            std::make_shared<eeyore::FunctionDef>("starttime", 0, 0)});
+            std::make_shared<eeyore::FunctionDef>("starttime", 0, false)});
 
         // stoptime() _sysy_stoptime(__LINE__)
         lib_funcs_.insert({"stoptime",
-            std::make_shared<eeyore::FunctionDef>("stoptime", 0, 0)});
+            std::make_shared<eeyore::FunctionDef>("stoptime", 0, false)});
     }
     void newScope() {
         auto ptr = std::make_unique<Scope>();
@@ -122,11 +118,19 @@ public:
             return lib_funcs_[name];
         return nullptr;
     }
-
+    
+    // Helper Functions
     void walkAndGetConst(const std::vector<int> &widths, int now_pos,
         const ASTPtrListPtr &ast, ArrayConstList &result, int level);
     void walkAndGetVar(const std::vector<int> &widths, int now_pos,
-        const ASTPtrListPtr &ast, ArrayVarList &result, int level);
+        const ASTPtrListPtr &ast, ArrayVarList &result, int level,
+        eeyore::Program &prog);
+    void getWidthsFromAST(const ASTPtrListPtr &ast, std::vector<int> &result,
+        std::string name);
+    void generateIndexEeyore(const ASTPtrListPtr &ast, 
+        const std::vector<int> &widths, eeyore::Program &prog);
+
+    // Code Generation Function Declaration
     void generateEeyoreOn(CompUnitASTNode *ast, eeyore::Program &prog);
     void generateEeyoreOn(ConstDefListASTNode *ast, eeyore::Program &prog);
     void generateEeyoreOn(ConstDefASTNode *ast, eeyore::Program &prog);
@@ -161,6 +165,7 @@ public:
 private:
     eeyore::FuncPtr global_ctx_;
     eeyore::FuncPtr cur_func_;
+    WhileASTNode *cur_loop_;
     FuncTable lib_funcs_;
     FuncTable user_funcs_;
     ScopePtrList scope_stack_;
