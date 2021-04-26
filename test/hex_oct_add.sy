@@ -1,0 +1,8 @@
+int a = 0x1fe45;
+int b = 06102;
+
+int main() {
+    int c = a+b;
+    putint(c);
+}
+

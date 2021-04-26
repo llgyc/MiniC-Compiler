@@ -16,10 +16,9 @@ extern void yyerror(BaseASTNode **, const char *);
 %}
 
 IDENT               [_a-zA-Z][_a-zA-Z0-9]*
-DECIMAL_CONST       [1-9][0-9]*
-OCTAL_CONST         0[0-7]*
-HEXADECIMAL_CONST   0[xX][0-9a-fA-F]+
-INT_CONST           {DECIMAL_CONST}|{OCTAL_CONST}|{HEXADECIMAL_CONST}
+DEC_CONST           [1-9][0-9]*
+OCT_CONST           0[0-7]*
+HEX_CONST           0[xX][0-9a-fA-F]+
 LINE_COMMENT        \/\/.*
 WHITESPACE          [ \t\v\n\f]
 
@@ -33,7 +32,7 @@ WHITESPACE          [ \t\v\n\f]
 <C_COMMENT>.    { }
 
 {LINE_COMMENT}  { }
-{WHITESPACE}   { }
+{WHITESPACE}    { }
 
 "const"         { return CONST; }
 "int"           { return INT; }
@@ -45,7 +44,9 @@ WHITESPACE          [ \t\v\n\f]
 "continue"      { return CONTINUE; }
 "return"        { return RETURN; }
 
-{INT_CONST}     { yylval.int_val = atoi(yytext); return INT_CONST; }
+{DEC_CONST}     { yylval.int_val = std::stoi(yytext, 0, 10); return INT_CONST; }
+{OCT_CONST}     { yylval.int_val = std::stoi(yytext, 0, 8);  return INT_CONST; }
+{HEX_CONST}     { yylval.int_val = std::stoi(yytext, 0, 16); return INT_CONST; }
 {IDENT}         { yylval.str_val = strdup(yytext); return IDENT; }
 
 "&&"            { return AND_OP; }

@@ -88,7 +88,7 @@ void Context::generateIndexEeyore(const ASTPtrListPtr &ast,
             auto tvar3 = cur_func_->addTemp();
             auto inst2 = std::make_shared<eeyore::BinaryInst>
                 (Operator::kAdd, tvar3, tvar2, lastvar);
-            cur_func_->pushInst(std::move(inst));
+            cur_func_->pushInst(std::move(inst2));
             lastvar = tvar3;
         } else {
             lastvar = tvar2;
