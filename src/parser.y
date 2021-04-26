@@ -171,25 +171,25 @@ extern int yyparse(BaseASTNode **);
 
     FuncDef
         : VOID IDENT '(' ')' Block
-          { std::string ident;
+          { std::string ident($2);
             ASTNodePtr ptr($5);
             $$ = new FuncDefASTNode(ReturnType::kVoidType, 
                 ident, std::move(ptr));
           }
         | INT IDENT '(' ')' Block
-          { std::string ident;
+          { std::string ident($2);
             ASTNodePtr ptr($5);
             $$ = new FuncDefASTNode(ReturnType::kIntType,
                 ident, std::move(ptr));
           }
         | VOID IDENT '(' FuncFParams ')' Block
-          { std::string ident;
+          { std::string ident($2);
             ASTNodePtr ptr1($4), ptr2($6);
             $$ = new FuncDefASTNode(ReturnType::kVoidType,
                 ident, std::move(ptr1), std::move(ptr2));
           }
         | INT IDENT '(' FuncFParams ')' Block
-          { std::string ident;
+          { std::string ident($2);
             ASTNodePtr ptr1($4), ptr2($6);
             $$ = new FuncDefASTNode(ReturnType::kIntType,
                 ident, std::move(ptr1), std::move(ptr2));
@@ -307,11 +307,11 @@ extern int yyparse(BaseASTNode **);
     UnaryExp
         : PrimaryExp
         | IDENT '(' ')'
-          { std::string ident;
+          { std::string ident($1);
             $$ = new FunCallASTNode(yylineno, ident);
           }
         | IDENT '(' FuncRParams ')'
-          { std::string ident;
+          { std::string ident($1);
             ASTNodePtr ptr($3);
             $$ = new FunCallASTNode(yylineno, ident, std::move(ptr));
           }

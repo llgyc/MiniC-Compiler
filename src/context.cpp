@@ -8,7 +8,7 @@ void Context::walkAndGetConst(const std::vector<int> &widths, int now_pos,
         if (derived_ptr == nullptr) {
             // Value
             result.push_back(
-                std::make_pair(now_pos++, derived_ptr->eval(*this))
+                std::make_pair(now_pos++, base_ptr->eval(*this))
             );
         } else {
             // List
@@ -67,6 +67,7 @@ void Context::getWidthsFromAST(const ASTPtrListPtr &ast,
             LogError("[ERROR] Index value of \"" 
                       + name + "\" is not a constant");
     }
+    if (result.empty()) return;
     for (auto it = result.rbegin() + 1; it != result.rend(); ++it) {
         *it = (*it) * (*(it-1));
     }
@@ -95,10 +96,16 @@ void Context::generateIndexEeyore(const ASTPtrListPtr &ast,
     }
     (*ast)[widths.size() - 1]->generateEeyoreCode(*this, prog);
     auto var_n = cur_func_->getLastTemp();
-    auto tvar_n = cur_func_->addTemp();
-    auto inst_n = std::make_shared<eeyore::BinaryInst>
-        (Operator::kAdd, tvar_n, var_n, lastvar);
-    cur_func_->pushInst(std::move(inst_n));
+    eeyore::VarPtr tvar_n;
+    if (widths.size() != 1) {
+        tvar_n = cur_func_->addTemp();
+        auto inst_n = std::make_shared<eeyore::BinaryInst>
+            (Operator::kAdd, tvar_n, var_n, lastvar);
+        cur_func_->pushInst(std::move(inst_n));
+    } else {
+        tvar_n = var_n;
+    }
+
     // Remember to *4
     auto tvar_final = cur_func_->addTemp();
     auto ival_final = std::make_shared<eeyore::IntValue>(4);
@@ -177,7 +184,7 @@ void Context::generateEeyoreOn(ConstDefASTNode *ast, eeyore::Program &prog) {
         // Generate toplayer related
         for (auto init_val : init_vals) {
             auto index_const = std::make_shared<eeyore::IntValue>
-                (init_val.first);
+                (init_val.first * 4);
             auto val_const = std::make_shared<eeyore::IntValue>
                 (init_val.second.value());
             auto inst = std::make_shared<eeyore::ArrayAssignInst>
@@ -272,7 +279,7 @@ void Context::generateEeyoreOn(VarDefASTNode *ast, eeyore::Program &prog) {
                 // Generate toplayer related
                 for (auto init_val : init_vals) {
                     auto index_const = std::make_shared<eeyore::IntValue>
-                        (init_val.first);
+                        (init_val.first * 4);
                     auto val_const = std::make_shared<eeyore::IntValue>
                         (init_val.second.value());
                     auto inst = std::make_shared<eeyore::ArrayAssignInst>
@@ -290,7 +297,7 @@ void Context::generateEeyoreOn(VarDefASTNode *ast, eeyore::Program &prog) {
                 // Generate toplayer related
                 for (auto init_val : init_vals) {
                     auto index_const = std::make_shared<eeyore::IntValue>
-                        (init_val.first);
+                        (init_val.first * 4);
                     auto temp_var = init_val.second;
                     auto inst = std::make_shared<eeyore::ArrayAssignInst>
                         (nvar, std::move(index_const), std::move(temp_var));
@@ -312,6 +319,7 @@ void Context::generateEeyoreOn(FuncDefASTNode *ast, eeyore::Program &prog) {
                     (name, global_ctx_->nativeNum(),
                      ast->return_type() == ReturnType::kIntType);
     prog.pushFunction(cur_func_);    
+    addFunction(name, cur_func_);
     
     newScope();
     // Add paramters
@@ -325,10 +333,8 @@ void Context::generateEeyoreOn(FuncDefASTNode *ast, eeyore::Program &prog) {
             auto param_ptr = dynamic_cast<FuncFParamASTNode *>(param.get());
             auto var_name = param_ptr->ident();
             auto index_ptr = param_ptr->const_index_list().get();
-            auto &index_list_ptr = 
-                dynamic_cast<ConstIndexListASTNode *>(index_ptr)->const_exps();
     
-            if (index_list_ptr->empty()) {
+            if (index_ptr == nullptr) {
                 // Variable Case
                 auto pvar = cur_func_->addParam();
     
@@ -336,6 +342,8 @@ void Context::generateEeyoreOn(FuncDefASTNode *ast, eeyore::Program &prog) {
                 addVariable(var_name, pvar);
             } else {
                 // Array Case
+                auto &index_list_ptr = dynamic_cast<ConstIndexListASTNode *>
+                    (index_ptr)->const_exps();
                 std::vector<int> widths;
                 getWidthsFromAST(index_list_ptr, widths, var_name);
                 auto pvar = cur_func_->addParam();
@@ -480,7 +488,7 @@ void Context::generateEeyoreOn(WhileASTNode *ast, eeyore::Program &prog) {
     ast->next_list().insert(ast->next_list().end(),
                             cond->false_list().begin(),
                             cond->false_list().end());
-    auto inst = std::make_shared<eeyore::JumpInst>(M1);
+    auto inst = std::make_shared<eeyore::JumpInst>(cur_func_->lookUpLabel(M1));
     cur_func_->pushInst(std::move(inst));
     // recover
     cur_loop_ = temp_loop;
@@ -596,16 +604,19 @@ void Context::generateEeyoreOn(FunCallASTNode *ast, eeyore::Program &prog) {
     auto lineno = ast->lineno();
     auto ident = ast->ident();
     auto params_ptr = ast->func_r_params().get();
-    auto &params_list = dynamic_cast<FuncRParamsASTNode *>(params_ptr)
-                            ->func_r_params();
-    eeyore::VarPtrList ptrs;
-    for (auto &param : (*params_list)) {
-        param->generateEeyoreCode(*this, prog);
-        ptrs.push_back(cur_func_->getLastTemp());
-    }
-    for (auto &ptr : ptrs) {
-        auto inst = std::make_shared<eeyore::ParamInst>(ptr);
-        cur_func_->pushInst(std::move(inst));
+    
+    if (params_ptr) {
+        auto &params_list = dynamic_cast<FuncRParamsASTNode *>(params_ptr)
+                                ->func_r_params();
+        eeyore::VarPtrList ptrs;
+        for (auto &param : (*params_list)) {
+            param->generateEeyoreCode(*this, prog);
+            ptrs.push_back(cur_func_->getLastTemp());
+        }
+        for (auto &ptr : ptrs) {
+            auto inst = std::make_shared<eeyore::ParamInst>(ptr);
+            cur_func_->pushInst(std::move(inst));
+        }
     }
     
     auto func = lookUpFunction(ident);

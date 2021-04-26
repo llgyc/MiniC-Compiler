@@ -272,11 +272,19 @@ public:
         return ptr;
     }
     VarPtr getLastTemp() { return temp_.back(); }
+    int lookUpLabel(int inst_pos) {
+        for (unsigned i = 0; i < label_pos_.size(); ++i) {
+            if (label_pos_[i] == inst_pos)
+                return i;
+        }
+        label_pos_.push_back(inst_pos);
+        return label_pos_.size() - 1;
+    }
     void backpatch(const std::vector<int> &list, int pos) {
         if (list.empty()) return;
         label_pos_.push_back(pos);
         for (auto id : list) {
-            insts_[id]->updateGoto(pos);
+            insts_[id]->updateGoto(label_pos_.size() - 1);
         }
     }
     void dumpVariableDeclarations(std::ostream &os) const;

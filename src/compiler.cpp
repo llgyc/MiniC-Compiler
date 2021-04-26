@@ -31,9 +31,12 @@ void SysY_to_Eeyore(int argc, char *argv[]) {
     yyparse(&root_ptr);
     assert(root_ptr != nullptr);
     ast_root.reset(root_ptr);
+    std::cerr << "[Success] Lexer and parser succeeded" << std::endl;
     ast_root->generateEeyoreCode(eeyore_generation_context, ir1);
+    std::cerr << "[Success] AST generation completed" << std::endl;
     std::ofstream ofs(argv[5]);
     ir1.dumpCode(ofs);
+    std::cerr << "[Success] Eeyore Code dumped" << std::endl;
 }
 
 int main(int argc, char *argv[]) {

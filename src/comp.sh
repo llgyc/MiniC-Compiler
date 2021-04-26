@@ -4,5 +4,5 @@ flex -o lex.yy.c lexer.l
 echo "[Bison] Processing ..."
 bison -d -o parser.tab.c parser.y -v
 echo "[GCC] Compiling ..."
-g++-8 -Wno-register -O2 -lm -std=c++17 *.c *.cpp -o compiler -g -Wall
+g++-8 -Wno-register -O0 -lm -std=c++17 *.c *.cpp -o compiler -g -Wall
 echo "[Success] Finished"

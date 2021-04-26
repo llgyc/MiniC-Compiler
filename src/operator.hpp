@@ -12,7 +12,7 @@ enum class Operator {
 
 const std::string operators[] = {
 #define EXPAND_OP(NAME, SYMBOL) \
-    "SYMBOL",
+    SYMBOL,
 #include "operators.def"
 #undef EXPAND_OP
 };

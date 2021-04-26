@@ -102,7 +102,7 @@ void TempVar::dumpCode(std::ostream &os) const {
 }
 
 void ParamVar::dumpCode(std::ostream &os) const {
-    // Nothing
+    os << "p" << id_;
     return;
 }
 
@@ -132,10 +132,11 @@ void FunctionDef::dumpVariableDeclarations(std::ostream &os) const {
 }
 
 void FunctionDef::dumpInstructions(std::ostream &os) const {
-    int ptr = 0;
     for (int i = 0; i < instNum(); ++i) {
-        if (ptr < labelNum() && i == label_pos_[ptr]) {
-            os << "l" << label_init_id_ + ptr << ":" << std::endl;
+        for (unsigned j = 0; j < label_pos_.size(); ++j) {
+            if (i == label_pos_[j]) {
+                os << "l" << label_init_id_ + j << ":" << std::endl;
+            }
         }
         insts_[i]->dumpCode(os, label_init_id_);
     }
