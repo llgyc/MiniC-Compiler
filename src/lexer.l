@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 #include "context.hpp"
-#include "parser.tab.h"
+#include "parser.tab.hpp"
 
 extern int yylex(void);
 extern void yyerror(BaseASTNode **, const char *);
