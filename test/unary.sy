@@ -1,9 +1,6 @@
-int a;
-
 int main() {
-    a = ----2;
-    putint(a);
-    a = +-+-2;
+    int a = 1;
+    if (!!a) a = 2;
     putint(a);
     return 0;
 }
