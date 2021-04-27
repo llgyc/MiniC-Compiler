@@ -1,6 +1,6 @@
+int a[5];
 int main() {
-    int a = 1;
-    if (!!a) a = 2;
-    putint(a);
+    if (1 || a[-1]) a[0]=2;
+    putint(a[0]);
     return 0;
 }

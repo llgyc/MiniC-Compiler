@@ -114,6 +114,21 @@ void Context::generateIndexEeyore(const ASTPtrListPtr &ast,
     cur_func_->pushInst(std::move(inst_final));
 }
 
+void Context::typeCoercion(const ASTNodePtr &ast) {
+    if (ast->value_type() != ValueType::kBoolType) {
+        auto cond_1 = cur_func_->getLastTemp();
+        auto cond_2 = std::make_shared<eeyore::IntValue>(0);
+        auto M = cur_func_->instNum();
+        ast->true_list().push_back(M);
+        ast->false_list().push_back(M+1);
+        auto inst1 = std::make_shared<eeyore::CondInst>
+            (Operator::kNeq, cond_1, cond_2);
+        cur_func_->pushInst(std::move(inst1));
+        auto inst2 = std::make_shared<eeyore::JumpInst>();
+        cur_func_->pushInst(std::move(inst2));
+    }
+}
+
 void Context::generateEeyoreOn(CompUnitASTNode *ast, eeyore::Program &prog) {
     prog.pushFunction(global_ctx_);
     // Declaration first
@@ -559,8 +574,10 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
     auto &rhs = ast->rhs();
     if (op == Operator::kAnd) {
         lhs->generateEeyoreCode(*this, prog);
+        typeCoercion(lhs);
         int M = cur_func_->instNum();
         rhs->generateEeyoreCode(*this, prog);
+        typeCoercion(rhs);
         cur_func_->backpatch(lhs->true_list(), M);
         ast->true_list() = rhs->true_list();
         ast->false_list() = lhs->false_list();
@@ -570,8 +587,10 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
         ast->setValueType(ValueType::kBoolType);
     } else if (op == Operator::kOr) {
         lhs->generateEeyoreCode(*this, prog);
+        typeCoercion(lhs);
         int M = cur_func_->instNum();
         rhs->generateEeyoreCode(*this, prog);
+        typeCoercion(rhs);
         cur_func_->backpatch(lhs->false_list(), M);
         ast->true_list() = lhs->true_list();
         ast->true_list().insert(ast->true_list().end(),
@@ -648,7 +667,7 @@ void Context::generateEeyoreOn(IntASTNode *ast, eeyore::Program &prog) {
     auto inst = std::make_shared<eeyore::AssignInst>(tvar, ptr);
     cur_func_->pushInst(std::move(inst));
     // Type Info
-    ast->setValueType(ValueType::kBoolType);
+    ast->setValueType(ValueType::kIntType);
 }
 
 void Context::generateEeyoreOn(UnaryOpASTNode *ast, eeyore::Program &prog) {
@@ -656,22 +675,9 @@ void Context::generateEeyoreOn(UnaryOpASTNode *ast, eeyore::Program &prog) {
     auto &operand = ast->operand();
     if (op == Operator::kNot) {
         operand->generateEeyoreCode(*this, prog);
-        if (operand->value_type() == ValueType::kBoolType) {
-            // Logical
-            ast->true_list() = operand->false_list();
-            ast->false_list() = operand->true_list();
-        } else {
-            auto cond_1 = cur_func_->getLastTemp();
-            auto cond_2 = std::make_shared<eeyore::IntValue>(0);
-            auto M = cur_func_->instNum();
-            ast->true_list().push_back(M);
-            ast->false_list().push_back(M+1);
-            auto inst1 = std::make_shared<eeyore::CondInst>
-                (Operator::kEq, cond_1, cond_2);
-            cur_func_->pushInst(std::move(inst1));
-            auto inst2 = std::make_shared<eeyore::JumpInst>();
-            cur_func_->pushInst(std::move(inst2));
-        }
+        typeCoercion(operand);
+        ast->true_list() = operand->false_list();
+        ast->false_list() = operand->true_list();
         ast->setValueType(ValueType::kBoolType);
     } else {
         // Arithmetic

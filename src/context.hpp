@@ -129,6 +129,7 @@ public:
         std::string name);
     void generateIndexEeyore(const ASTPtrListPtr &ast, 
         const std::vector<int> &widths, eeyore::Program &prog);
+    void typeCoercion(const ASTNodePtr &operand);
 
     // Code Generation Function Declaration
     void generateEeyoreOn(CompUnitASTNode *ast, eeyore::Program &prog);
