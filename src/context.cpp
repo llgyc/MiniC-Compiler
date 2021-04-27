@@ -455,6 +455,7 @@ void Context::generateEeyoreOn(IfASTNode *ast, eeyore::Program &prog) {
     if (else_then == nullptr) {
         // if (B) M S1
         cond->generateEeyoreCode(*this, prog);
+        typeCoercion(cond);
         int M = cur_func_->instNum();
         then->generateEeyoreCode(*this, prog);
         cur_func_->backpatch(cond->true_list(), M);
@@ -467,6 +468,7 @@ void Context::generateEeyoreOn(IfASTNode *ast, eeyore::Program &prog) {
     } else {
         // if (B) M1 S1 N else M2 S2
         cond->generateEeyoreCode(*this, prog);
+        typeCoercion(cond);
         int M1 = cur_func_->instNum();
         then->generateEeyoreCode(*this, prog);
         // N
@@ -496,6 +498,7 @@ void Context::generateEeyoreOn(WhileASTNode *ast, eeyore::Program &prog) {
 
     int M1 = cur_func_->instNum();
     cond->generateEeyoreCode(*this, prog);
+    typeCoercion(cond);
     int M2 = cur_func_->instNum();
     stmt->generateEeyoreCode(*this, prog);
     cur_func_->backpatch(stmt->next_list(), M1);
