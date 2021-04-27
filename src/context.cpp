@@ -545,6 +545,8 @@ void Context::generateEeyoreOn(LValASTNode *ast, eeyore::Program &prog) {
                         (lhs, rhs_var, rhs_index);
         cur_func_->pushInst(std::move(inst));
     }
+    // Type Info
+    ast->setValueType(ValueType::kIntType);
 }
 
 void Context::generateEeyoreOn(IndexListASTNode *ast, eeyore::Program &prog) {
@@ -565,6 +567,7 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
         ast->false_list().insert(ast->false_list().end(),
                                  rhs->false_list().begin(),
                                  rhs->false_list().end());
+        ast->setValueType(ValueType::kBoolType);
     } else if (op == Operator::kOr) {
         lhs->generateEeyoreCode(*this, prog);
         int M = cur_func_->instNum();
@@ -575,6 +578,7 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
                                 rhs->true_list().begin(),
                                 rhs->true_list().end());
         ast->false_list() = rhs->false_list();
+        ast->setValueType(ValueType::kBoolType);
     } else if (Operator::kEq <= op && op <= Operator::kGreaterEq) {
         // Relation Operator
         lhs->generateEeyoreCode(*this, prog);
@@ -588,6 +592,7 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
         cur_func_->pushInst(std::move(inst1));
         auto inst2 = std::make_shared<eeyore::JumpInst>();
         cur_func_->pushInst(std::move(inst2));
+        ast->setValueType(ValueType::kBoolType);
     } else {
         // Arithmetic Operator
         lhs->generateEeyoreCode(*this, prog);
@@ -597,6 +602,7 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
         auto tvar = cur_func_->addTemp();
         auto inst = std::make_shared<eeyore::BinaryInst>(op, tvar, lvar, rvar);
         cur_func_->pushInst(std::move(inst));
+        ast->setValueType(ValueType::kIntType);
     }
 }
 
@@ -629,6 +635,7 @@ void Context::generateEeyoreOn(FunCallASTNode *ast, eeyore::Program &prog) {
         auto inst = std::make_shared<eeyore::AssignCallInst>(func, lineno);
         cur_func_->pushInst(std::move(inst));
     }
+    ast->setValueType(ValueType::kIntType);
 }
 
 void Context::generateEeyoreOn(FuncRParamsASTNode *ast, eeyore::Program &prog) {
@@ -640,16 +647,32 @@ void Context::generateEeyoreOn(IntASTNode *ast, eeyore::Program &prog) {
     auto tvar = cur_func_->addTemp();
     auto inst = std::make_shared<eeyore::AssignInst>(tvar, ptr);
     cur_func_->pushInst(std::move(inst));
+    // Type Info
+    ast->setValueType(ValueType::kBoolType);
 }
 
 void Context::generateEeyoreOn(UnaryOpASTNode *ast, eeyore::Program &prog) {
     auto op = ast->op();
     auto &operand = ast->operand();
     if (op == Operator::kNot) {
-        // Logical
         operand->generateEeyoreCode(*this, prog);
-        ast->true_list() = operand->false_list();
-        ast->false_list() = operand->true_list();
+        if (operand->value_type() == ValueType::kBoolType) {
+            // Logical
+            ast->true_list() = operand->false_list();
+            ast->false_list() = operand->true_list();
+        } else {
+            auto cond_1 = cur_func_->getLastTemp();
+            auto cond_2 = std::make_shared<eeyore::IntValue>(0);
+            auto M = cur_func_->instNum();
+            ast->true_list().push_back(M);
+            ast->false_list().push_back(M+1);
+            auto inst1 = std::make_shared<eeyore::CondInst>
+                (Operator::kEq, cond_1, cond_2);
+            cur_func_->pushInst(std::move(inst1));
+            auto inst2 = std::make_shared<eeyore::JumpInst>();
+            cur_func_->pushInst(std::move(inst2));
+        }
+        ast->setValueType(ValueType::kBoolType);
     } else {
         // Arithmetic
         operand->generateEeyoreCode(*this, prog);
@@ -662,6 +685,7 @@ void Context::generateEeyoreOn(UnaryOpASTNode *ast, eeyore::Program &prog) {
             auto inst = std::make_shared<eeyore::UnaryInst>(op, lhs, rhs);
             cur_func_->pushInst(std::move(inst));
         }
+        ast->setValueType(ValueType::kIntType);
     }
 }
 

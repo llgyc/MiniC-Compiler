@@ -18,16 +18,24 @@ using ASTNodePtr = std::unique_ptr<BaseASTNode>;
 using ASTPtrList = std::vector<ASTNodePtr>;
 using ASTPtrListPtr = std::unique_ptr<ASTPtrList>;
 
+enum class ValueType {
+    kIntType,
+    kBoolType
+};
+
 class BaseASTNode {
 public:
     virtual ~BaseASTNode() = default;
     virtual void generateEeyoreCode(Context &ctx, eeyore::Program &prog) = 0;
     virtual std::optional<int> eval(Context &ctx) const { return std::nullopt; }
+    void setValueType(ValueType value_type) { value_type_ = value_type; };
+    ValueType value_type() const { return value_type_; }
     std::vector<int> &true_list() { return true_list_; }
     std::vector<int> &false_list() { return false_list_; }
     std::vector<int> &next_list() { return next_list_; }
 
 private:
+    ValueType value_type_;
     std::vector<int> true_list_;
     std::vector<int> false_list_;
     std::vector<int> next_list_;

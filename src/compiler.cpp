@@ -6,6 +6,7 @@
 
 #include "context.hpp"
 
+extern int yydebug;
 extern int yylineno;
 extern std::FILE *yyin;
 extern int yyparse(BaseASTNode **);
@@ -27,6 +28,7 @@ void SysY_to_Eeyore(int argc, char *argv[]) {
     // SysY to Eeyore
     yyin = fopen(argv[3], "r");
     yylineno = 1;
+    yydebug = 1;
     BaseASTNode *root_ptr = nullptr;
     yyparse(&root_ptr);
     assert(root_ptr != nullptr);
