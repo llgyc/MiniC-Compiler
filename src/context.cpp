@@ -677,23 +677,22 @@ void Context::generateEeyoreOn(UnaryOpASTNode *ast, eeyore::Program &prog) {
     auto op = ast->op();
     auto &operand = ast->operand();
     if (op == Operator::kNot) {
-        operand->generateEeyoreCode(*this, prog);
-        typeCoercion(operand);
-        ast->true_list().insert(ast->true_list().end(),
-                                operand->false_list().begin(),
-                                operand->false_list().end());
-        ast->false_list().insert(ast->false_list().end(),
-                                 operand->true_list().begin(),
-                                 operand->true_list().end());
-        ast->setValueType(ValueType::kBoolType);
-        /*
+        // Comment: 2021.04.27
+        // There is some weird testcase:
+        //     -!!x
+        // satisfying syntax rule but strange in semantics
+        // Code Part:
+        // operand->generateEeyoreCode(*this, prog);
+        // typeCoercion(operand);
+        // ast->true_list() = operand->false_list();
+        // ast->false_list() = operand->true_list();
+        // ast->setValueType(ValueType::kBoolType);
         operand->generateEeyoreCode(*this, prog);
         auto rhs = cur_func_->getLastTemp();
         auto lhs = cur_func_->addTemp();
         auto inst = std::make_shared<eeyore::UnaryInst>(op, lhs, rhs);
         cur_func_->pushInst(std::move(inst));
         ast->setValueType(ValueType::kIntType);
-        */
     } else {
         // Arithmetic
         operand->generateEeyoreCode(*this, prog);

@@ -1,8 +1,6 @@
-int main () {
-    if (!+(5+-5)) putint(1);
-    if (!-(--5-(+--5))) putint(2);
-    int a = 010;
-    putint(a);
-    if (-a + 8 == 0) putint(5);
+int a = 1;
+
+int main() {
+    if (-!!a) putint(a);
     return 0;
 }
