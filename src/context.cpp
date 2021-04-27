@@ -677,11 +677,19 @@ void Context::generateEeyoreOn(UnaryOpASTNode *ast, eeyore::Program &prog) {
     auto op = ast->op();
     auto &operand = ast->operand();
     if (op == Operator::kNot) {
+    /*
         operand->generateEeyoreCode(*this, prog);
         typeCoercion(operand);
         ast->true_list() = operand->false_list();
         ast->false_list() = operand->true_list();
         ast->setValueType(ValueType::kBoolType);
+    */
+        operand->generateEeyoreCode(*this, prog);
+        auto rhs = cur_func_->getLastTemp();
+        auto lhs = cur_func_->addTemp();
+        auto inst = std::make_shared<eeyore::UnaryInst>(op, lhs, rhs);
+        cur_func_->pushInst(std::move(inst));
+        ast->setValueType(ValueType::kIntType);
     } else {
         // Arithmetic
         operand->generateEeyoreCode(*this, prog);
