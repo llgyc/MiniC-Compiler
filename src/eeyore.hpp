@@ -278,6 +278,7 @@ public:
     const std::string &name() const { return name_; }
     const VarPtrList &native() const { return native_; }
     const VarPtrList &temp() const { return temp_; }
+    const VarPtrList &params() const { return params_; }
     const InstPtrList &insts() const { return insts_; }
     const std::vector<int> &label_pos() const { return label_pos_; }
     

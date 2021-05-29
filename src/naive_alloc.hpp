@@ -70,7 +70,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
         return;
     }
     // Normal Function
-    int now_pos = 0;
+    int now_pos = func->paramNum();
     for (auto &var : func->native()) {
         auto ptr = CAST_P(var, NativeVar);
         Tstart[ptr->id_] = now_pos;
@@ -123,8 +123,8 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
         PUSH_INST(_inst); \
     } else TEST_TYPE(SYMBOL, ParamVar) { \
         auto _ptr = CAST_P(SYMBOL, ParamVar); \
-        auto _inst = std::make_shared<tigger::AssignRInst> \
-            (REG, 20 + _ptr->id_); \
+        auto _inst = std::make_shared<tigger::StackLoadInst> \
+            (_ptr->id_, REG); \
         PUSH_INST(_inst); \
     } else TEST_TYPE(SYMBOL, IntValue) { \
         auto _ptr = CAST_P(SYMBOL, IntValue); \
@@ -159,16 +159,24 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
         PUSH_INST(_inst); \
     } else TEST_TYPE(SYMBOL, ParamVar) { \
         auto _ptr = CAST_P(SYMBOL, ParamVar); \
-        auto _inst = std::make_shared<tigger::AssignRInst> \
-            (20 + _ptr->id_, REG); \
+        auto _inst = std::make_shared<tigger::StackStoreInst> \
+            (REG, _ptr->id_); \
         PUSH_INST(_inst); \
     } else assert(false);
-    
+
+
+    // save parameter
+    for (int i = 0; i < func->paramNum(); i++) {
+        STORE_SYMBOL(func->params()[i], 20 + i);
+    }
+
+    // true instructions
     int cnt = 0;
+    t_func->setLabelNum(func->labelNum());
     for (auto &inst : func->insts()) {
         for (int j = 0; j < func->labelNum(); ++j) {
             if (cnt == func->label_pos()[j]) {
-                t_func->pushLabel(t_func->instNum());
+                t_func->setLabel(j, t_func->instNum());
             }
         }
         ++cnt;
@@ -187,7 +195,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 (Operator::kAdd, 2, 2, 3);
             PUSH_INST(inst);
             auto inst2 = std::make_shared<tigger::MemStoreInst>
-                (3, 0, 1);
+                (2, 0, 1);
             PUSH_INST(inst2);
         } else TEST_TYPE(inst, AssignArrayInst) {
             // SYMBOL = SYMBOL [ RightValue ]

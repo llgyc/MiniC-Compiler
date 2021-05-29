@@ -198,7 +198,8 @@ public:
     int stk_size() const { return stk_size_; }
     int instNum() const { return insts_.size(); }
     int labelNum() const { return label_pos_.size(); }
-    void pushLabel(int pos) { label_pos_.push_back(pos); }
+    void setLabel(int pos, int val) { label_pos_[pos] = val; }
+    void setLabelNum(int size) { label_pos_.resize(size); }
     void pushInst(InstPtr inst) {
         insts_.push_back(std::move(inst));
     }

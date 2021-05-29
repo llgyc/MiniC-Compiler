@@ -12,6 +12,7 @@ if (REG == 0) { \
 } else if (REG < 28) { \
     os << "a" << (REG - 20); \
 } else assert(false);
+
 void BinaryRInst::dumpCode(std::ostream &os, int label_init_id) const {
     os << "  ";
     PRINT_REG(rd_);
@@ -82,7 +83,7 @@ void JumpInst::dumpCode(std::ostream &os, int label_init_id) const {
 }
 
 void CallInst::dumpCode(std::ostream &os, int label_init_id) const {
-    os << "  " << func_ << std::endl;
+    os << "  call f_" << func_ << std::endl;
 }
 
 void ReturnInst::dumpCode(std::ostream &os, int label_init_id) const {
