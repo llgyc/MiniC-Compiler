@@ -26,7 +26,7 @@ wc:
   sw       s0, 36(sp)
   lw       s0, 32(sp)
   lw       s1, 36(sp)
-s0, s1, .l4
+  blt      s0, s1, .l4
   j        .l6
 .l4:
   lw       s0, 12(sp)
@@ -44,7 +44,7 @@ s0, s1, .l4
   sw       s0, 52(sp)
   lw       s0, 48(sp)
   lw       s1, 52(sp)
-s0, s1, .l1
+  bne      s0, s1, .l1
   j        .l2
 .l1:
   lw       s0, 8(sp)
@@ -53,7 +53,7 @@ s0, s1, .l1
   sw       s0, 60(sp)
   lw       s0, 56(sp)
   lw       s1, 60(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l3
 .l0:
   lw       s0, 16(sp)
@@ -125,7 +125,7 @@ main:
   sw       s0, 2020(sp)
   lw       s0, 2016(sp)
   lw       s1, 2020(sp)
-s0, s1, .l0
+  bne      s0, s1, .l0
   j        .l2
 .l7:
   call     getch

@@ -21,7 +21,7 @@ QuickSort:
   sw       s0, 32(sp)
   lw       s0, 28(sp)
   lw       s1, 32(sp)
-s0, s1, .l14
+  blt      s0, s1, .l14
   j        .l15
 .l14:
   lw       s0, 4(sp)
@@ -52,7 +52,7 @@ s0, s1, .l14
   sw       s0, 60(sp)
   lw       s0, 56(sp)
   lw       s1, 60(sp)
-s0, s1, .l12
+  blt      s0, s1, .l12
   j        .l13
 .l2:
 .l12:
@@ -62,7 +62,7 @@ s0, s1, .l12
   sw       s0, 68(sp)
   lw       s0, 64(sp)
   lw       s1, 68(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l4
 .l0:
   lw       s0, 16(sp)
@@ -86,7 +86,7 @@ s0, s1, .l0
   sw       s0, 92(sp)
   lw       s0, 80(sp)
   lw       s1, 92(sp)
-s0, s1, .l1
+  bgt      s0, s1, .l1
   j        .l4
 .l1:
   lw       s0, 16(sp)
@@ -107,7 +107,7 @@ s0, s1, .l1
   sw       s0, 112(sp)
   lw       s0, 108(sp)
   lw       s1, 112(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l8
 .l3:
   lw       s0, 12(sp)
@@ -150,7 +150,7 @@ s0, s1, .l3
   sw       s0, 152(sp)
   lw       s0, 148(sp)
   lw       s1, 152(sp)
-s0, s1, .l5
+  blt      s0, s1, .l5
   j        .l10
 .l5:
   lw       s0, 12(sp)
@@ -168,7 +168,7 @@ s0, s1, .l5
   sw       s0, 168(sp)
   lw       s0, 164(sp)
   lw       s1, 168(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l10
 .l6:
   lw       s0, 12(sp)
@@ -189,7 +189,7 @@ s0, s1, .l6
   sw       s0, 188(sp)
   lw       s0, 184(sp)
   lw       s1, 188(sp)
-s0, s1, .l9
+  blt      s0, s1, .l9
   j        .l11
 .l9:
   lw       s0, 16(sp)
@@ -477,7 +477,7 @@ main:
   sw       s0, 204(sp)
   lw       s0, 200(sp)
   lw       s1, 204(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l16:
   lw       s0, 40(sp)

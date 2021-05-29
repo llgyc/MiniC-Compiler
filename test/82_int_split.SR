@@ -42,7 +42,7 @@ split:
   sw       s0, 32(sp)
   lw       s0, 24(sp)
   lw       s1, 32(sp)
-s0, s1, .l0
+  bne      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 8(sp)
@@ -141,7 +141,7 @@ main:
   sw       s0, 60(sp)
   lw       s0, 56(sp)
   lw       s1, 60(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l3:
   lw       s0, 0(sp)

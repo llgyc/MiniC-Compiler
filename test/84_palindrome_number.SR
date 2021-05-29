@@ -17,7 +17,7 @@ palindrome:
   sw       s0, 36(sp)
   lw       s0, 32(sp)
   lw       s1, 36(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l5
 .l0:
   lw       s0, 20(sp)
@@ -85,7 +85,7 @@ s0, s1, .l0
   sw       s0, 104(sp)
   lw       s0, 92(sp)
   lw       s1, 104(sp)
-s0, s1, .l2
+  beq      s0, s1, .l2
   j        .l4
 .l2:
   li       s0, 1
@@ -112,7 +112,7 @@ s0, s1, .l2
   sw       s0, 128(sp)
   lw       s0, 116(sp)
   lw       s1, 128(sp)
-s0, s1, .l3
+  beq      s0, s1, .l3
   j        .l4
 .l3:
   li       s0, 1
@@ -162,7 +162,7 @@ main:
   sw       s0, 24(sp)
   lw       s0, 20(sp)
   lw       s1, 24(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l1
 .l7:
   lw       s0, 0(sp)

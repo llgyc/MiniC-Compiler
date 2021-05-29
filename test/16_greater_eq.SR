@@ -61,7 +61,7 @@ main:
   sw       s0, 20(sp)
   lw       s0, 16(sp)
   lw       s1, 20(sp)
-s0, s1, .l0
+  bge      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 0(sp)

@@ -20,7 +20,7 @@ main:
   sw       s0, 80(sp)
   lw       s0, 76(sp)
   lw       s1, 80(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 0(sp)
@@ -108,7 +108,7 @@ s0, s1, .l0
   sw       s0, 172(sp)
   lw       s0, 168(sp)
   lw       s1, 172(sp)
-s0, s1, .l3
+  bne      s0, s1, .l3
   j        .l10
 .l3:
   lw       s0, 56(sp)
@@ -117,7 +117,7 @@ s0, s1, .l3
   sw       s0, 180(sp)
   lw       s0, 176(sp)
   lw       s1, 180(sp)
-s0, s1, .l7
+  blt      s0, s1, .l7
   j        .l10
 .l7:
   lw       s0, 52(sp)
@@ -151,7 +151,7 @@ s0, s1, .l7
   sw       s0, 216(sp)
   lw       s0, 204(sp)
   lw       s1, 216(sp)
-s0, s1, .l4
+  blt      s0, s1, .l4
   j        .l5
 .l4:
   lw       s0, 60(sp)
@@ -193,7 +193,7 @@ s0, s1, .l4
   sw       s0, 256(sp)
   lw       s0, 244(sp)
   lw       s1, 256(sp)
-s0, s1, .l8
+  beq      s0, s1, .l8
   j        .l9
 .l8:
   lw       s0, 48(sp)

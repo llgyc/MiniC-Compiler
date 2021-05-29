@@ -34,7 +34,7 @@ insert:
   sw       s0, 32(sp)
   lw       s0, 20(sp)
   lw       s1, 32(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l3
 .l0:
   lw       s0, 8(sp)
@@ -44,7 +44,7 @@ s0, s1, .l0
   sw       s0, 40(sp)
   lw       s0, 36(sp)
   lw       s1, 40(sp)
-s0, s1, .l1
+  blt      s0, s1, .l1
   j        .l3
 .l1:
   lw       s0, 8(sp)
@@ -71,7 +71,7 @@ s0, s1, .l1
   sw       s0, 64(sp)
   lw       s0, 60(sp)
   lw       s1, 64(sp)
-s0, s1, .l4
+  bgt      s0, s1, .l4
   j        .l6
 .l4:
   lw       s0, 12(sp)
@@ -308,7 +308,7 @@ main:
   sw       s0, 200(sp)
   lw       s0, 196(sp)
   lw       s1, 200(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l7:
   lw       s0, 48(sp)

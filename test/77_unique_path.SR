@@ -13,7 +13,7 @@ uniquePaths:
   sw       s0, 56(sp)
   lw       s0, 52(sp)
   lw       s1, 56(sp)
-s0, s1, .l1
+  beq      s0, s1, .l1
   j        .l0
 .l0:
   lw       s0, 4(sp)
@@ -22,7 +22,7 @@ s0, s1, .l1
   sw       s0, 64(sp)
   lw       s0, 60(sp)
   lw       s1, 64(sp)
-s0, s1, .l1
+  beq      s0, s1, .l1
   j        .l2
 .l1:
   li       s0, 1
@@ -43,7 +43,7 @@ ret
   sw       s0, 80(sp)
   lw       s0, 76(sp)
   lw       s1, 80(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l5
 .l3:
   lw       s0, 44(sp)
@@ -100,7 +100,7 @@ s0, s1, .l3
   sw       s0, 140(sp)
   lw       s0, 136(sp)
   lw       s1, 140(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l8
 .l6:
   lw       s0, 0(sp)
@@ -166,7 +166,7 @@ s0, s1, .l6
   sw       s0, 212(sp)
   lw       s0, 204(sp)
   lw       s1, 212(sp)
-s0, s1, .l12
+  bgt      s0, s1, .l12
   j        .l14
 .l12:
   lw       s0, 4(sp)
@@ -189,7 +189,7 @@ s0, s1, .l12
   sw       s0, 236(sp)
   lw       s0, 228(sp)
   lw       s1, 236(sp)
-s0, s1, .l9
+  bgt      s0, s1, .l9
   j        .l11
 .l9:
   lw       s0, 44(sp)

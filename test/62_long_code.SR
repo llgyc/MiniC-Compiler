@@ -31,7 +31,7 @@ bubblesort:
   sw       s0, 32(sp)
   lw       s0, 20(sp)
   lw       s1, 32(sp)
-s0, s1, .l5
+  blt      s0, s1, .l5
   j        .l7
 .l5:
   li       s0, 0
@@ -58,7 +58,7 @@ s0, s1, .l5
   sw       s0, 60(sp)
   lw       s0, 40(sp)
   lw       s1, 60(sp)
-s0, s1, .l2
+  blt      s0, s1, .l2
   j        .l4
 .l2:
   lw       s0, 8(sp)
@@ -91,7 +91,7 @@ s0, s1, .l2
   sw       s0, 92(sp)
   lw       s0, 72(sp)
   lw       s1, 92(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l1
 .l0:
   lw       s0, 8(sp)
@@ -210,7 +210,7 @@ insertsort:
   sw       s0, 24(sp)
   lw       s0, 20(sp)
   lw       s1, 24(sp)
-s0, s1, .l4
+  blt      s0, s1, .l4
   j        .l6
 .l12:
   lw       s0, 4(sp)
@@ -246,7 +246,7 @@ s0, s1, .l4
   sw       s0, 60(sp)
   lw       s0, 52(sp)
   lw       s1, 60(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l3
 .l8:
   lw       s0, 8(sp)
@@ -264,7 +264,7 @@ s0, s1, .l0
   sw       s0, 76(sp)
   lw       s0, 64(sp)
   lw       s1, 76(sp)
-s0, s1, .l1
+  blt      s0, s1, .l1
   j        .l3
 .l9:
   lw       s0, 12(sp)
@@ -365,7 +365,7 @@ QuickSort:
   sw       s0, 32(sp)
   lw       s0, 28(sp)
   lw       s1, 32(sp)
-s0, s1, .l14
+  blt      s0, s1, .l14
   j        .l15
 .l29:
   lw       s0, 4(sp)
@@ -396,7 +396,7 @@ s0, s1, .l14
   sw       s0, 60(sp)
   lw       s0, 56(sp)
   lw       s1, 60(sp)
-s0, s1, .l12
+  blt      s0, s1, .l12
   j        .l13
 .l17:
 .l27:
@@ -406,7 +406,7 @@ s0, s1, .l12
   sw       s0, 68(sp)
   lw       s0, 64(sp)
   lw       s1, 68(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l4
 .l15:
   lw       s0, 16(sp)
@@ -430,7 +430,7 @@ s0, s1, .l0
   sw       s0, 92(sp)
   lw       s0, 80(sp)
   lw       s1, 92(sp)
-s0, s1, .l1
+  bgt      s0, s1, .l1
   j        .l4
 .l16:
   lw       s0, 16(sp)
@@ -451,7 +451,7 @@ s0, s1, .l1
   sw       s0, 112(sp)
   lw       s0, 108(sp)
   lw       s1, 112(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l8
 .l18:
   lw       s0, 12(sp)
@@ -494,7 +494,7 @@ s0, s1, .l3
   sw       s0, 152(sp)
   lw       s0, 148(sp)
   lw       s1, 152(sp)
-s0, s1, .l5
+  blt      s0, s1, .l5
   j        .l10
 .l20:
   lw       s0, 12(sp)
@@ -512,7 +512,7 @@ s0, s1, .l5
   sw       s0, 168(sp)
   lw       s0, 164(sp)
   lw       s1, 168(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l10
 .l21:
   lw       s0, 12(sp)
@@ -533,7 +533,7 @@ s0, s1, .l6
   sw       s0, 188(sp)
   lw       s0, 184(sp)
   lw       s1, 188(sp)
-s0, s1, .l9
+  blt      s0, s1, .l9
   j        .l11
 .l24:
   lw       s0, 16(sp)
@@ -668,7 +668,7 @@ getMid:
   sw       s0, 20(sp)
   lw       s0, 16(sp)
   lw       s1, 20(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l1
 .l31:
   lui      s0, %hi(v0)
@@ -796,7 +796,7 @@ getMost:
   li       t0, 4028
   add      t0, sp, t0
   lw       s1, 0(t0)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l34:
   li       t0, 4004
@@ -892,7 +892,7 @@ s0, s1, .l0
   li       t0, 4068
   add      t0, sp, t0
   lw       s1, 0(t0)
-s0, s1, .l5
+  blt      s0, s1, .l5
   j        .l7
 .l39:
   li       t0, 4004
@@ -1019,7 +1019,7 @@ s0, s1, .l5
   li       t0, 4124
   add      t0, sp, t0
   lw       s1, 0(t0)
-s0, s1, .l3
+  bgt      s0, s1, .l3
   j        .l4
 .l37:
   li       t0, 4016
@@ -1138,7 +1138,7 @@ revert:
   sw       s0, 28(sp)
   lw       s0, 24(sp)
   lw       s1, 28(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l42:
   lw       s0, 8(sp)
@@ -1243,7 +1243,7 @@ arrCopy:
   sw       s0, 20(sp)
   lw       s0, 16(sp)
   lw       s1, 20(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l45:
   lw       s0, 8(sp)
@@ -1316,7 +1316,7 @@ calSum:
   sw       s0, 28(sp)
   lw       s0, 24(sp)
   lw       s1, 28(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l5
 .l51:
   lw       s0, 8(sp)
@@ -1356,7 +1356,7 @@ s0, s1, .l3
   sw       s0, 72(sp)
   lw       s0, 60(sp)
   lw       s1, 72(sp)
-s0, s1, .l0
+  bne      s0, s1, .l0
   j        .l1
 .l48:
   lw       s0, 12(sp)
@@ -1440,7 +1440,7 @@ avgPooling:
   sw       s0, 32(sp)
   lw       s0, 28(sp)
   lw       s1, 32(sp)
-s0, s1, .l5
+  blt      s0, s1, .l5
   j        .l7
 .l59:
   lw       s0, 12(sp)
@@ -1455,7 +1455,7 @@ s0, s1, .l5
   sw       s0, 48(sp)
   lw       s0, 36(sp)
   lw       s1, 48(sp)
-s0, s1, .l2
+  blt      s0, s1, .l2
   j        .l3
 .l56:
   lw       s0, 8(sp)
@@ -1491,7 +1491,7 @@ s0, s1, .l2
   sw       s0, 84(sp)
   lw       s0, 72(sp)
   lw       s1, 84(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l1
 .l54:
   li       s0, 0
@@ -1647,7 +1647,7 @@ s0, s1, .l0
   sw       s0, 248(sp)
   lw       s0, 244(sp)
   lw       s1, 248(sp)
-s0, s1, .l8
+  blt      s0, s1, .l8
   j        .l10
 .l62:
   lw       s0, 12(sp)
@@ -2145,7 +2145,7 @@ main:
   sw       s0, 680(sp)
   lw       s0, 676(sp)
   lw       s1, 680(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l65:
   lw       s0, 260(sp)
@@ -2197,7 +2197,7 @@ s0, s1, .l0
   sw       s0, 728(sp)
   lw       s0, 724(sp)
   lw       s1, 728(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l5
 .l68:
   lw       s0, 260(sp)
@@ -2287,7 +2287,7 @@ s0, s1, .l3
   sw       s0, 812(sp)
   lw       s0, 808(sp)
   lw       s1, 812(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l8
 .l71:
   lw       s0, 260(sp)
@@ -2351,7 +2351,7 @@ s0, s1, .l6
   sw       s0, 872(sp)
   lw       s0, 868(sp)
   lw       s1, 872(sp)
-s0, s1, .l9
+  blt      s0, s1, .l9
   j        .l11
 .l74:
   lw       s0, 260(sp)
@@ -2427,7 +2427,7 @@ s0, s1, .l9
   sw       s0, 944(sp)
   lw       s0, 940(sp)
   lw       s1, 944(sp)
-s0, s1, .l12
+  blt      s0, s1, .l12
   j        .l14
 .l77:
   lw       s0, 260(sp)
@@ -2495,7 +2495,7 @@ s0, s1, .l12
   sw       s0, 1008(sp)
   lw       s0, 1004(sp)
   lw       s1, 1008(sp)
-s0, s1, .l15
+  blt      s0, s1, .l15
   j        .l17
 .l80:
   lw       s0, 260(sp)
@@ -2563,7 +2563,7 @@ s0, s1, .l15
   sw       s0, 1072(sp)
   lw       s0, 1068(sp)
   lw       s1, 1072(sp)
-s0, s1, .l18
+  blt      s0, s1, .l18
   j        .l20
 .l83:
   lw       s0, 260(sp)

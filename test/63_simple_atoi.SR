@@ -34,7 +34,7 @@ atoi_:
   sw       s0, 40(sp)
   lw       s0, 36(sp)
   lw       s1, 40(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l9
 .l0:
   lw       s0, 12(sp)
@@ -64,7 +64,7 @@ s0, s1, .l0
   sw       s0, 68(sp)
   lw       s0, 64(sp)
   lw       s1, 68(sp)
-s0, s1, .l7
+  beq      s0, s1, .l7
   j        .l2
 .l2:
   lw       s0, 12(sp)
@@ -82,7 +82,7 @@ s0, s1, .l7
   sw       s0, 84(sp)
   lw       s0, 80(sp)
   lw       s1, 84(sp)
-s0, s1, .l7
+  beq      s0, s1, .l7
   j        .l8
 .l7:
   lw       s0, 12(sp)
@@ -100,7 +100,7 @@ s0, s1, .l7
   sw       s0, 100(sp)
   lw       s0, 96(sp)
   lw       s1, 100(sp)
-s0, s1, .l3
+  beq      s0, s1, .l3
   j        .l4
 .l3:
   li       s0, 1
@@ -138,7 +138,7 @@ s0, s1, .l3
   sw       s0, 136(sp)
   lw       s0, 132(sp)
   lw       s1, 136(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l5
 .l5:
   lw       s0, 12(sp)
@@ -156,7 +156,7 @@ s0, s1, .l6
   sw       s0, 152(sp)
   lw       s0, 148(sp)
   lw       s1, 152(sp)
-s0, s1, .l6
+  bgt      s0, s1, .l6
   j        .l14
 .l6:
   li       s0, 2147483647
@@ -186,7 +186,7 @@ ret
   sw       s0, 176(sp)
   lw       s0, 172(sp)
   lw       s1, 176(sp)
-s0, s1, .l10
+  bne      s0, s1, .l10
   j        .l15
 .l10:
   lw       s0, 12(sp)
@@ -204,7 +204,7 @@ s0, s1, .l10
   sw       s0, 192(sp)
   lw       s0, 188(sp)
   lw       s1, 192(sp)
-s0, s1, .l11
+  bgt      s0, s1, .l11
   j        .l15
 .l11:
   lw       s0, 12(sp)
@@ -222,7 +222,7 @@ s0, s1, .l11
   sw       s0, 208(sp)
   lw       s0, 204(sp)
   lw       s1, 208(sp)
-s0, s1, .l12
+  blt      s0, s1, .l12
   j        .l15
 .l12:
   lw       s0, 4(sp)
@@ -310,7 +310,7 @@ main:
   sw       s0, 2020(sp)
   lw       s0, 2016(sp)
   lw       s1, 2020(sp)
-s0, s1, .l0
+  bne      s0, s1, .l0
   j        .l2
 .l16:
   call     getch

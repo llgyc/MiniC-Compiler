@@ -24,7 +24,7 @@ main:
   sw       s0, 8(sp)
   lw       s0, 4(sp)
   lw       s1, 8(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l1
 .l0:
   li       s0, 1

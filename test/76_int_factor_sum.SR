@@ -41,7 +41,7 @@ factor:
   sw       s0, 32(sp)
   lw       s0, 20(sp)
   lw       s1, 32(sp)
-s0, s1, .l2
+  blt      s0, s1, .l2
   j        .l4
 .l2:
   lw       s0, 0(sp)
@@ -56,7 +56,7 @@ s0, s1, .l2
   sw       s0, 48(sp)
   lw       s0, 44(sp)
   lw       s1, 48(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l1
 .l0:
   lw       s0, 8(sp)

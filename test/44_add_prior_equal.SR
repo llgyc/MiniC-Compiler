@@ -29,7 +29,7 @@ main:
   sw       s0, 40(sp)
   lw       s0, 36(sp)
   lw       s1, 40(sp)
-s0, s1, .l0
+  bne      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 8(sp)
@@ -63,7 +63,7 @@ s0, s1, .l0
   sw       s0, 76(sp)
   lw       s0, 72(sp)
   lw       s1, 76(sp)
-s0, s1, .l1
+  beq      s0, s1, .l1
   j        .l3
 .l1:
   lw       s0, 8(sp)

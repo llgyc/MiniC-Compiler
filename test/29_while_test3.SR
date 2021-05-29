@@ -56,7 +56,7 @@ EightWhile:
   sw       s0, 36(sp)
   lw       s0, 32(sp)
   lw       s1, 36(sp)
-s0, s1, .l21
+  blt      s0, s1, .l21
   j        .l23
 .l21:
   lw       s0, 0(sp)
@@ -76,7 +76,7 @@ s0, s1, .l21
   sw       s0, 56(sp)
   lw       s0, 52(sp)
   lw       s1, 56(sp)
-s0, s1, .l18
+  blt      s0, s1, .l18
   j        .l20
 .l18:
   lw       s0, 4(sp)
@@ -96,7 +96,7 @@ s0, s1, .l18
   sw       s0, 76(sp)
   lw       s0, 72(sp)
   lw       s1, 76(sp)
-s0, s1, .l15
+  beq      s0, s1, .l15
   j        .l17
 .l15:
   lw       s0, 8(sp)
@@ -116,7 +116,7 @@ s0, s1, .l15
   sw       s0, 96(sp)
   lw       s0, 92(sp)
   lw       s1, 96(sp)
-s0, s1, .l12
+  blt      s0, s1, .l12
   j        .l14
 .l12:
   lw       s0, 12(sp)
@@ -137,7 +137,7 @@ s0, s1, .l12
   sw       s0, 116(sp)
   lw       s0, 112(sp)
   lw       s1, 116(sp)
-s0, s1, .l9
+  bgt      s0, s1, .l9
   j        .l11
 .l9:
   lui      s0, %hi(v3)
@@ -160,7 +160,7 @@ s0, s1, .l9
   sw       s0, 136(sp)
   lw       s0, 132(sp)
   lw       s1, 136(sp)
-s0, s1, .l6
+  bgt      s0, s1, .l6
   j        .l8
 .l6:
   lui      s0, %hi(v2)
@@ -183,7 +183,7 @@ s0, s1, .l6
   sw       s0, 156(sp)
   lw       s0, 152(sp)
   lw       s1, 156(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l5
 .l3:
   lui      s0, %hi(v0)
@@ -206,7 +206,7 @@ s0, s1, .l3
   sw       s0, 176(sp)
   lw       s0, 172(sp)
   lw       s1, 176(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l0:
   lui      s0, %hi(v1)

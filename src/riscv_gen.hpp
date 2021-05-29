@@ -203,6 +203,7 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
             } else if (ptr->op_ == Operator::kEq) {
                 hd += "beq      ";
             }
+            os << hd;
             PRINT_REG2(ptr->rs1_, ptr->rs2_);
             os << ", .l" << ptr->label_ << std::endl;
         } else TEST_TYPE(inst, JumpInst) {

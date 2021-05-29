@@ -12,7 +12,7 @@ enc:
   sw       s0, 8(sp)
   lw       s0, 4(sp)
   lw       s1, 8(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l1
 .l0:
   lw       s0, 0(sp)
@@ -63,7 +63,7 @@ dec:
   sw       s0, 8(sp)
   lw       s0, 4(sp)
   lw       s1, 8(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l1
 .l3:
   lw       s0, 0(sp)

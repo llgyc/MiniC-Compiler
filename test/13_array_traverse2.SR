@@ -29,7 +29,7 @@ main:
   sw       s0, 36(sp)
   lw       s0, 32(sp)
   lw       s1, 36(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l8
 .l4:
 .l6:
@@ -39,7 +39,7 @@ s0, s1, .l6
   sw       s0, 44(sp)
   lw       s0, 40(sp)
   lw       s1, 44(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l5
 .l1:
 .l3:
@@ -49,7 +49,7 @@ s0, s1, .l3
   sw       s0, 52(sp)
   lw       s0, 48(sp)
   lw       s1, 52(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 0(sp)

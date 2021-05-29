@@ -12,7 +12,7 @@ fib:
   sw       s0, 16(sp)
   lw       s0, 12(sp)
   lw       s1, 16(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l2
 .l0:
   li       s0, 0
@@ -28,7 +28,7 @@ ret
   sw       s0, 28(sp)
   lw       s0, 24(sp)
   lw       s1, 28(sp)
-s0, s1, .l1
+  beq      s0, s1, .l1
   j        .l3
 .l1:
   li       s0, 1

@@ -35,7 +35,7 @@ maxArea:
   sw       s0, 52(sp)
   lw       s0, 48(sp)
   lw       s1, 52(sp)
-s0, s1, .l8
+  blt      s0, s1, .l8
   j        .l9
 .l8:
   lw       s0, 8(sp)
@@ -62,7 +62,7 @@ s0, s1, .l8
   sw       s0, 76(sp)
   lw       s0, 64(sp)
   lw       s1, 76(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l1
 .l0:
   lw       s0, 12(sp)
@@ -124,7 +124,7 @@ s0, s1, .l0
   sw       s0, 140(sp)
   lw       s0, 136(sp)
   lw       s1, 140(sp)
-s0, s1, .l2
+  bgt      s0, s1, .l2
   j        .l6
 .l2:
   lw       s0, 20(sp)
@@ -156,7 +156,7 @@ s0, s1, .l2
   sw       s0, 168(sp)
   lw       s0, 156(sp)
   lw       s1, 168(sp)
-s0, s1, .l4
+  bgt      s0, s1, .l4
   j        .l5
 .l4:
   lw       s0, 12(sp)

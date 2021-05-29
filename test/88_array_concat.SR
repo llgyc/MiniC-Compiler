@@ -19,7 +19,7 @@ concat:
   sw       s0, 28(sp)
   lw       s0, 24(sp)
   lw       s1, 28(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 12(sp)
@@ -67,7 +67,7 @@ s0, s1, .l0
   sw       s0, 72(sp)
   lw       s0, 68(sp)
   lw       s1, 72(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l5
 .l3:
   lw       s0, 12(sp)
@@ -143,7 +143,7 @@ main:
   sw       s0, 136(sp)
   lw       s0, 132(sp)
   lw       s1, 136(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l6:
   lw       s0, 120(sp)
@@ -259,7 +259,7 @@ s0, s1, .l0
   sw       s0, 244(sp)
   lw       s0, 240(sp)
   lw       s1, 244(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l5
 .l9:
   lw       s0, 120(sp)

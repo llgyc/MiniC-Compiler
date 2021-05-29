@@ -19,7 +19,7 @@ ifElseElseIf:
   sw       s0, 20(sp)
   lw       s0, 16(sp)
   lw       s1, 20(sp)
-s0, s1, .l2
+  beq      s0, s1, .l2
   j        .l3
 .l2:
   li       s0, 25
@@ -34,7 +34,7 @@ s0, s1, .l2
   sw       s0, 32(sp)
   lw       s0, 28(sp)
   lw       s1, 32(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l1
 .l0:
   li       s0, 42

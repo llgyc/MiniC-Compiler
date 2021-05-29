@@ -57,7 +57,7 @@ Merge:
   sw       s0, 160(sp)
   lw       s0, 156(sp)
   lw       s1, 160(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l4
 .l0:
   lw       s0, 104(sp)
@@ -107,7 +107,7 @@ s0, s1, .l0
   sw       s0, 208(sp)
   lw       s0, 204(sp)
   lw       s1, 208(sp)
-s0, s1, .l2
+  blt      s0, s1, .l2
   j        .l5
 .l2:
   lw       s0, 108(sp)
@@ -175,7 +175,7 @@ s0, s1, .l2
   sw       s0, 276(sp)
   lw       s0, 272(sp)
   lw       s1, 276(sp)
-s0, s1, .l6
+  bne      s0, s1, .l6
   j        .l13
 .l6:
   lw       s0, 108(sp)
@@ -184,7 +184,7 @@ s0, s1, .l6
   sw       s0, 284(sp)
   lw       s0, 280(sp)
   lw       s1, 284(sp)
-s0, s1, .l10
+  bne      s0, s1, .l10
   j        .l13
 .l10:
   lw       s0, 104(sp)
@@ -217,7 +217,7 @@ s0, s1, .l10
   sw       s0, 316(sp)
   lw       s0, 296(sp)
   lw       s1, 316(sp)
-s0, s1, .l7
+  blt      s0, s1, .l7
   j        .l8
 .l7:
   lw       s0, 112(sp)
@@ -315,7 +315,7 @@ s0, s1, .l7
   sw       s0, 412(sp)
   lw       s0, 408(sp)
   lw       s1, 412(sp)
-s0, s1, .l11
+  blt      s0, s1, .l11
   j        .l16
 .l11:
   lw       s0, 112(sp)
@@ -369,7 +369,7 @@ s0, s1, .l11
   sw       s0, 464(sp)
   lw       s0, 460(sp)
   lw       s1, 464(sp)
-s0, s1, .l14
+  blt      s0, s1, .l14
   j        .l17
 .l14:
   lw       s0, 112(sp)
@@ -443,7 +443,7 @@ MergeSort:
   sw       s0, 24(sp)
   lw       s0, 20(sp)
   lw       s1, 24(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l1
 .l18:
   lw       s0, 4(sp)
@@ -717,7 +717,7 @@ main:
   sw       s0, 208(sp)
   lw       s0, 204(sp)
   lw       s1, 208(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l20:
   lw       s0, 40(sp)

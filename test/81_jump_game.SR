@@ -13,7 +13,7 @@ canJump:
   sw       s0, 60(sp)
   lw       s0, 56(sp)
   lw       s1, 60(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l2
 .l0:
   li       s0, 1
@@ -44,7 +44,7 @@ ret
   sw       s0, 88(sp)
   lw       s0, 76(sp)
   lw       s1, 88(sp)
-s0, s1, .l1
+  bgt      s0, s1, .l1
   j        .l3
 .l1:
   li       s0, 1
@@ -71,7 +71,7 @@ ret
   sw       s0, 112(sp)
   lw       s0, 100(sp)
   lw       s1, 112(sp)
-s0, s1, .l4
+  blt      s0, s1, .l4
   j        .l6
 .l4:
   lw       s0, 48(sp)
@@ -138,7 +138,7 @@ s0, s1, .l4
   sw       s0, 180(sp)
   lw       s0, 172(sp)
   lw       s1, 180(sp)
-s0, s1, .l15
+  bgt      s0, s1, .l15
   j        .l17
 .l15:
   lw       s0, 48(sp)
@@ -168,7 +168,7 @@ s0, s1, .l15
   sw       s0, 212(sp)
   lw       s0, 192(sp)
   lw       s1, 212(sp)
-s0, s1, .l7
+  blt      s0, s1, .l7
   j        .l8
 .l7:
   lw       s0, 48(sp)
@@ -213,7 +213,7 @@ s0, s1, .l7
   sw       s0, 256(sp)
   lw       s0, 248(sp)
   lw       s1, 256(sp)
-s0, s1, .l11
+  bgt      s0, s1, .l11
   j        .l14
 .l11:
   lw       s0, 48(sp)
@@ -237,7 +237,7 @@ s0, s1, .l11
   sw       s0, 280(sp)
   lw       s0, 276(sp)
   lw       s1, 280(sp)
-s0, s1, .l9
+  bne      s0, s1, .l9
   j        .l10
 .l9:
   lw       s0, 48(sp)

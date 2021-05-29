@@ -31,7 +31,7 @@ select_sort:
   sw       s0, 40(sp)
   lw       s0, 28(sp)
   lw       s1, 40(sp)
-s0, s1, .l7
+  blt      s0, s1, .l7
   j        .l9
 .l7:
   lw       s0, 8(sp)
@@ -55,7 +55,7 @@ s0, s1, .l7
   sw       s0, 64(sp)
   lw       s0, 60(sp)
   lw       s1, 64(sp)
-s0, s1, .l2
+  blt      s0, s1, .l2
   j        .l5
 .l2:
   lw       s0, 16(sp)
@@ -82,7 +82,7 @@ s0, s1, .l2
   sw       s0, 88(sp)
   lw       s0, 76(sp)
   lw       s1, 88(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l1
 .l0:
   lw       s0, 12(sp)
@@ -108,7 +108,7 @@ s0, s1, .l0
   sw       s0, 112(sp)
   lw       s0, 108(sp)
   lw       s1, 112(sp)
-s0, s1, .l4
+  bne      s0, s1, .l4
   j        .l6
 .l4:
   lw       s0, 16(sp)
@@ -350,7 +350,7 @@ main:
   sw       s0, 192(sp)
   lw       s0, 188(sp)
   lw       s1, 192(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l10:
   lw       s0, 40(sp)

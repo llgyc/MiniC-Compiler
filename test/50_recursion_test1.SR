@@ -12,7 +12,7 @@ fact:
   sw       s0, 12(sp)
   lw       s0, 8(sp)
   lw       s1, 12(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l1
 .l0:
   li       s0, 1

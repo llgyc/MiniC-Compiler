@@ -25,7 +25,7 @@ insertsort:
   sw       s0, 24(sp)
   lw       s0, 20(sp)
   lw       s1, 24(sp)
-s0, s1, .l4
+  blt      s0, s1, .l4
   j        .l6
 .l4:
   lw       s0, 4(sp)
@@ -61,7 +61,7 @@ s0, s1, .l4
   sw       s0, 60(sp)
   lw       s0, 52(sp)
   lw       s1, 60(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l3
 .l0:
   lw       s0, 8(sp)
@@ -79,7 +79,7 @@ s0, s1, .l0
   sw       s0, 76(sp)
   lw       s0, 64(sp)
   lw       s1, 76(sp)
-s0, s1, .l1
+  blt      s0, s1, .l1
   j        .l3
 .l1:
   lw       s0, 12(sp)
@@ -322,7 +322,7 @@ main:
   sw       s0, 184(sp)
   lw       s0, 180(sp)
   lw       s1, 184(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l7:
   lw       s0, 40(sp)

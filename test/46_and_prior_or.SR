@@ -42,7 +42,7 @@ main:
   sw       s0, 60(sp)
   lw       s0, 56(sp)
   lw       s1, 60(sp)
-s0, s1, .l0
+  bne      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 0(sp)
@@ -51,7 +51,7 @@ s0, s1, .l0
   sw       s0, 68(sp)
   lw       s0, 64(sp)
   lw       s1, 68(sp)
-s0, s1, .l3
+  bgt      s0, s1, .l3
   j        .l2
 .l2:
   lw       s0, 12(sp)
@@ -66,7 +66,7 @@ s0, s1, .l3
   sw       s0, 84(sp)
   lw       s0, 80(sp)
   lw       s1, 84(sp)
-s0, s1, .l1
+  beq      s0, s1, .l1
   j        .l4
 .l1:
   lw       s0, 8(sp)
@@ -75,7 +75,7 @@ s0, s1, .l1
   sw       s0, 92(sp)
   lw       s0, 88(sp)
   lw       s1, 92(sp)
-s0, s1, .l3
+  bgt      s0, s1, .l3
   j        .l4
 .l3:
   lw       s0, 12(sp)

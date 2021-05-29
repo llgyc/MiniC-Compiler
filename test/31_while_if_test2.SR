@@ -19,7 +19,7 @@ ifWhile:
   sw       s0, 20(sp)
   lw       s0, 16(sp)
   lw       s1, 20(sp)
-s0, s1, .l5
+  beq      s0, s1, .l5
   j        .l6
 .l1:
 .l5:
@@ -29,7 +29,7 @@ s0, s1, .l5
   sw       s0, 28(sp)
   lw       s0, 24(sp)
   lw       s1, 28(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 4(sp)
@@ -63,7 +63,7 @@ s0, s1, .l0
   sw       s0, 60(sp)
   lw       s0, 56(sp)
   lw       s1, 60(sp)
-s0, s1, .l3
+  blt      s0, s1, .l3
   j        .l7
 .l3:
   lw       s0, 4(sp)

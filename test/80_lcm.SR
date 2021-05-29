@@ -28,7 +28,7 @@ gcd:
   sw       s0, 36(sp)
   lw       s0, 32(sp)
   lw       s1, 36(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l1
 .l0:
   lw       s0, 0(sp)
@@ -61,7 +61,7 @@ s0, s1, .l0
   sw       s0, 68(sp)
   lw       s0, 64(sp)
   lw       s1, 68(sp)
-s0, s1, .l2
+  bne      s0, s1, .l2
   j        .l4
 .l2:
   lw       s0, 4(sp)

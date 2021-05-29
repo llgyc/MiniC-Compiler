@@ -23,7 +23,7 @@ main:
   sw       s0, 140(sp)
   lw       s0, 136(sp)
   lw       s1, 140(sp)
-s0, s1, .l0
+  beq      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 120(sp)

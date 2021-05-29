@@ -34,7 +34,7 @@ counting_sort:
   sw       s0, 80(sp)
   lw       s0, 76(sp)
   lw       s1, 80(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l4
 .l0:
   lw       s0, 60(sp)
@@ -69,7 +69,7 @@ s0, s1, .l0
   sw       s0, 112(sp)
   lw       s0, 108(sp)
   lw       s1, 112(sp)
-s0, s1, .l2
+  blt      s0, s1, .l2
   j        .l5
 .l2:
   lw       s0, 52(sp)
@@ -141,7 +141,7 @@ s0, s1, .l2
   sw       s0, 180(sp)
   lw       s0, 176(sp)
   lw       s1, 180(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l8
 .l6:
   lw       s0, 60(sp)
@@ -210,7 +210,7 @@ s0, s1, .l6
   sw       s0, 248(sp)
   lw       s0, 244(sp)
   lw       s1, 248(sp)
-s0, s1, .l9
+  bgt      s0, s1, .l9
   j        .l11
 .l9:
   lw       s0, 56(sp)
@@ -517,7 +517,7 @@ main:
   sw       s0, 236(sp)
   lw       s0, 232(sp)
   lw       s1, 236(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l12:
   lw       s0, 40(sp)

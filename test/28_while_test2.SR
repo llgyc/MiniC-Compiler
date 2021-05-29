@@ -28,7 +28,7 @@ FourWhile:
   sw       s0, 36(sp)
   lw       s0, 32(sp)
   lw       s1, 36(sp)
-s0, s1, .l9
+  blt      s0, s1, .l9
   j        .l11
 .l9:
   lw       s0, 0(sp)
@@ -48,7 +48,7 @@ s0, s1, .l9
   sw       s0, 56(sp)
   lw       s0, 52(sp)
   lw       s1, 56(sp)
-s0, s1, .l6
+  blt      s0, s1, .l6
   j        .l8
 .l6:
   lw       s0, 4(sp)
@@ -68,7 +68,7 @@ s0, s1, .l6
   sw       s0, 76(sp)
   lw       s0, 72(sp)
   lw       s1, 76(sp)
-s0, s1, .l3
+  beq      s0, s1, .l3
   j        .l5
 .l3:
   lw       s0, 8(sp)
@@ -88,7 +88,7 @@ s0, s1, .l3
   sw       s0, 96(sp)
   lw       s0, 92(sp)
   lw       s1, 96(sp)
-s0, s1, .l0
+  blt      s0, s1, .l0
   j        .l2
 .l0:
   lw       s0, 12(sp)

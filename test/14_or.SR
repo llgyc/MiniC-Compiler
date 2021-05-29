@@ -34,7 +34,7 @@ main:
   sw       s0, 8(sp)
   lw       s0, 8(sp)
   li       s1, 0
-s0, s1, .l1
+  bne      s0, s1, .l1
   j        .l0
 .l0:
   lui      s0, %hi(v1)
@@ -42,7 +42,7 @@ s0, s1, .l1
   sw       s0, 12(sp)
   lw       s0, 12(sp)
   li       s1, 0
-s0, s1, .l1
+  bne      s0, s1, .l1
   j        .l2
 .l1:
   li       s0, 1

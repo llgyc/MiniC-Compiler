@@ -37,7 +37,7 @@ main:
   sw       s0, 12(sp)
   lw       s0, 8(sp)
   lw       s1, 12(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l2
 .l0:
   lui      s0, %hi(v1)

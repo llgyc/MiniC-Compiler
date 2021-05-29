@@ -29,7 +29,7 @@ myFunc:
   sw       s0, 28(sp)
   lw       s0, 24(sp)
   lw       s1, 28(sp)
-s0, s1, .l0
+  bne      s0, s1, .l0
   j        .l3
 .l0:
   li       s0, 0
@@ -46,7 +46,7 @@ ret
   sw       s0, 40(sp)
   lw       s0, 36(sp)
   lw       s1, 40(sp)
-s0, s1, .l1
+  bgt      s0, s1, .l1
   j        .l4
 .l1:
   lw       s0, 4(sp)

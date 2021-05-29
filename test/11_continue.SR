@@ -16,7 +16,7 @@ main:
   sw       s0, 12(sp)
   lw       s0, 8(sp)
   lw       s1, 12(sp)
-s0, s1, .l3
+  bgt      s0, s1, .l3
   j        .l4
 .l3:
   lw       s0, 0(sp)
@@ -25,7 +25,7 @@ s0, s1, .l3
   sw       s0, 20(sp)
   lw       s0, 16(sp)
   lw       s1, 20(sp)
-s0, s1, .l0
+  bgt      s0, s1, .l0
   j        .l1
 .l0:
   lw       s0, 0(sp)
