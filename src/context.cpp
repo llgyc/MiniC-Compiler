@@ -646,15 +646,25 @@ void Context::generateEeyoreOn(FunCallASTNode *ast, eeyore::Program &prog) {
             cur_func_->pushInst(std::move(inst));
         }
     }
-    
+
     auto func = lookUpFunction(ident);
+    if (ident == "starttime" || ident == "stoptime") {
+        auto linevar = std::make_shared<eeyore::IntValue>(lineno);
+        auto inst1 = std::make_shared<eeyore::ParamInst>(std::move(linevar));
+        cur_func_->pushInst(std::move(inst1));
+        auto inst2 = std::make_shared<eeyore::AssignCallInst>(func);
+        cur_func_->pushInst(std::move(inst2));
+        ast->setValueType(ValueType::kIntType);
+        return;
+    } 
+    
     if (func->need_return()) {
         auto tvar = cur_func_->addTemp();
         auto inst = std::make_shared<eeyore::AssignCallInst>
-                        (func, lineno, tvar);
+                        (func, tvar);
         cur_func_->pushInst(std::move(inst));
     } else {
-        auto inst = std::make_shared<eeyore::AssignCallInst>(func, lineno);
+        auto inst = std::make_shared<eeyore::AssignCallInst>(func);
         cur_func_->pushInst(std::move(inst));
     }
     ast->setValueType(ValueType::kIntType);

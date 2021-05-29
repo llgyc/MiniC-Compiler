@@ -48,7 +48,6 @@ public:
         lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     VarPtr lhs_;
     VarPtr rhs_;
 };
@@ -61,7 +60,6 @@ public:
         rhs_(std::move(rhs)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     VarPtr lhs_var_;
     VarPtr lhs_index_;
     VarPtr rhs_;
@@ -75,7 +73,6 @@ public:
         rhs_index_(std::move(rhs_index)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     VarPtr lhs_;
     VarPtr rhs_var_;
     VarPtr rhs_index_;
@@ -90,7 +87,6 @@ public:
         rhs_2_(std::move(rhs_2)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     Operator op_;
     VarPtr lhs_;
     VarPtr rhs_1_;
@@ -103,7 +99,6 @@ public:
         op_(op), lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     Operator op_;
     VarPtr lhs_;
     VarPtr rhs_;
@@ -121,7 +116,6 @@ public:
     }
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     Operator op_;
     VarPtr cond_1_;
     VarPtr cond_2_;
@@ -137,7 +131,6 @@ public:
     }
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     int label_id_; 
 };
 
@@ -146,19 +139,16 @@ public:
     ParamInst(VarPtr param) : param_(std::move(param)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     VarPtr param_;
 };
 
 class AssignCallInst : public InstBase {
 public:
-    AssignCallInst(FuncPtr func, int lineno, VarPtr store = nullptr) :
-        func_(std::move(func)), lineno_(lineno), store_(std::move(store)) {}
+    AssignCallInst(FuncPtr func, VarPtr store = nullptr) :
+        func_(std::move(func)), store_(std::move(store)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     FuncPtr func_;
-    int lineno_;
     VarPtr store_;
 };
 
@@ -167,7 +157,6 @@ public:
     ReturnInst(VarPtr ret = nullptr) : ret_(std::move(ret)) {}
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
-private:
     VarPtr ret_;
 };
 
@@ -189,7 +178,6 @@ public:
     void dumpCode(std::ostream &os) const override;
     void dumpVariableDeclaration(std::ostream &os) const override;
 
-private:
     int id_;
     std::optional<int> val_;
     std::unordered_map<int, int> pos2val_;
@@ -205,7 +193,6 @@ public:
     void dumpCode(std::ostream &os) const override;
     void dumpVariableDeclaration(std::ostream &os) const override;
 
-private:
     int id_;
 };
 
@@ -218,7 +205,6 @@ public:
     const std::vector<int> &widths() const { return widths_; }
     void dumpCode(std::ostream &os) const override;
 
-private:
     int id_;
     // info from SysY
     std::vector<int> widths_;
@@ -231,7 +217,6 @@ public:
     IntValue(int val) : val_(val) {}
     void dumpCode(std::ostream &os) const override;
 
-private:
     int val_;
 };
 
@@ -291,6 +276,10 @@ public:
     void dumpInstructions(std::ostream &os) const;
     void dumpCode(std::ostream &os) const;
     const std::string &name() const { return name_; }
+    const VarPtrList &native() const { return native_; }
+    const VarPtrList &temp() const { return temp_; }
+    const InstPtrList &insts() const { return insts_; }
+    const std::vector<int> &label_pos() const { return label_pos_; }
     
 private:
     bool has_return_;
@@ -309,6 +298,7 @@ class Program {
 public:
     void pushFunction(FuncPtr func) { funcs_.push_back(std::move(func)); }
     void dumpCode(std::ostream &os) const;
+    const FuncList &funcs() const { return funcs_; }
 
 private:
     FuncList funcs_;

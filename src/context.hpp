@@ -82,11 +82,13 @@ public:
 
         // starttime() _sysy_starttime(__LINE__)
         lib_funcs_.insert({"starttime",
-            std::make_shared<eeyore::FunctionDef>("starttime", 0, false)});
+            std::make_shared<eeyore::FunctionDef>("_sysy_starttime", 0, false)});
+        param = lib_funcs_["starttime"]->addParam();
 
         // stoptime() _sysy_stoptime(__LINE__)
         lib_funcs_.insert({"stoptime",
-            std::make_shared<eeyore::FunctionDef>("stoptime", 0, false)});
+            std::make_shared<eeyore::FunctionDef>("_sysy_stoptime", 0, false)});
+        param = lib_funcs_["stoptime"]->addParam();
     }
     void newScope() {
         auto ptr = std::make_unique<Scope>();

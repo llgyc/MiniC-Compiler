@@ -5,6 +5,8 @@
 #include <cassert>
 
 #include "context.hpp"
+#include "tigger.hpp"
+#include "naive_alloc.hpp"
 
 extern int yylineno;
 extern std::FILE *yyin;
@@ -21,9 +23,11 @@ ASTNodePtr ast_root;
 
 Context eeyore_generation_context;
 
-eeyore::Program ir1;
+eeyore::Program eir1;
 
-void SysY_to_Eeyore(int argc, char *argv[]) {
+tigger::Program tir1;
+
+void SysY_to_Eeyore(int argc, char *argv[], eeyore::Program &ir) {
     // SysY to Eeyore
     yyin = fopen(argv[3], "r");
     yylineno = 1;
@@ -32,11 +36,13 @@ void SysY_to_Eeyore(int argc, char *argv[]) {
     assert(root_ptr != nullptr);
     ast_root.reset(root_ptr);
     std::cerr << "[Success] Lexer and parser succeeded" << std::endl;
-    ast_root->generateEeyoreCode(eeyore_generation_context, ir1);
+    ast_root->generateEeyoreCode(eeyore_generation_context, ir);
     std::cerr << "[Success] AST generation completed" << std::endl;
-    std::ofstream ofs(argv[5]);
-    ir1.dumpCode(ofs);
-    std::cerr << "[Success] Eeyore Code dumped" << std::endl;
+}
+
+void Eeyore_to_Tigger(eeyore::Program &ir1, tigger::Program &ir2) {
+    naive_alloc::translate_E2T(ir1, ir2);
+    std::cerr << "[Success] Tigger translation completed" << std::endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -61,9 +67,16 @@ int main(int argc, char *argv[]) {
             return 0;
         }
         if (!strcmp(argv[2], "-e")) { 
-            SysY_to_Eeyore(argc, argv);
+            SysY_to_Eeyore(argc, argv, eir1);
+            std::ofstream ofs(argv[5]);
+            eir1.dumpCode(ofs);
+            std::cerr << "[Success] Eeyore code dumped" << std::endl;
         } else if (!strcmp(argv[2], "-t")) {
-            // TODO: Eeyore to Tiger
+            SysY_to_Eeyore(argc, argv, eir1);
+            Eeyore_to_Tigger(eir1, tir1);
+            std::ofstream ofs(argv[5]);
+            tir1.dumpCode(ofs);
+            std::cerr << "[Success] Tigger code dumped" << std::endl;
         }
     }
 
