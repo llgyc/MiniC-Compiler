@@ -1,0 +1,19 @@
+  .comm v0, 400, 4
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -16
+  sw       ra, 12(sp)
+  li       s0, 0
+  sw       s0, 0(sp)
+  lw       a0, 0(sp)
+  lw       ra, 12(sp)
+  addi     sp, sp, 16
+ret
+  li       a0, -1
+  lw       ra, 12(sp)
+  addi     sp, sp, 16
+ret
+  .size    main, .-main

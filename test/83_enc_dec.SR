@@ -1,0 +1,154 @@
+  .text
+  .align   2
+  .global  enc
+  .type    enc, @function
+enc:
+  addi     sp, sp, -48
+  sw       ra, 44(sp)
+  sw       a0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 4(sp)
+  li       s0, 25
+  sw       s0, 8(sp)
+  lw       s0, 4(sp)
+  lw       s1, 8(sp)
+s0, s1, .l0
+  j        .l1
+.l0:
+  lw       s0, 0(sp)
+  sw       s0, 12(sp)
+  li       s0, 60
+  sw       s0, 16(sp)
+  lw       s0, 12(sp)
+  lw       s1, 16(sp)
+  add      s0, s0, s1
+  sw       s0, 20(sp)
+  lw       s0, 20(sp)
+  sw       s0, 0(sp)
+  j        .l2
+.l1:
+  lw       s0, 0(sp)
+  sw       s0, 24(sp)
+  li       s0, 15
+  sw       s0, 28(sp)
+  lw       s0, 24(sp)
+  lw       s1, 28(sp)
+  sub      s0, s0, s1
+  sw       s0, 32(sp)
+  lw       s0, 32(sp)
+  sw       s0, 0(sp)
+.l2:
+  lw       s0, 0(sp)
+  sw       s0, 36(sp)
+  lw       a0, 36(sp)
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  li       a0, -1
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  .size    enc, .-enc
+  .text
+  .align   2
+  .global  dec
+  .type    dec, @function
+dec:
+  addi     sp, sp, -48
+  sw       ra, 44(sp)
+  sw       a0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 4(sp)
+  li       s0, 85
+  sw       s0, 8(sp)
+  lw       s0, 4(sp)
+  lw       s1, 8(sp)
+s0, s1, .l0
+  j        .l1
+.l3:
+  lw       s0, 0(sp)
+  sw       s0, 12(sp)
+  li       s0, 59
+  sw       s0, 16(sp)
+  lw       s0, 12(sp)
+  lw       s1, 16(sp)
+  sub      s0, s0, s1
+  sw       s0, 20(sp)
+  lw       s0, 20(sp)
+  sw       s0, 0(sp)
+  j        .l2
+.l4:
+  lw       s0, 0(sp)
+  sw       s0, 24(sp)
+  li       s0, 14
+  sw       s0, 28(sp)
+  lw       s0, 24(sp)
+  lw       s1, 28(sp)
+  add      s0, s0, s1
+  sw       s0, 32(sp)
+  lw       s0, 32(sp)
+  sw       s0, 0(sp)
+.l5:
+  lw       s0, 0(sp)
+  sw       s0, 36(sp)
+  lw       a0, 36(sp)
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  li       a0, -1
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  .size    dec, .-dec
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -48
+  sw       ra, 44(sp)
+  li       s0, 400
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 12(sp)
+  lw       s0, 12(sp)
+  mv       a0, s0
+  call     enc
+  sw       a0, 16(sp)
+  lw       s0, 16(sp)
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  sw       s0, 20(sp)
+  lw       s0, 20(sp)
+  mv       a0, s0
+  call     dec
+  sw       a0, 24(sp)
+  lw       s0, 24(sp)
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  sw       s0, 28(sp)
+  lw       s0, 28(sp)
+  mv       a0, s0
+  call     putint
+  li       s0, 10
+  sw       s0, 32(sp)
+  lw       s0, 32(sp)
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  sw       s0, 36(sp)
+  lw       s0, 36(sp)
+  mv       a0, s0
+  call     putch
+  li       s0, 0
+  sw       s0, 40(sp)
+  lw       a0, 40(sp)
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  li       a0, -1
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  .size    main, .-main

@@ -1,0 +1,133 @@
+  .text
+  .align   2
+  .global  deepWhileBr
+  .type    deepWhileBr, @function
+deepWhileBr:
+  addi     sp, sp, -112
+  sw       ra, 108(sp)
+  sw       a0, 0(sp)
+  sw       a1, 4(sp)
+  lw       s0, 0(sp)
+  sw       s0, 20(sp)
+  lw       s0, 4(sp)
+  sw       s0, 24(sp)
+  lw       s0, 20(sp)
+  lw       s1, 24(sp)
+  add      s0, s0, s1
+  sw       s0, 28(sp)
+  lw       s0, 28(sp)
+  sw       s0, 8(sp)
+.l3:
+  lw       s0, 8(sp)
+  sw       s0, 32(sp)
+  li       s0, 75
+  sw       s0, 36(sp)
+  lw       s0, 32(sp)
+  lw       s1, 36(sp)
+s0, s1, .l4
+  j        .l5
+.l4:
+  li       s0, 42
+  sw       s0, 40(sp)
+  lw       s0, 40(sp)
+  sw       s0, 12(sp)
+  lw       s0, 8(sp)
+  sw       s0, 44(sp)
+  li       s0, 100
+  sw       s0, 48(sp)
+  lw       s0, 44(sp)
+  lw       s1, 48(sp)
+s0, s1, .l2
+  j        .l3
+.l2:
+  lw       s0, 8(sp)
+  sw       s0, 52(sp)
+  lw       s0, 12(sp)
+  sw       s0, 56(sp)
+  lw       s0, 52(sp)
+  lw       s1, 56(sp)
+  add      s0, s0, s1
+  sw       s0, 60(sp)
+  lw       s0, 60(sp)
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  sw       s0, 64(sp)
+  li       s0, 99
+  sw       s0, 68(sp)
+  lw       s0, 64(sp)
+  lw       s1, 68(sp)
+s0, s1, .l1
+  j        .l3
+.l1:
+  lw       s0, 12(sp)
+  sw       s0, 72(sp)
+  li       s0, 2
+  sw       s0, 76(sp)
+  lw       s0, 72(sp)
+  lw       s1, 76(sp)
+  mul      s0, s0, s1
+  sw       s0, 80(sp)
+  lw       s0, 80(sp)
+  sw       s0, 16(sp)
+  li       s0, 1
+  sw       s0, 84(sp)
+  li       s0, 1
+  sw       s0, 88(sp)
+  lw       s0, 84(sp)
+  lw       s1, 88(sp)
+s0, s1, .l0
+  j        .l3
+.l0:
+  lw       s0, 16(sp)
+  sw       s0, 92(sp)
+  li       s0, 2
+  sw       s0, 96(sp)
+  lw       s0, 92(sp)
+  lw       s1, 96(sp)
+  mul      s0, s0, s1
+  sw       s0, 100(sp)
+  lw       s0, 100(sp)
+  sw       s0, 8(sp)
+  j        .l3
+.l5:
+  lw       s0, 8(sp)
+  sw       s0, 104(sp)
+  lw       a0, 104(sp)
+  lw       ra, 108(sp)
+  addi     sp, sp, 112
+ret
+  li       a0, -1
+  lw       ra, 108(sp)
+  addi     sp, sp, 112
+ret
+  .size    deepWhileBr, .-deepWhileBr
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -32
+  sw       ra, 28(sp)
+  li       s0, 2
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 8(sp)
+  lw       s0, 0(sp)
+  sw       s0, 12(sp)
+  lw       s0, 8(sp)
+  mv       a0, s0
+  lw       s0, 12(sp)
+  mv       a1, s0
+  call     deepWhileBr
+  sw       a0, 16(sp)
+  lw       a0, 16(sp)
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  li       a0, -1
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  .size    main, .-main

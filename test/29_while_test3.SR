@@ -1,0 +1,411 @@
+  .global   v0
+  .section  .sdata
+  .align    2
+  .type     v0, @object
+  .size     v0, 4
+v0:
+  .word     0
+  .global   v1
+  .section  .sdata
+  .align    2
+  .type     v1, @object
+  .size     v1, 4
+v1:
+  .word     0
+  .global   v2
+  .section  .sdata
+  .align    2
+  .type     v2, @object
+  .size     v2, 4
+v2:
+  .word     0
+  .global   v3
+  .section  .sdata
+  .align    2
+  .type     v3, @object
+  .size     v3, 4
+v3:
+  .word     0
+  .text
+  .align   2
+  .global  EightWhile
+  .type    EightWhile, @function
+EightWhile:
+  addi     sp, sp, -352
+  sw       ra, 348(sp)
+  li       s0, 5
+  sw       s0, 16(sp)
+  lw       s0, 16(sp)
+  sw       s0, 0(sp)
+  li       s0, 6
+  sw       s0, 20(sp)
+  lw       s0, 20(sp)
+  sw       s0, 4(sp)
+  li       s0, 7
+  sw       s0, 24(sp)
+  lw       s0, 24(sp)
+  sw       s0, 8(sp)
+  li       s0, 10
+  sw       s0, 28(sp)
+  lw       s0, 28(sp)
+  sw       s0, 12(sp)
+.l22:
+  lw       s0, 0(sp)
+  sw       s0, 32(sp)
+  li       s0, 20
+  sw       s0, 36(sp)
+  lw       s0, 32(sp)
+  lw       s1, 36(sp)
+s0, s1, .l21
+  j        .l23
+.l21:
+  lw       s0, 0(sp)
+  sw       s0, 40(sp)
+  li       s0, 3
+  sw       s0, 44(sp)
+  lw       s0, 40(sp)
+  lw       s1, 44(sp)
+  add      s0, s0, s1
+  sw       s0, 48(sp)
+  lw       s0, 48(sp)
+  sw       s0, 0(sp)
+.l19:
+  lw       s0, 4(sp)
+  sw       s0, 52(sp)
+  li       s0, 10
+  sw       s0, 56(sp)
+  lw       s0, 52(sp)
+  lw       s1, 56(sp)
+s0, s1, .l18
+  j        .l20
+.l18:
+  lw       s0, 4(sp)
+  sw       s0, 60(sp)
+  li       s0, 1
+  sw       s0, 64(sp)
+  lw       s0, 60(sp)
+  lw       s1, 64(sp)
+  add      s0, s0, s1
+  sw       s0, 68(sp)
+  lw       s0, 68(sp)
+  sw       s0, 4(sp)
+.l16:
+  lw       s0, 8(sp)
+  sw       s0, 72(sp)
+  li       s0, 7
+  sw       s0, 76(sp)
+  lw       s0, 72(sp)
+  lw       s1, 76(sp)
+s0, s1, .l15
+  j        .l17
+.l15:
+  lw       s0, 8(sp)
+  sw       s0, 80(sp)
+  li       s0, 1
+  sw       s0, 84(sp)
+  lw       s0, 80(sp)
+  lw       s1, 84(sp)
+  sub      s0, s0, s1
+  sw       s0, 88(sp)
+  lw       s0, 88(sp)
+  sw       s0, 8(sp)
+.l13:
+  lw       s0, 12(sp)
+  sw       s0, 92(sp)
+  li       s0, 20
+  sw       s0, 96(sp)
+  lw       s0, 92(sp)
+  lw       s1, 96(sp)
+s0, s1, .l12
+  j        .l14
+.l12:
+  lw       s0, 12(sp)
+  sw       s0, 100(sp)
+  li       s0, 3
+  sw       s0, 104(sp)
+  lw       s0, 100(sp)
+  lw       s1, 104(sp)
+  add      s0, s0, s1
+  sw       s0, 108(sp)
+  lw       s0, 108(sp)
+  sw       s0, 12(sp)
+.l10:
+  lui      s0, %hi(v3)
+  lw       s0, %lo(v3)(s0)
+  sw       s0, 112(sp)
+  li       s0, 1
+  sw       s0, 116(sp)
+  lw       s0, 112(sp)
+  lw       s1, 116(sp)
+s0, s1, .l9
+  j        .l11
+.l9:
+  lui      s0, %hi(v3)
+  lw       s0, %lo(v3)(s0)
+  sw       s0, 120(sp)
+  li       s0, 1
+  sw       s0, 124(sp)
+  lw       s0, 120(sp)
+  lw       s1, 124(sp)
+  sub      s0, s0, s1
+  sw       s0, 128(sp)
+  lw       s0, 128(sp)
+  la       s11, v3
+  sw       s0, 0(s11)
+.l7:
+  lui      s0, %hi(v2)
+  lw       s0, %lo(v2)(s0)
+  sw       s0, 132(sp)
+  li       s0, 2
+  sw       s0, 136(sp)
+  lw       s0, 132(sp)
+  lw       s1, 136(sp)
+s0, s1, .l6
+  j        .l8
+.l6:
+  lui      s0, %hi(v2)
+  lw       s0, %lo(v2)(s0)
+  sw       s0, 140(sp)
+  li       s0, 2
+  sw       s0, 144(sp)
+  lw       s0, 140(sp)
+  lw       s1, 144(sp)
+  sub      s0, s0, s1
+  sw       s0, 148(sp)
+  lw       s0, 148(sp)
+  la       s11, v2
+  sw       s0, 0(s11)
+.l4:
+  lui      s0, %hi(v0)
+  lw       s0, %lo(v0)(s0)
+  sw       s0, 152(sp)
+  li       s0, 3
+  sw       s0, 156(sp)
+  lw       s0, 152(sp)
+  lw       s1, 156(sp)
+s0, s1, .l3
+  j        .l5
+.l3:
+  lui      s0, %hi(v0)
+  lw       s0, %lo(v0)(s0)
+  sw       s0, 160(sp)
+  li       s0, 10
+  sw       s0, 164(sp)
+  lw       s0, 160(sp)
+  lw       s1, 164(sp)
+  add      s0, s0, s1
+  sw       s0, 168(sp)
+  lw       s0, 168(sp)
+  la       s11, v0
+  sw       s0, 0(s11)
+.l1:
+  lui      s0, %hi(v1)
+  lw       s0, %lo(v1)(s0)
+  sw       s0, 172(sp)
+  li       s0, 10
+  sw       s0, 176(sp)
+  lw       s0, 172(sp)
+  lw       s1, 176(sp)
+s0, s1, .l0
+  j        .l2
+.l0:
+  lui      s0, %hi(v1)
+  lw       s0, %lo(v1)(s0)
+  sw       s0, 180(sp)
+  li       s0, 8
+  sw       s0, 184(sp)
+  lw       s0, 180(sp)
+  lw       s1, 184(sp)
+  add      s0, s0, s1
+  sw       s0, 188(sp)
+  lw       s0, 188(sp)
+  la       s11, v1
+  sw       s0, 0(s11)
+  j        .l1
+.l2:
+  lui      s0, %hi(v1)
+  lw       s0, %lo(v1)(s0)
+  sw       s0, 192(sp)
+  li       s0, 1
+  sw       s0, 196(sp)
+  lw       s0, 192(sp)
+  lw       s1, 196(sp)
+  sub      s0, s0, s1
+  sw       s0, 200(sp)
+  lw       s0, 200(sp)
+  la       s11, v1
+  sw       s0, 0(s11)
+  j        .l4
+.l5:
+  lui      s0, %hi(v0)
+  lw       s0, %lo(v0)(s0)
+  sw       s0, 204(sp)
+  li       s0, 8
+  sw       s0, 208(sp)
+  lw       s0, 204(sp)
+  lw       s1, 208(sp)
+  sub      s0, s0, s1
+  sw       s0, 212(sp)
+  lw       s0, 212(sp)
+  la       s11, v0
+  sw       s0, 0(s11)
+  j        .l7
+.l8:
+  lui      s0, %hi(v2)
+  lw       s0, %lo(v2)(s0)
+  sw       s0, 216(sp)
+  li       s0, 1
+  sw       s0, 220(sp)
+  lw       s0, 216(sp)
+  lw       s1, 220(sp)
+  add      s0, s0, s1
+  sw       s0, 224(sp)
+  lw       s0, 224(sp)
+  la       s11, v2
+  sw       s0, 0(s11)
+  j        .l10
+.l11:
+  lui      s0, %hi(v3)
+  lw       s0, %lo(v3)(s0)
+  sw       s0, 228(sp)
+  li       s0, 1
+  sw       s0, 232(sp)
+  lw       s0, 228(sp)
+  lw       s1, 232(sp)
+  add      s0, s0, s1
+  sw       s0, 236(sp)
+  lw       s0, 236(sp)
+  la       s11, v3
+  sw       s0, 0(s11)
+  j        .l13
+.l14:
+  lw       s0, 12(sp)
+  sw       s0, 240(sp)
+  li       s0, 1
+  sw       s0, 244(sp)
+  lw       s0, 240(sp)
+  lw       s1, 244(sp)
+  sub      s0, s0, s1
+  sw       s0, 248(sp)
+  lw       s0, 248(sp)
+  sw       s0, 12(sp)
+  j        .l16
+.l17:
+  lw       s0, 8(sp)
+  sw       s0, 252(sp)
+  li       s0, 1
+  sw       s0, 256(sp)
+  lw       s0, 252(sp)
+  lw       s1, 256(sp)
+  add      s0, s0, s1
+  sw       s0, 260(sp)
+  lw       s0, 260(sp)
+  sw       s0, 8(sp)
+  j        .l19
+.l20:
+  lw       s0, 4(sp)
+  sw       s0, 264(sp)
+  li       s0, 2
+  sw       s0, 268(sp)
+  lw       s0, 264(sp)
+  lw       s1, 268(sp)
+  sub      s0, s0, s1
+  sw       s0, 272(sp)
+  lw       s0, 272(sp)
+  sw       s0, 4(sp)
+  j        .l22
+.l23:
+  lw       s0, 0(sp)
+  sw       s0, 276(sp)
+  lw       s0, 4(sp)
+  sw       s0, 280(sp)
+  lw       s0, 12(sp)
+  sw       s0, 284(sp)
+  lw       s0, 280(sp)
+  lw       s1, 284(sp)
+  add      s0, s0, s1
+  sw       s0, 288(sp)
+  lw       s0, 276(sp)
+  lw       s1, 288(sp)
+  add      s0, s0, s1
+  sw       s0, 292(sp)
+  lw       s0, 8(sp)
+  sw       s0, 296(sp)
+  lw       s0, 292(sp)
+  lw       s1, 296(sp)
+  add      s0, s0, s1
+  sw       s0, 300(sp)
+  lui      s0, %hi(v3)
+  lw       s0, %lo(v3)(s0)
+  sw       s0, 304(sp)
+  lw       s0, 12(sp)
+  sw       s0, 308(sp)
+  lw       s0, 304(sp)
+  lw       s1, 308(sp)
+  add      s0, s0, s1
+  sw       s0, 312(sp)
+  lui      s0, %hi(v0)
+  lw       s0, %lo(v0)(s0)
+  sw       s0, 316(sp)
+  lw       s0, 312(sp)
+  lw       s1, 316(sp)
+  sub      s0, s0, s1
+  sw       s0, 320(sp)
+  lui      s0, %hi(v1)
+  lw       s0, %lo(v1)(s0)
+  sw       s0, 324(sp)
+  lw       s0, 320(sp)
+  lw       s1, 324(sp)
+  add      s0, s0, s1
+  sw       s0, 328(sp)
+  lw       s0, 300(sp)
+  lw       s1, 328(sp)
+  sub      s0, s0, s1
+  sw       s0, 332(sp)
+  lw       a0, 332(sp)
+  lw       ra, 348(sp)
+  addi     sp, sp, 352
+ret
+  li       a0, -1
+  lw       ra, 348(sp)
+  addi     sp, sp, 352
+ret
+  .size    EightWhile, .-EightWhile
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -32
+  sw       ra, 28(sp)
+  li       s0, 1
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  la       s11, v0
+  sw       s0, 0(s11)
+  li       s0, 2
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  la       s11, v1
+  sw       s0, 0(s11)
+  li       s0, 4
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  la       s11, v3
+  sw       s0, 0(s11)
+  li       s0, 6
+  sw       s0, 12(sp)
+  lw       s0, 12(sp)
+  la       s11, v2
+  sw       s0, 0(s11)
+  call     EightWhile
+  sw       a0, 16(sp)
+  lw       a0, 16(sp)
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  li       a0, -1
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  .size    main, .-main

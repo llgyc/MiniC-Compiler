@@ -1,0 +1,126 @@
+  .global   v0
+  .section  .sdata
+  .align    2
+  .type     v0, @object
+  .size     v0, 4
+v0:
+  .word     0
+  .text
+  .align   2
+  .global  myFunc
+  .type    myFunc, @function
+myFunc:
+  addi     sp, sp, -80
+  sw       ra, 76(sp)
+  sw       a0, 0(sp)
+  sw       a1, 4(sp)
+  sw       a2, 8(sp)
+  li       s0, 2
+  sw       s0, 16(sp)
+  lw       s0, 16(sp)
+  sw       s0, 0(sp)
+  li       s0, 0
+  sw       s0, 20(sp)
+  lw       s0, 20(sp)
+  sw       s0, 12(sp)
+  lw       s0, 12(sp)
+  sw       s0, 24(sp)
+  li       s0, 0
+  sw       s0, 28(sp)
+  lw       s0, 24(sp)
+  lw       s1, 28(sp)
+s0, s1, .l0
+  j        .l3
+.l0:
+  li       s0, 0
+  sw       s0, 32(sp)
+  lw       a0, 32(sp)
+  lw       ra, 76(sp)
+  addi     sp, sp, 80
+ret
+.l2:
+.l3:
+  lw       s0, 4(sp)
+  sw       s0, 36(sp)
+  li       s0, 0
+  sw       s0, 40(sp)
+  lw       s0, 36(sp)
+  lw       s1, 40(sp)
+s0, s1, .l1
+  j        .l4
+.l1:
+  lw       s0, 4(sp)
+  sw       s0, 44(sp)
+  li       s0, 1
+  sw       s0, 48(sp)
+  lw       s0, 44(sp)
+  lw       s1, 48(sp)
+  sub      s0, s0, s1
+  sw       s0, 52(sp)
+  lw       s0, 52(sp)
+  sw       s0, 4(sp)
+  j        .l2
+.l4:
+  lw       s0, 0(sp)
+  sw       s0, 56(sp)
+  lw       s0, 4(sp)
+  sw       s0, 60(sp)
+  lw       s0, 56(sp)
+  lw       s1, 60(sp)
+  add      s0, s0, s1
+  sw       s0, 64(sp)
+  lw       a0, 64(sp)
+  lw       ra, 76(sp)
+  addi     sp, sp, 80
+ret
+  li       a0, -1
+  lw       ra, 76(sp)
+  addi     sp, sp, 80
+ret
+  .size    myFunc, .-myFunc
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -48
+  sw       ra, 44(sp)
+  li       s0, 3
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  la       s11, v0
+  sw       s0, 0(s11)
+  li       s0, 1
+  sw       s0, 8(sp)
+  li       s0, 2
+  sw       s0, 12(sp)
+  li       s0, 1
+  sw       s0, 16(sp)
+  lw       s0, 8(sp)
+  mv       a0, s0
+  lw       s0, 12(sp)
+  mv       a1, s0
+  lw       s0, 16(sp)
+  mv       a2, s0
+  call     myFunc
+  sw       a0, 20(sp)
+  lw       s0, 20(sp)
+  sw       s0, 0(sp)
+  lui      s0, %hi(v0)
+  lw       s0, %lo(v0)(s0)
+  sw       s0, 24(sp)
+  lw       s0, 0(sp)
+  sw       s0, 28(sp)
+  lw       s0, 24(sp)
+  lw       s1, 28(sp)
+  add      s0, s0, s1
+  sw       s0, 32(sp)
+  lw       a0, 32(sp)
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  li       a0, -1
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  .size    main, .-main

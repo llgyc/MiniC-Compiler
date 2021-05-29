@@ -1,0 +1,107 @@
+  .text
+  .align   2
+  .global  whileIf
+  .type    whileIf, @function
+whileIf:
+  addi     sp, sp, -80
+  sw       ra, 76(sp)
+  li       s0, 0
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  sw       s0, 0(sp)
+  li       s0, 0
+  sw       s0, 12(sp)
+  lw       s0, 12(sp)
+  sw       s0, 4(sp)
+.l6:
+  lw       s0, 0(sp)
+  sw       s0, 16(sp)
+  li       s0, 100
+  sw       s0, 20(sp)
+  lw       s0, 16(sp)
+  lw       s1, 20(sp)
+s0, s1, .l5
+  j        .l7
+.l5:
+  lw       s0, 0(sp)
+  sw       s0, 24(sp)
+  li       s0, 5
+  sw       s0, 28(sp)
+  lw       s0, 24(sp)
+  lw       s1, 28(sp)
+s0, s1, .l2
+  j        .l3
+.l2:
+  li       s0, 25
+  sw       s0, 32(sp)
+  lw       s0, 32(sp)
+  sw       s0, 4(sp)
+  j        .l4
+.l3:
+  lw       s0, 0(sp)
+  sw       s0, 36(sp)
+  li       s0, 10
+  sw       s0, 40(sp)
+  lw       s0, 36(sp)
+  lw       s1, 40(sp)
+s0, s1, .l0
+  j        .l1
+.l0:
+  li       s0, 42
+  sw       s0, 44(sp)
+  lw       s0, 44(sp)
+  sw       s0, 4(sp)
+  j        .l4
+.l1:
+  lw       s0, 0(sp)
+  sw       s0, 48(sp)
+  li       s0, 2
+  sw       s0, 52(sp)
+  lw       s0, 48(sp)
+  lw       s1, 52(sp)
+  mul      s0, s0, s1
+  sw       s0, 56(sp)
+  lw       s0, 56(sp)
+  sw       s0, 4(sp)
+.l4:
+  lw       s0, 0(sp)
+  sw       s0, 60(sp)
+  li       s0, 1
+  sw       s0, 64(sp)
+  lw       s0, 60(sp)
+  lw       s1, 64(sp)
+  add      s0, s0, s1
+  sw       s0, 68(sp)
+  lw       s0, 68(sp)
+  sw       s0, 0(sp)
+  j        .l6
+.l7:
+  lw       s0, 4(sp)
+  sw       s0, 72(sp)
+  lw       a0, 72(sp)
+  lw       ra, 76(sp)
+  addi     sp, sp, 80
+ret
+  li       a0, -1
+  lw       ra, 76(sp)
+  addi     sp, sp, 80
+ret
+  .size    whileIf, .-whileIf
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -16
+  sw       ra, 12(sp)
+  call     whileIf
+  sw       a0, 0(sp)
+  lw       a0, 0(sp)
+  lw       ra, 12(sp)
+  addi     sp, sp, 16
+ret
+  li       a0, -1
+  lw       ra, 12(sp)
+  addi     sp, sp, 16
+ret
+  .size    main, .-main

@@ -1,0 +1,514 @@
+  .global   v0
+  .section  .sdata
+  .align    2
+  .type     v0, @object
+  .size     v0, 4
+v0:
+  .word     0
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -656
+  sw       ra, 652(sp)
+  call     getint
+  sw       a0, 132(sp)
+  lw       s0, 132(sp)
+  sw       s0, 120(sp)
+.l1:
+  lw       s0, 120(sp)
+  sw       s0, 136(sp)
+  li       s0, 5
+  sw       s0, 140(sp)
+  lw       s0, 136(sp)
+  lw       s1, 140(sp)
+s0, s1, .l0
+  j        .l2
+.l0:
+  lw       s0, 120(sp)
+  sw       s0, 144(sp)
+  li       s0, 1
+  sw       s0, 148(sp)
+  lw       s0, 144(sp)
+  lw       s1, 148(sp)
+  add      s0, s0, s1
+  sw       s0, 152(sp)
+  lw       s0, 152(sp)
+  sw       s0, 120(sp)
+  j        .l1
+.l2:
+  li       s0, 0
+  sw       s0, 156(sp)
+  lw       s0, 156(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 160(sp)
+  li       s0, 1
+  sw       s0, 164(sp)
+  lw       s0, 160(sp)
+  lw       s1, 164(sp)
+  add      s0, s0, s1
+  sw       s0, 168(sp)
+  lw       s0, 168(sp)
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  sw       s0, 172(sp)
+  li       s0, 1
+  sw       s0, 176(sp)
+  lw       s0, 172(sp)
+  lw       s1, 176(sp)
+  add      s0, s0, s1
+  sw       s0, 180(sp)
+  lw       s0, 180(sp)
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  sw       s0, 184(sp)
+  li       s0, 1
+  sw       s0, 188(sp)
+  lw       s0, 184(sp)
+  lw       s1, 188(sp)
+  add      s0, s0, s1
+  sw       s0, 192(sp)
+  lw       s0, 192(sp)
+  sw       s0, 12(sp)
+  lw       s0, 12(sp)
+  sw       s0, 196(sp)
+  li       s0, 1
+  sw       s0, 200(sp)
+  lw       s0, 196(sp)
+  lw       s1, 200(sp)
+  add      s0, s0, s1
+  sw       s0, 204(sp)
+  lw       s0, 204(sp)
+  sw       s0, 16(sp)
+  lw       s0, 16(sp)
+  sw       s0, 208(sp)
+  li       s0, 1
+  sw       s0, 212(sp)
+  lw       s0, 208(sp)
+  lw       s1, 212(sp)
+  add      s0, s0, s1
+  sw       s0, 216(sp)
+  lw       s0, 216(sp)
+  sw       s0, 20(sp)
+  lw       s0, 20(sp)
+  sw       s0, 220(sp)
+  li       s0, 1
+  sw       s0, 224(sp)
+  lw       s0, 220(sp)
+  lw       s1, 224(sp)
+  add      s0, s0, s1
+  sw       s0, 228(sp)
+  lw       s0, 228(sp)
+  sw       s0, 24(sp)
+  lw       s0, 24(sp)
+  sw       s0, 232(sp)
+  li       s0, 1
+  sw       s0, 236(sp)
+  lw       s0, 232(sp)
+  lw       s1, 236(sp)
+  add      s0, s0, s1
+  sw       s0, 240(sp)
+  lw       s0, 240(sp)
+  sw       s0, 28(sp)
+  lw       s0, 28(sp)
+  sw       s0, 244(sp)
+  li       s0, 1
+  sw       s0, 248(sp)
+  lw       s0, 244(sp)
+  lw       s1, 248(sp)
+  add      s0, s0, s1
+  sw       s0, 252(sp)
+  lw       s0, 252(sp)
+  sw       s0, 32(sp)
+  lw       s0, 32(sp)
+  sw       s0, 256(sp)
+  li       s0, 1
+  sw       s0, 260(sp)
+  lw       s0, 256(sp)
+  lw       s1, 260(sp)
+  add      s0, s0, s1
+  sw       s0, 264(sp)
+  lw       s0, 264(sp)
+  sw       s0, 36(sp)
+  lw       s0, 36(sp)
+  sw       s0, 268(sp)
+  li       s0, 1
+  sw       s0, 272(sp)
+  lw       s0, 268(sp)
+  lw       s1, 272(sp)
+  add      s0, s0, s1
+  sw       s0, 276(sp)
+  lw       s0, 276(sp)
+  sw       s0, 40(sp)
+  lw       s0, 40(sp)
+  sw       s0, 280(sp)
+  li       s0, 1
+  sw       s0, 284(sp)
+  lw       s0, 280(sp)
+  lw       s1, 284(sp)
+  add      s0, s0, s1
+  sw       s0, 288(sp)
+  lw       s0, 288(sp)
+  sw       s0, 44(sp)
+  lw       s0, 44(sp)
+  sw       s0, 292(sp)
+  li       s0, 1
+  sw       s0, 296(sp)
+  lw       s0, 292(sp)
+  lw       s1, 296(sp)
+  add      s0, s0, s1
+  sw       s0, 300(sp)
+  lw       s0, 300(sp)
+  sw       s0, 48(sp)
+  lw       s0, 48(sp)
+  sw       s0, 304(sp)
+  li       s0, 1
+  sw       s0, 308(sp)
+  lw       s0, 304(sp)
+  lw       s1, 308(sp)
+  add      s0, s0, s1
+  sw       s0, 312(sp)
+  lw       s0, 312(sp)
+  sw       s0, 52(sp)
+  lw       s0, 52(sp)
+  sw       s0, 316(sp)
+  li       s0, 1
+  sw       s0, 320(sp)
+  lw       s0, 316(sp)
+  lw       s1, 320(sp)
+  add      s0, s0, s1
+  sw       s0, 324(sp)
+  lw       s0, 324(sp)
+  sw       s0, 56(sp)
+  lw       s0, 56(sp)
+  sw       s0, 328(sp)
+  li       s0, 1
+  sw       s0, 332(sp)
+  lw       s0, 328(sp)
+  lw       s1, 332(sp)
+  add      s0, s0, s1
+  sw       s0, 336(sp)
+  lw       s0, 336(sp)
+  sw       s0, 60(sp)
+  lw       s0, 60(sp)
+  sw       s0, 340(sp)
+  li       s0, 1
+  sw       s0, 344(sp)
+  lw       s0, 340(sp)
+  lw       s1, 344(sp)
+  add      s0, s0, s1
+  sw       s0, 348(sp)
+  lw       s0, 348(sp)
+  sw       s0, 64(sp)
+  lw       s0, 64(sp)
+  sw       s0, 352(sp)
+  li       s0, 1
+  sw       s0, 356(sp)
+  lw       s0, 352(sp)
+  lw       s1, 356(sp)
+  add      s0, s0, s1
+  sw       s0, 360(sp)
+  lw       s0, 360(sp)
+  sw       s0, 68(sp)
+  lw       s0, 68(sp)
+  sw       s0, 364(sp)
+  li       s0, 1
+  sw       s0, 368(sp)
+  lw       s0, 364(sp)
+  lw       s1, 368(sp)
+  add      s0, s0, s1
+  sw       s0, 372(sp)
+  lw       s0, 372(sp)
+  sw       s0, 72(sp)
+  lw       s0, 72(sp)
+  sw       s0, 376(sp)
+  li       s0, 1
+  sw       s0, 380(sp)
+  lw       s0, 376(sp)
+  lw       s1, 380(sp)
+  add      s0, s0, s1
+  sw       s0, 384(sp)
+  lw       s0, 384(sp)
+  sw       s0, 76(sp)
+  lw       s0, 76(sp)
+  sw       s0, 388(sp)
+  li       s0, 1
+  sw       s0, 392(sp)
+  lw       s0, 388(sp)
+  lw       s1, 392(sp)
+  add      s0, s0, s1
+  sw       s0, 396(sp)
+  lw       s0, 396(sp)
+  sw       s0, 80(sp)
+  lw       s0, 80(sp)
+  sw       s0, 400(sp)
+  li       s0, 1
+  sw       s0, 404(sp)
+  lw       s0, 400(sp)
+  lw       s1, 404(sp)
+  add      s0, s0, s1
+  sw       s0, 408(sp)
+  lw       s0, 408(sp)
+  sw       s0, 84(sp)
+  lw       s0, 84(sp)
+  sw       s0, 412(sp)
+  li       s0, 1
+  sw       s0, 416(sp)
+  lw       s0, 412(sp)
+  lw       s1, 416(sp)
+  add      s0, s0, s1
+  sw       s0, 420(sp)
+  lw       s0, 420(sp)
+  sw       s0, 88(sp)
+  lw       s0, 88(sp)
+  sw       s0, 424(sp)
+  li       s0, 1
+  sw       s0, 428(sp)
+  lw       s0, 424(sp)
+  lw       s1, 428(sp)
+  add      s0, s0, s1
+  sw       s0, 432(sp)
+  lw       s0, 432(sp)
+  sw       s0, 92(sp)
+  lw       s0, 92(sp)
+  sw       s0, 436(sp)
+  li       s0, 1
+  sw       s0, 440(sp)
+  lw       s0, 436(sp)
+  lw       s1, 440(sp)
+  add      s0, s0, s1
+  sw       s0, 444(sp)
+  lw       s0, 444(sp)
+  sw       s0, 96(sp)
+  lw       s0, 96(sp)
+  sw       s0, 448(sp)
+  li       s0, 1
+  sw       s0, 452(sp)
+  lw       s0, 448(sp)
+  lw       s1, 452(sp)
+  add      s0, s0, s1
+  sw       s0, 456(sp)
+  lw       s0, 456(sp)
+  sw       s0, 100(sp)
+  lw       s0, 100(sp)
+  sw       s0, 460(sp)
+  li       s0, 1
+  sw       s0, 464(sp)
+  lw       s0, 460(sp)
+  lw       s1, 464(sp)
+  add      s0, s0, s1
+  sw       s0, 468(sp)
+  lw       s0, 468(sp)
+  sw       s0, 104(sp)
+  lw       s0, 104(sp)
+  sw       s0, 472(sp)
+  li       s0, 1
+  sw       s0, 476(sp)
+  lw       s0, 472(sp)
+  lw       s1, 476(sp)
+  add      s0, s0, s1
+  sw       s0, 480(sp)
+  lw       s0, 480(sp)
+  sw       s0, 108(sp)
+  lw       s0, 108(sp)
+  sw       s0, 484(sp)
+  li       s0, 1
+  sw       s0, 488(sp)
+  lw       s0, 484(sp)
+  lw       s1, 488(sp)
+  add      s0, s0, s1
+  sw       s0, 492(sp)
+  lw       s0, 492(sp)
+  sw       s0, 112(sp)
+  lw       s0, 112(sp)
+  sw       s0, 496(sp)
+  li       s0, 1
+  sw       s0, 500(sp)
+  lw       s0, 496(sp)
+  lw       s1, 500(sp)
+  add      s0, s0, s1
+  sw       s0, 504(sp)
+  lw       s0, 504(sp)
+  sw       s0, 116(sp)
+  lw       s0, 0(sp)
+  sw       s0, 508(sp)
+  lw       s0, 508(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 4(sp)
+  sw       s0, 512(sp)
+  lw       s0, 512(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 8(sp)
+  sw       s0, 516(sp)
+  lw       s0, 516(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 12(sp)
+  sw       s0, 520(sp)
+  lw       s0, 520(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 16(sp)
+  sw       s0, 524(sp)
+  lw       s0, 524(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 20(sp)
+  sw       s0, 528(sp)
+  lw       s0, 528(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 24(sp)
+  sw       s0, 532(sp)
+  lw       s0, 532(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 28(sp)
+  sw       s0, 536(sp)
+  lw       s0, 536(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 32(sp)
+  sw       s0, 540(sp)
+  lw       s0, 540(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 36(sp)
+  sw       s0, 544(sp)
+  lw       s0, 544(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 40(sp)
+  sw       s0, 548(sp)
+  lw       s0, 548(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 44(sp)
+  sw       s0, 552(sp)
+  lw       s0, 552(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 48(sp)
+  sw       s0, 556(sp)
+  lw       s0, 556(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 52(sp)
+  sw       s0, 560(sp)
+  lw       s0, 560(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 56(sp)
+  sw       s0, 564(sp)
+  lw       s0, 564(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 60(sp)
+  sw       s0, 568(sp)
+  lw       s0, 568(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 64(sp)
+  sw       s0, 572(sp)
+  lw       s0, 572(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 68(sp)
+  sw       s0, 576(sp)
+  lw       s0, 576(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 72(sp)
+  sw       s0, 580(sp)
+  lw       s0, 580(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 76(sp)
+  sw       s0, 584(sp)
+  lw       s0, 584(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 80(sp)
+  sw       s0, 588(sp)
+  lw       s0, 588(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 84(sp)
+  sw       s0, 592(sp)
+  lw       s0, 592(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 88(sp)
+  sw       s0, 596(sp)
+  lw       s0, 596(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 92(sp)
+  sw       s0, 600(sp)
+  lw       s0, 600(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 96(sp)
+  sw       s0, 604(sp)
+  lw       s0, 604(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 100(sp)
+  sw       s0, 608(sp)
+  lw       s0, 608(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 104(sp)
+  sw       s0, 612(sp)
+  lw       s0, 612(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 108(sp)
+  sw       s0, 616(sp)
+  lw       s0, 616(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 112(sp)
+  sw       s0, 620(sp)
+  lw       s0, 620(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 116(sp)
+  sw       s0, 624(sp)
+  lw       s0, 624(sp)
+  mv       a0, s0
+  call     putint
+  li       s0, 10
+  sw       s0, 628(sp)
+  lw       s0, 628(sp)
+  sw       s0, 128(sp)
+  lw       s0, 128(sp)
+  sw       s0, 632(sp)
+  lw       s0, 632(sp)
+  mv       a0, s0
+  call     putch
+  lw       s0, 120(sp)
+  sw       s0, 636(sp)
+  lw       s0, 636(sp)
+  mv       a0, s0
+  call     putint
+  lw       s0, 128(sp)
+  sw       s0, 640(sp)
+  lw       s0, 640(sp)
+  mv       a0, s0
+  call     putch
+  lw       s0, 100(sp)
+  sw       s0, 644(sp)
+  lw       a0, 644(sp)
+  lw       ra, 652(sp)
+  addi     sp, sp, 656
+ret
+  li       a0, -1
+  lw       ra, 652(sp)
+  addi     sp, sp, 656
+ret
+  .size    main, .-main

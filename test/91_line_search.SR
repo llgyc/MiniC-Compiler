@@ -1,0 +1,210 @@
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -272
+  sw       ra, 268(sp)
+  li       s0, 0
+  sw       s0, 76(sp)
+  lw       s0, 76(sp)
+  sw       s0, 4(sp)
+  li       s0, 0
+  sw       s0, 80(sp)
+  lw       s0, 80(sp)
+  sw       s0, 0(sp)
+.l1:
+  lw       s0, 0(sp)
+  sw       s0, 84(sp)
+  li       s0, 10
+  sw       s0, 88(sp)
+  lw       s0, 84(sp)
+  lw       s1, 88(sp)
+s0, s1, .l0
+  j        .l2
+.l0:
+  lw       s0, 0(sp)
+  sw       s0, 92(sp)
+  lw       s0, 92(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 96(sp)
+  lw       s0, 0(sp)
+  sw       s0, 100(sp)
+  li       s0, 1
+  sw       s0, 104(sp)
+  lw       s0, 100(sp)
+  lw       s1, 104(sp)
+  add      s0, s0, s1
+  sw       s0, 108(sp)
+  lw       s0, 108(sp)
+  addi     s1, sp, 8
+  lw       s2, 96(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  lw       s0, 0(sp)
+  sw       s0, 112(sp)
+  li       s0, 1
+  sw       s0, 116(sp)
+  lw       s0, 112(sp)
+  lw       s1, 116(sp)
+  add      s0, s0, s1
+  sw       s0, 120(sp)
+  lw       s0, 120(sp)
+  sw       s0, 0(sp)
+  j        .l1
+.l2:
+  li       s0, 10
+  sw       s0, 124(sp)
+  lw       s0, 124(sp)
+  sw       s0, 64(sp)
+  call     getint
+  sw       a0, 128(sp)
+  lw       s0, 128(sp)
+  sw       s0, 48(sp)
+  lw       s0, 64(sp)
+  sw       s0, 132(sp)
+  li       s0, 1
+  sw       s0, 136(sp)
+  lw       s0, 132(sp)
+  lw       s1, 136(sp)
+  sub      s0, s0, s1
+  sw       s0, 140(sp)
+  lw       s0, 140(sp)
+  sw       s0, 52(sp)
+  li       s0, 0
+  sw       s0, 144(sp)
+  lw       s0, 144(sp)
+  sw       s0, 56(sp)
+  lw       s0, 52(sp)
+  sw       s0, 148(sp)
+  lw       s0, 56(sp)
+  sw       s0, 152(sp)
+  lw       s0, 148(sp)
+  lw       s1, 152(sp)
+  add      s0, s0, s1
+  sw       s0, 156(sp)
+  li       s0, 2
+  sw       s0, 160(sp)
+  lw       s0, 156(sp)
+  lw       s1, 160(sp)
+  div      s0, s0, s1
+  sw       s0, 164(sp)
+  lw       s0, 164(sp)
+  sw       s0, 60(sp)
+  li       s0, 0
+  sw       s0, 168(sp)
+  lw       s0, 168(sp)
+  sw       s0, 68(sp)
+  li       s0, 0
+  sw       s0, 172(sp)
+  lw       s0, 172(sp)
+  sw       s0, 0(sp)
+  li       s0, 0
+  sw       s0, 176(sp)
+  lw       s0, 176(sp)
+  sw       s0, 72(sp)
+.l7:
+  lw       s0, 0(sp)
+  sw       s0, 180(sp)
+  li       s0, 10
+  sw       s0, 184(sp)
+  lw       s0, 180(sp)
+  lw       s1, 184(sp)
+s0, s1, .l3
+  j        .l10
+.l3:
+  lw       s0, 68(sp)
+  sw       s0, 188(sp)
+  li       s0, 0
+  sw       s0, 192(sp)
+  lw       s0, 188(sp)
+  lw       s1, 192(sp)
+s0, s1, .l6
+  j        .l10
+.l6:
+  lw       s0, 0(sp)
+  sw       s0, 196(sp)
+  lw       s0, 196(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 200(sp)
+  addi     s0, sp, 8
+  lw       s1, 200(sp)
+  add      s0, s0, s1
+  lw       s0, 0(s0)
+  sw       s0, 204(sp)
+  lw       s0, 48(sp)
+  sw       s0, 208(sp)
+  lw       s0, 204(sp)
+  lw       s1, 208(sp)
+s0, s1, .l4
+  j        .l5
+.l4:
+  li       s0, 1
+  sw       s0, 212(sp)
+  lw       s0, 212(sp)
+  sw       s0, 68(sp)
+  lw       s0, 0(sp)
+  sw       s0, 216(sp)
+  lw       s0, 216(sp)
+  sw       s0, 72(sp)
+.l5:
+  lw       s0, 0(sp)
+  sw       s0, 220(sp)
+  li       s0, 1
+  sw       s0, 224(sp)
+  lw       s0, 220(sp)
+  lw       s1, 224(sp)
+  add      s0, s0, s1
+  sw       s0, 228(sp)
+  lw       s0, 228(sp)
+  sw       s0, 0(sp)
+  j        .l7
+.l10:
+  lw       s0, 68(sp)
+  sw       s0, 232(sp)
+  li       s0, 1
+  sw       s0, 236(sp)
+  lw       s0, 232(sp)
+  lw       s1, 236(sp)
+s0, s1, .l8
+  j        .l9
+.l8:
+  lw       s0, 72(sp)
+  sw       s0, 240(sp)
+  lw       s0, 240(sp)
+  mv       a0, s0
+  call     putint
+  j        .l11
+.l9:
+  li       s0, 0
+  sw       s0, 244(sp)
+  lw       s0, 244(sp)
+  sw       s0, 48(sp)
+  lw       s0, 48(sp)
+  sw       s0, 248(sp)
+  lw       s0, 248(sp)
+  mv       a0, s0
+  call     putint
+.l11:
+  li       s0, 10
+  sw       s0, 252(sp)
+  lw       s0, 252(sp)
+  sw       s0, 48(sp)
+  lw       s0, 48(sp)
+  sw       s0, 256(sp)
+  lw       s0, 256(sp)
+  mv       a0, s0
+  call     putch
+  li       s0, 0
+  sw       s0, 260(sp)
+  lw       a0, 260(sp)
+  lw       ra, 268(sp)
+  addi     sp, sp, 272
+ret
+  li       a0, -1
+  lw       ra, 268(sp)
+  addi     sp, sp, 272
+ret
+  .size    main, .-main

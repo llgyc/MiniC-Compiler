@@ -1,0 +1,77 @@
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -96
+  sw       ra, 92(sp)
+  li       s0, 2
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  neg      s0, s0
+  sw       s0, 12(sp)
+  lw       s0, 12(sp)
+  sw       s0, 0(sp)
+  li       s0, 1
+  sw       s0, 16(sp)
+  lw       s0, 16(sp)
+  sw       s0, 4(sp)
+  lw       s0, 0(sp)
+  sw       s0, 20(sp)
+  lw       s0, 4(sp)
+  sw       s0, 24(sp)
+  lw       s0, 24(sp)
+  neg      s0, s0
+  sw       s0, 28(sp)
+  lw       s0, 20(sp)
+  lw       s1, 28(sp)
+  sub      s0, s0, s1
+  sw       s0, 32(sp)
+  lw       s0, 0(sp)
+  sw       s0, 36(sp)
+  lw       s0, 4(sp)
+  sw       s0, 40(sp)
+  lw       s0, 36(sp)
+  lw       s1, 40(sp)
+  add      s0, s0, s1
+  sw       s0, 44(sp)
+  lw       s0, 44(sp)
+  neg      s0, s0
+  sw       s0, 48(sp)
+  lw       s0, 0(sp)
+  sw       s0, 52(sp)
+  lw       s0, 4(sp)
+  sw       s0, 56(sp)
+  lw       s0, 52(sp)
+  lw       s1, 56(sp)
+  sub      s0, s0, s1
+  sw       s0, 60(sp)
+  lw       s0, 60(sp)
+  neg      s0, s0
+  sw       s0, 64(sp)
+  lw       s0, 48(sp)
+  lw       s1, 64(sp)
+  rem      s0, s0, s1
+  sw       s0, 68(sp)
+  lw       s0, 32(sp)
+  lw       s1, 68(sp)
+  add      s0, s0, s1
+  sw       s0, 72(sp)
+  lw       s0, 72(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 76(sp)
+  lw       s0, 76(sp)
+  mv       a0, s0
+  call     putint
+  li       s0, 0
+  sw       s0, 80(sp)
+  lw       a0, 80(sp)
+  lw       ra, 92(sp)
+  addi     sp, sp, 96
+ret
+  li       a0, -1
+  lw       ra, 92(sp)
+  addi     sp, sp, 96
+ret
+  .size    main, .-main

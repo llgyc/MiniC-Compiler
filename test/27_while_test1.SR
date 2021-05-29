@@ -1,0 +1,98 @@
+  .text
+  .align   2
+  .global  doubleWhile
+  .type    doubleWhile, @function
+doubleWhile:
+  addi     sp, sp, -80
+  sw       ra, 76(sp)
+  li       s0, 5
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  sw       s0, 0(sp)
+  li       s0, 7
+  sw       s0, 12(sp)
+  lw       s0, 12(sp)
+  sw       s0, 4(sp)
+.l4:
+  lw       s0, 0(sp)
+  sw       s0, 16(sp)
+  li       s0, 100
+  sw       s0, 20(sp)
+  lw       s0, 16(sp)
+  lw       s1, 20(sp)
+s0, s1, .l3
+  j        .l5
+.l3:
+  lw       s0, 0(sp)
+  sw       s0, 24(sp)
+  li       s0, 30
+  sw       s0, 28(sp)
+  lw       s0, 24(sp)
+  lw       s1, 28(sp)
+  add      s0, s0, s1
+  sw       s0, 32(sp)
+  lw       s0, 32(sp)
+  sw       s0, 0(sp)
+.l1:
+  lw       s0, 4(sp)
+  sw       s0, 36(sp)
+  li       s0, 100
+  sw       s0, 40(sp)
+  lw       s0, 36(sp)
+  lw       s1, 40(sp)
+s0, s1, .l0
+  j        .l2
+.l0:
+  lw       s0, 4(sp)
+  sw       s0, 44(sp)
+  li       s0, 6
+  sw       s0, 48(sp)
+  lw       s0, 44(sp)
+  lw       s1, 48(sp)
+  add      s0, s0, s1
+  sw       s0, 52(sp)
+  lw       s0, 52(sp)
+  sw       s0, 4(sp)
+  j        .l1
+.l2:
+  lw       s0, 4(sp)
+  sw       s0, 56(sp)
+  li       s0, 100
+  sw       s0, 60(sp)
+  lw       s0, 56(sp)
+  lw       s1, 60(sp)
+  sub      s0, s0, s1
+  sw       s0, 64(sp)
+  lw       s0, 64(sp)
+  sw       s0, 4(sp)
+  j        .l4
+.l5:
+  lw       s0, 4(sp)
+  sw       s0, 68(sp)
+  lw       a0, 68(sp)
+  lw       ra, 76(sp)
+  addi     sp, sp, 80
+ret
+  li       a0, -1
+  lw       ra, 76(sp)
+  addi     sp, sp, 80
+ret
+  .size    doubleWhile, .-doubleWhile
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -16
+  sw       ra, 12(sp)
+  call     doubleWhile
+  sw       a0, 0(sp)
+  lw       a0, 0(sp)
+  lw       ra, 12(sp)
+  addi     sp, sp, 16
+ret
+  li       a0, -1
+  lw       ra, 12(sp)
+  addi     sp, sp, 16
+ret
+  .size    main, .-main

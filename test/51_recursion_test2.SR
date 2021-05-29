@@ -1,0 +1,111 @@
+  .text
+  .align   2
+  .global  fib
+  .type    fib, @function
+fib:
+  addi     sp, sp, -96
+  sw       ra, 92(sp)
+  sw       a0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 12(sp)
+  li       s0, 0
+  sw       s0, 16(sp)
+  lw       s0, 12(sp)
+  lw       s1, 16(sp)
+s0, s1, .l0
+  j        .l2
+.l0:
+  li       s0, 0
+  sw       s0, 20(sp)
+  lw       a0, 20(sp)
+  lw       ra, 92(sp)
+  addi     sp, sp, 96
+ret
+.l2:
+  lw       s0, 0(sp)
+  sw       s0, 24(sp)
+  li       s0, 1
+  sw       s0, 28(sp)
+  lw       s0, 24(sp)
+  lw       s1, 28(sp)
+s0, s1, .l1
+  j        .l3
+.l1:
+  li       s0, 1
+  sw       s0, 32(sp)
+  lw       a0, 32(sp)
+  lw       ra, 92(sp)
+  addi     sp, sp, 96
+ret
+.l3:
+  lw       s0, 0(sp)
+  sw       s0, 36(sp)
+  li       s0, 1
+  sw       s0, 40(sp)
+  lw       s0, 36(sp)
+  lw       s1, 40(sp)
+  sub      s0, s0, s1
+  sw       s0, 44(sp)
+  lw       s0, 44(sp)
+  sw       s0, 4(sp)
+  lw       s0, 0(sp)
+  sw       s0, 48(sp)
+  li       s0, 2
+  sw       s0, 52(sp)
+  lw       s0, 48(sp)
+  lw       s1, 52(sp)
+  sub      s0, s0, s1
+  sw       s0, 56(sp)
+  lw       s0, 56(sp)
+  sw       s0, 8(sp)
+  lw       s0, 4(sp)
+  sw       s0, 60(sp)
+  lw       s0, 60(sp)
+  mv       a0, s0
+  call     fib
+  sw       a0, 64(sp)
+  lw       s0, 8(sp)
+  sw       s0, 68(sp)
+  lw       s0, 68(sp)
+  mv       a0, s0
+  call     fib
+  sw       a0, 72(sp)
+  lw       s0, 64(sp)
+  lw       s1, 72(sp)
+  add      s0, s0, s1
+  sw       s0, 76(sp)
+  lw       a0, 76(sp)
+  lw       ra, 92(sp)
+  addi     sp, sp, 96
+ret
+  li       a0, -1
+  lw       ra, 92(sp)
+  addi     sp, sp, 96
+ret
+  .size    fib, .-fib
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -32
+  sw       ra, 28(sp)
+  li       s0, 10
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  mv       a0, s0
+  call     fib
+  sw       a0, 12(sp)
+  lw       a0, 12(sp)
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  li       a0, -1
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  .size    main, .-main

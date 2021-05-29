@@ -204,6 +204,8 @@ public:
         insts_.push_back(std::move(inst));
     }
     void dumpCode(std::ostream &os, FuncPtr global, int label_init_id) const;
+    const std::vector<int> &label_pos() const { return label_pos_; }
+    const InstList &insts() const { return insts_; }
 
 private:
     std::string name_;
@@ -220,7 +222,10 @@ public:
         global_.insert(std::make_pair(id, std::make_pair(is_array, val)));
     }
     void dumpCode(std::ostream &os) const;
-
+    const FuncList &funcs() const { return funcs_; }
+    const std::map<int, std::pair<bool, int> > global() const { 
+        return global_; 
+    }
 
 private:
     FuncList funcs_;

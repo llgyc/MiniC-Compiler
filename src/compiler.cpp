@@ -7,6 +7,7 @@
 #include "context.hpp"
 #include "tigger.hpp"
 #include "naive_alloc.hpp"
+#include "riscv_gen.hpp"
 
 extern int yylineno;
 extern std::FILE *yyin;
@@ -27,9 +28,9 @@ eeyore::Program eir1;
 
 tigger::Program tir1;
 
-void SysY_to_Eeyore(int argc, char *argv[], eeyore::Program &ir) {
+void SysY_to_Eeyore(char *file, eeyore::Program &ir) {
     // SysY to Eeyore
-    yyin = fopen(argv[3], "r");
+    yyin = fopen(file, "r");
     yylineno = 1;
     BaseASTNode *root_ptr = nullptr;
     yyparse(&root_ptr);
@@ -57,8 +58,11 @@ int main(int argc, char *argv[]) {
             print_usage();
             return 0;
         }
-        // TODO: Tiger to RISC-V
-
+        SysY_to_Eeyore(argv[2], eir1);
+        Eeyore_to_Tigger(eir1, tir1);
+        std::ofstream ofs(argv[4]);
+        riscv_gen::translate_T2R(tir1, ofs);
+        std::cerr << "[Success] RISC-V code dumped" << std::endl;
     }
     
     if (argc == 6) {
@@ -67,12 +71,12 @@ int main(int argc, char *argv[]) {
             return 0;
         }
         if (!strcmp(argv[2], "-e")) { 
-            SysY_to_Eeyore(argc, argv, eir1);
+            SysY_to_Eeyore(argv[3], eir1);
             std::ofstream ofs(argv[5]);
             eir1.dumpCode(ofs);
             std::cerr << "[Success] Eeyore code dumped" << std::endl;
         } else if (!strcmp(argv[2], "-t")) {
-            SysY_to_Eeyore(argc, argv, eir1);
+            SysY_to_Eeyore(argv[3], eir1);
             Eeyore_to_Tigger(eir1, tir1);
             std::ofstream ofs(argv[5]);
             tir1.dumpCode(ofs);

@@ -1,0 +1,54 @@
+  .global   v0
+  .section  .sdata
+  .align    2
+  .type     v0, @object
+  .size     v0, 4
+v0:
+  .word     0
+  .global   v1
+  .section  .sdata
+  .align    2
+  .type     v1, @object
+  .size     v1, 4
+v1:
+  .word     0
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -32
+  sw       ra, 28(sp)
+  li       s0, 10
+  sw       s0, 4(sp)
+  lw       s0, 4(sp)
+  la       s11, v0
+  sw       s0, 0(s11)
+  li       s0, 20
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  la       s11, v1
+  sw       s0, 0(s11)
+  lui      s0, %hi(v0)
+  lw       s0, %lo(v0)(s0)
+  sw       s0, 12(sp)
+  lui      s0, %hi(v1)
+  lw       s0, %lo(v1)(s0)
+  sw       s0, 16(sp)
+  lw       s0, 12(sp)
+  lw       s1, 16(sp)
+  add      s0, s0, s1
+  sw       s0, 20(sp)
+  lw       s0, 20(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 24(sp)
+  lw       a0, 24(sp)
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  li       a0, -1
+  lw       ra, 28(sp)
+  addi     sp, sp, 32
+ret
+  .size    main, .-main

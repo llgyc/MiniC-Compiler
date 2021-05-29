@@ -1,0 +1,464 @@
+  .text
+  .align   2
+  .global  canJump
+  .type    canJump, @function
+canJump:
+  addi     sp, sp, -336
+  sw       ra, 332(sp)
+  sw       a0, 0(sp)
+  sw       a1, 4(sp)
+  lw       s0, 4(sp)
+  sw       s0, 56(sp)
+  li       s0, 1
+  sw       s0, 60(sp)
+  lw       s0, 56(sp)
+  lw       s1, 60(sp)
+s0, s1, .l0
+  j        .l2
+.l0:
+  li       s0, 1
+  sw       s0, 64(sp)
+  lw       a0, 64(sp)
+  lw       ra, 332(sp)
+  addi     sp, sp, 336
+ret
+.l2:
+  li       s0, 0
+  sw       s0, 68(sp)
+  lw       s0, 68(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 72(sp)
+  lw       s0, 0(sp)
+  lw       s1, 72(sp)
+  add      s0, s0, s1
+  lw       s0, 0(s0)
+  sw       s0, 76(sp)
+  lw       s0, 4(sp)
+  sw       s0, 80(sp)
+  li       s0, 2
+  sw       s0, 84(sp)
+  lw       s0, 80(sp)
+  lw       s1, 84(sp)
+  sub      s0, s0, s1
+  sw       s0, 88(sp)
+  lw       s0, 76(sp)
+  lw       s1, 88(sp)
+s0, s1, .l1
+  j        .l3
+.l1:
+  li       s0, 1
+  sw       s0, 92(sp)
+  lw       a0, 92(sp)
+  lw       ra, 332(sp)
+  addi     sp, sp, 336
+ret
+.l3:
+  li       s0, 0
+  sw       s0, 96(sp)
+  lw       s0, 96(sp)
+  sw       s0, 48(sp)
+.l5:
+  lw       s0, 48(sp)
+  sw       s0, 100(sp)
+  lw       s0, 4(sp)
+  sw       s0, 104(sp)
+  li       s0, 1
+  sw       s0, 108(sp)
+  lw       s0, 104(sp)
+  lw       s1, 108(sp)
+  sub      s0, s0, s1
+  sw       s0, 112(sp)
+  lw       s0, 100(sp)
+  lw       s1, 112(sp)
+s0, s1, .l4
+  j        .l6
+.l4:
+  lw       s0, 48(sp)
+  sw       s0, 116(sp)
+  lw       s0, 116(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 120(sp)
+  li       s0, 0
+  sw       s0, 124(sp)
+  lw       s0, 124(sp)
+  addi     s1, sp, 8
+  lw       s2, 120(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  lw       s0, 48(sp)
+  sw       s0, 128(sp)
+  li       s0, 1
+  sw       s0, 132(sp)
+  lw       s0, 128(sp)
+  lw       s1, 132(sp)
+  add      s0, s0, s1
+  sw       s0, 136(sp)
+  lw       s0, 136(sp)
+  sw       s0, 48(sp)
+  j        .l5
+.l6:
+  lw       s0, 4(sp)
+  sw       s0, 140(sp)
+  li       s0, 1
+  sw       s0, 144(sp)
+  lw       s0, 140(sp)
+  lw       s1, 144(sp)
+  sub      s0, s0, s1
+  sw       s0, 148(sp)
+  lw       s0, 148(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 152(sp)
+  li       s0, 1
+  sw       s0, 156(sp)
+  lw       s0, 156(sp)
+  addi     s1, sp, 8
+  lw       s2, 152(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  lw       s0, 4(sp)
+  sw       s0, 160(sp)
+  li       s0, 2
+  sw       s0, 164(sp)
+  lw       s0, 160(sp)
+  lw       s1, 164(sp)
+  sub      s0, s0, s1
+  sw       s0, 168(sp)
+  lw       s0, 168(sp)
+  sw       s0, 48(sp)
+.l16:
+  lw       s0, 48(sp)
+  sw       s0, 172(sp)
+  li       s0, 1
+  sw       s0, 176(sp)
+  lw       s0, 176(sp)
+  neg      s0, s0
+  sw       s0, 180(sp)
+  lw       s0, 172(sp)
+  lw       s1, 180(sp)
+s0, s1, .l15
+  j        .l17
+.l15:
+  lw       s0, 48(sp)
+  sw       s0, 184(sp)
+  lw       s0, 184(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 188(sp)
+  lw       s0, 0(sp)
+  lw       s1, 188(sp)
+  add      s0, s0, s1
+  lw       s0, 0(s0)
+  sw       s0, 192(sp)
+  lw       s0, 4(sp)
+  sw       s0, 196(sp)
+  li       s0, 1
+  sw       s0, 200(sp)
+  lw       s0, 196(sp)
+  lw       s1, 200(sp)
+  sub      s0, s0, s1
+  sw       s0, 204(sp)
+  lw       s0, 48(sp)
+  sw       s0, 208(sp)
+  lw       s0, 204(sp)
+  lw       s1, 208(sp)
+  sub      s0, s0, s1
+  sw       s0, 212(sp)
+  lw       s0, 192(sp)
+  lw       s1, 212(sp)
+s0, s1, .l7
+  j        .l8
+.l7:
+  lw       s0, 48(sp)
+  sw       s0, 216(sp)
+  lw       s0, 216(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 220(sp)
+  lw       s0, 0(sp)
+  lw       s1, 220(sp)
+  add      s0, s0, s1
+  lw       s0, 0(s0)
+  sw       s0, 224(sp)
+  lw       s0, 224(sp)
+  sw       s0, 52(sp)
+  j        .l13
+.l8:
+  lw       s0, 4(sp)
+  sw       s0, 228(sp)
+  li       s0, 1
+  sw       s0, 232(sp)
+  lw       s0, 228(sp)
+  lw       s1, 232(sp)
+  sub      s0, s0, s1
+  sw       s0, 236(sp)
+  lw       s0, 48(sp)
+  sw       s0, 240(sp)
+  lw       s0, 236(sp)
+  lw       s1, 240(sp)
+  sub      s0, s0, s1
+  sw       s0, 244(sp)
+  lw       s0, 244(sp)
+  sw       s0, 52(sp)
+.l12:
+.l13:
+  lw       s0, 52(sp)
+  sw       s0, 248(sp)
+  li       s0, 1
+  sw       s0, 252(sp)
+  lw       s0, 252(sp)
+  neg      s0, s0
+  sw       s0, 256(sp)
+  lw       s0, 248(sp)
+  lw       s1, 256(sp)
+s0, s1, .l11
+  j        .l14
+.l11:
+  lw       s0, 48(sp)
+  sw       s0, 260(sp)
+  lw       s0, 52(sp)
+  sw       s0, 264(sp)
+  lw       s0, 260(sp)
+  lw       s1, 264(sp)
+  add      s0, s0, s1
+  sw       s0, 268(sp)
+  lw       s0, 268(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 272(sp)
+  addi     s0, sp, 8
+  lw       s1, 272(sp)
+  add      s0, s0, s1
+  lw       s0, 0(s0)
+  sw       s0, 276(sp)
+  li       s0, 0
+  sw       s0, 280(sp)
+  lw       s0, 276(sp)
+  lw       s1, 280(sp)
+s0, s1, .l9
+  j        .l10
+.l9:
+  lw       s0, 48(sp)
+  sw       s0, 284(sp)
+  lw       s0, 284(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 288(sp)
+  li       s0, 1
+  sw       s0, 292(sp)
+  lw       s0, 292(sp)
+  addi     s1, sp, 8
+  lw       s2, 288(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+.l10:
+  lw       s0, 52(sp)
+  sw       s0, 296(sp)
+  li       s0, 1
+  sw       s0, 300(sp)
+  lw       s0, 296(sp)
+  lw       s1, 300(sp)
+  sub      s0, s0, s1
+  sw       s0, 304(sp)
+  lw       s0, 304(sp)
+  sw       s0, 52(sp)
+  j        .l12
+.l14:
+  lw       s0, 48(sp)
+  sw       s0, 308(sp)
+  li       s0, 1
+  sw       s0, 312(sp)
+  lw       s0, 308(sp)
+  lw       s1, 312(sp)
+  sub      s0, s0, s1
+  sw       s0, 316(sp)
+  lw       s0, 316(sp)
+  sw       s0, 48(sp)
+  j        .l16
+.l17:
+  li       s0, 0
+  sw       s0, 320(sp)
+  lw       s0, 320(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 324(sp)
+  addi     s0, sp, 8
+  lw       s1, 324(sp)
+  add      s0, s0, s1
+  lw       s0, 0(s0)
+  sw       s0, 328(sp)
+  lw       a0, 328(sp)
+  lw       ra, 332(sp)
+  addi     sp, sp, 336
+ret
+  li       a0, -1
+  lw       ra, 332(sp)
+  addi     sp, sp, 336
+ret
+  .size    canJump, .-canJump
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -192
+  sw       ra, 188(sp)
+  li       s0, 0
+  sw       s0, 44(sp)
+  lw       s0, 44(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 48(sp)
+  li       s0, 3
+  sw       s0, 52(sp)
+  lw       s0, 52(sp)
+  addi     s1, sp, 4
+  lw       s2, 48(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 1
+  sw       s0, 56(sp)
+  lw       s0, 56(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 60(sp)
+  li       s0, 3
+  sw       s0, 64(sp)
+  lw       s0, 64(sp)
+  addi     s1, sp, 4
+  lw       s2, 60(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 2
+  sw       s0, 68(sp)
+  lw       s0, 68(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 72(sp)
+  li       s0, 9
+  sw       s0, 76(sp)
+  lw       s0, 76(sp)
+  addi     s1, sp, 4
+  lw       s2, 72(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 3
+  sw       s0, 80(sp)
+  lw       s0, 80(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 84(sp)
+  li       s0, 0
+  sw       s0, 88(sp)
+  lw       s0, 88(sp)
+  addi     s1, sp, 4
+  lw       s2, 84(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 4
+  sw       s0, 92(sp)
+  lw       s0, 92(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 96(sp)
+  li       s0, 0
+  sw       s0, 100(sp)
+  lw       s0, 100(sp)
+  addi     s1, sp, 4
+  lw       s2, 96(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 5
+  sw       s0, 104(sp)
+  lw       s0, 104(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 108(sp)
+  li       s0, 1
+  sw       s0, 112(sp)
+  lw       s0, 112(sp)
+  addi     s1, sp, 4
+  lw       s2, 108(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 6
+  sw       s0, 116(sp)
+  lw       s0, 116(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 120(sp)
+  li       s0, 1
+  sw       s0, 124(sp)
+  lw       s0, 124(sp)
+  addi     s1, sp, 4
+  lw       s2, 120(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 7
+  sw       s0, 128(sp)
+  lw       s0, 128(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 132(sp)
+  li       s0, 5
+  sw       s0, 136(sp)
+  lw       s0, 136(sp)
+  addi     s1, sp, 4
+  lw       s2, 132(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 8
+  sw       s0, 140(sp)
+  lw       s0, 140(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 144(sp)
+  li       s0, 7
+  sw       s0, 148(sp)
+  lw       s0, 148(sp)
+  addi     s1, sp, 4
+  lw       s2, 144(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 9
+  sw       s0, 152(sp)
+  lw       s0, 152(sp)
+  li       s1, 4
+  mul      s0, s0, s1
+  sw       s0, 156(sp)
+  li       s0, 8
+  sw       s0, 160(sp)
+  lw       s0, 160(sp)
+  addi     s1, sp, 4
+  lw       s2, 156(sp)
+  add      s1, s1, s2
+  sw       s0, 0(s1)
+  li       s0, 10
+  sw       s0, 164(sp)
+  lw       s0, 164(sp)
+  sw       s0, 0(sp)
+  addi     s0, sp, 4
+  sw       s0, 168(sp)
+  lw       s0, 0(sp)
+  sw       s0, 172(sp)
+  lw       s0, 168(sp)
+  mv       a0, s0
+  lw       s0, 172(sp)
+  mv       a1, s0
+  call     canJump
+  sw       a0, 176(sp)
+  lw       s0, 176(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 180(sp)
+  lw       a0, 180(sp)
+  lw       ra, 188(sp)
+  addi     sp, sp, 192
+ret
+  li       a0, -1
+  lw       ra, 188(sp)
+  addi     sp, sp, 192
+ret
+  .size    main, .-main

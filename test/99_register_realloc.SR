@@ -1,0 +1,1004 @@
+  .text
+  .align   2
+  .global  func
+  .type    func, @function
+func:
+  addi     sp, sp, -1328
+  sw       ra, 1324(sp)
+  sw       a0, 0(sp)
+  sw       a1, 4(sp)
+  lw       s0, 0(sp)
+  sw       s0, 156(sp)
+  lw       s0, 4(sp)
+  sw       s0, 160(sp)
+  lw       s0, 156(sp)
+  lw       s1, 160(sp)
+  add      s0, s0, s1
+  sw       s0, 164(sp)
+  lw       s0, 164(sp)
+  sw       s0, 8(sp)
+  li       s0, 1
+  sw       s0, 168(sp)
+  lw       s0, 168(sp)
+  sw       s0, 12(sp)
+  li       s0, 2
+  sw       s0, 172(sp)
+  lw       s0, 172(sp)
+  sw       s0, 16(sp)
+  li       s0, 3
+  sw       s0, 176(sp)
+  lw       s0, 176(sp)
+  sw       s0, 20(sp)
+  li       s0, 4
+  sw       s0, 180(sp)
+  lw       s0, 180(sp)
+  sw       s0, 24(sp)
+  li       s0, 1
+  sw       s0, 184(sp)
+  lw       s0, 12(sp)
+  sw       s0, 188(sp)
+  lw       s0, 184(sp)
+  lw       s1, 188(sp)
+  add      s0, s0, s1
+  sw       s0, 192(sp)
+  lw       s0, 192(sp)
+  sw       s0, 28(sp)
+  li       s0, 2
+  sw       s0, 196(sp)
+  lw       s0, 16(sp)
+  sw       s0, 200(sp)
+  lw       s0, 196(sp)
+  lw       s1, 200(sp)
+  add      s0, s0, s1
+  sw       s0, 204(sp)
+  lw       s0, 204(sp)
+  sw       s0, 32(sp)
+  li       s0, 3
+  sw       s0, 208(sp)
+  lw       s0, 20(sp)
+  sw       s0, 212(sp)
+  lw       s0, 208(sp)
+  lw       s1, 212(sp)
+  add      s0, s0, s1
+  sw       s0, 216(sp)
+  lw       s0, 216(sp)
+  sw       s0, 36(sp)
+  li       s0, 4
+  sw       s0, 220(sp)
+  lw       s0, 24(sp)
+  sw       s0, 224(sp)
+  lw       s0, 220(sp)
+  lw       s1, 224(sp)
+  add      s0, s0, s1
+  sw       s0, 228(sp)
+  lw       s0, 228(sp)
+  sw       s0, 40(sp)
+  li       s0, 1
+  sw       s0, 232(sp)
+  lw       s0, 28(sp)
+  sw       s0, 236(sp)
+  lw       s0, 232(sp)
+  lw       s1, 236(sp)
+  add      s0, s0, s1
+  sw       s0, 240(sp)
+  lw       s0, 240(sp)
+  sw       s0, 44(sp)
+  li       s0, 2
+  sw       s0, 244(sp)
+  lw       s0, 32(sp)
+  sw       s0, 248(sp)
+  lw       s0, 244(sp)
+  lw       s1, 248(sp)
+  add      s0, s0, s1
+  sw       s0, 252(sp)
+  lw       s0, 252(sp)
+  sw       s0, 48(sp)
+  li       s0, 3
+  sw       s0, 256(sp)
+  lw       s0, 36(sp)
+  sw       s0, 260(sp)
+  lw       s0, 256(sp)
+  lw       s1, 260(sp)
+  add      s0, s0, s1
+  sw       s0, 264(sp)
+  lw       s0, 264(sp)
+  sw       s0, 52(sp)
+  li       s0, 4
+  sw       s0, 268(sp)
+  lw       s0, 40(sp)
+  sw       s0, 272(sp)
+  lw       s0, 268(sp)
+  lw       s1, 272(sp)
+  add      s0, s0, s1
+  sw       s0, 276(sp)
+  lw       s0, 276(sp)
+  sw       s0, 56(sp)
+  li       s0, 1
+  sw       s0, 280(sp)
+  lw       s0, 44(sp)
+  sw       s0, 284(sp)
+  lw       s0, 280(sp)
+  lw       s1, 284(sp)
+  add      s0, s0, s1
+  sw       s0, 288(sp)
+  lw       s0, 288(sp)
+  sw       s0, 60(sp)
+  li       s0, 2
+  sw       s0, 292(sp)
+  lw       s0, 48(sp)
+  sw       s0, 296(sp)
+  lw       s0, 292(sp)
+  lw       s1, 296(sp)
+  add      s0, s0, s1
+  sw       s0, 300(sp)
+  lw       s0, 300(sp)
+  sw       s0, 64(sp)
+  li       s0, 3
+  sw       s0, 304(sp)
+  lw       s0, 52(sp)
+  sw       s0, 308(sp)
+  lw       s0, 304(sp)
+  lw       s1, 308(sp)
+  add      s0, s0, s1
+  sw       s0, 312(sp)
+  lw       s0, 312(sp)
+  sw       s0, 68(sp)
+  li       s0, 4
+  sw       s0, 316(sp)
+  lw       s0, 56(sp)
+  sw       s0, 320(sp)
+  lw       s0, 316(sp)
+  lw       s1, 320(sp)
+  add      s0, s0, s1
+  sw       s0, 324(sp)
+  lw       s0, 324(sp)
+  sw       s0, 72(sp)
+  li       s0, 1
+  sw       s0, 328(sp)
+  lw       s0, 60(sp)
+  sw       s0, 332(sp)
+  lw       s0, 328(sp)
+  lw       s1, 332(sp)
+  add      s0, s0, s1
+  sw       s0, 336(sp)
+  lw       s0, 336(sp)
+  sw       s0, 76(sp)
+  li       s0, 2
+  sw       s0, 340(sp)
+  lw       s0, 64(sp)
+  sw       s0, 344(sp)
+  lw       s0, 340(sp)
+  lw       s1, 344(sp)
+  add      s0, s0, s1
+  sw       s0, 348(sp)
+  lw       s0, 348(sp)
+  sw       s0, 80(sp)
+  li       s0, 3
+  sw       s0, 352(sp)
+  lw       s0, 68(sp)
+  sw       s0, 356(sp)
+  lw       s0, 352(sp)
+  lw       s1, 356(sp)
+  add      s0, s0, s1
+  sw       s0, 360(sp)
+  lw       s0, 360(sp)
+  sw       s0, 84(sp)
+  li       s0, 4
+  sw       s0, 364(sp)
+  lw       s0, 72(sp)
+  sw       s0, 368(sp)
+  lw       s0, 364(sp)
+  lw       s1, 368(sp)
+  add      s0, s0, s1
+  sw       s0, 372(sp)
+  lw       s0, 372(sp)
+  sw       s0, 88(sp)
+  li       s0, 1
+  sw       s0, 376(sp)
+  lw       s0, 76(sp)
+  sw       s0, 380(sp)
+  lw       s0, 376(sp)
+  lw       s1, 380(sp)
+  add      s0, s0, s1
+  sw       s0, 384(sp)
+  lw       s0, 384(sp)
+  sw       s0, 92(sp)
+  li       s0, 2
+  sw       s0, 388(sp)
+  lw       s0, 80(sp)
+  sw       s0, 392(sp)
+  lw       s0, 388(sp)
+  lw       s1, 392(sp)
+  add      s0, s0, s1
+  sw       s0, 396(sp)
+  lw       s0, 396(sp)
+  sw       s0, 96(sp)
+  li       s0, 3
+  sw       s0, 400(sp)
+  lw       s0, 84(sp)
+  sw       s0, 404(sp)
+  lw       s0, 400(sp)
+  lw       s1, 404(sp)
+  add      s0, s0, s1
+  sw       s0, 408(sp)
+  lw       s0, 408(sp)
+  sw       s0, 100(sp)
+  li       s0, 4
+  sw       s0, 412(sp)
+  lw       s0, 88(sp)
+  sw       s0, 416(sp)
+  lw       s0, 412(sp)
+  lw       s1, 416(sp)
+  add      s0, s0, s1
+  sw       s0, 420(sp)
+  lw       s0, 420(sp)
+  sw       s0, 104(sp)
+  li       s0, 1
+  sw       s0, 424(sp)
+  lw       s0, 92(sp)
+  sw       s0, 428(sp)
+  lw       s0, 424(sp)
+  lw       s1, 428(sp)
+  add      s0, s0, s1
+  sw       s0, 432(sp)
+  lw       s0, 432(sp)
+  sw       s0, 108(sp)
+  li       s0, 2
+  sw       s0, 436(sp)
+  lw       s0, 96(sp)
+  sw       s0, 440(sp)
+  lw       s0, 436(sp)
+  lw       s1, 440(sp)
+  add      s0, s0, s1
+  sw       s0, 444(sp)
+  lw       s0, 444(sp)
+  sw       s0, 112(sp)
+  li       s0, 3
+  sw       s0, 448(sp)
+  lw       s0, 100(sp)
+  sw       s0, 452(sp)
+  lw       s0, 448(sp)
+  lw       s1, 452(sp)
+  add      s0, s0, s1
+  sw       s0, 456(sp)
+  lw       s0, 456(sp)
+  sw       s0, 116(sp)
+  li       s0, 4
+  sw       s0, 460(sp)
+  lw       s0, 104(sp)
+  sw       s0, 464(sp)
+  lw       s0, 460(sp)
+  lw       s1, 464(sp)
+  add      s0, s0, s1
+  sw       s0, 468(sp)
+  lw       s0, 468(sp)
+  sw       s0, 120(sp)
+  li       s0, 1
+  sw       s0, 472(sp)
+  lw       s0, 108(sp)
+  sw       s0, 476(sp)
+  lw       s0, 472(sp)
+  lw       s1, 476(sp)
+  add      s0, s0, s1
+  sw       s0, 480(sp)
+  lw       s0, 480(sp)
+  sw       s0, 124(sp)
+  li       s0, 2
+  sw       s0, 484(sp)
+  lw       s0, 112(sp)
+  sw       s0, 488(sp)
+  lw       s0, 484(sp)
+  lw       s1, 488(sp)
+  add      s0, s0, s1
+  sw       s0, 492(sp)
+  lw       s0, 492(sp)
+  sw       s0, 128(sp)
+  li       s0, 3
+  sw       s0, 496(sp)
+  lw       s0, 116(sp)
+  sw       s0, 500(sp)
+  lw       s0, 496(sp)
+  lw       s1, 500(sp)
+  add      s0, s0, s1
+  sw       s0, 504(sp)
+  lw       s0, 504(sp)
+  sw       s0, 132(sp)
+  li       s0, 4
+  sw       s0, 508(sp)
+  lw       s0, 120(sp)
+  sw       s0, 512(sp)
+  lw       s0, 508(sp)
+  lw       s1, 512(sp)
+  add      s0, s0, s1
+  sw       s0, 516(sp)
+  lw       s0, 516(sp)
+  sw       s0, 136(sp)
+  li       s0, 1
+  sw       s0, 520(sp)
+  lw       s0, 124(sp)
+  sw       s0, 524(sp)
+  lw       s0, 520(sp)
+  lw       s1, 524(sp)
+  add      s0, s0, s1
+  sw       s0, 528(sp)
+  lw       s0, 528(sp)
+  sw       s0, 140(sp)
+  li       s0, 2
+  sw       s0, 532(sp)
+  lw       s0, 128(sp)
+  sw       s0, 536(sp)
+  lw       s0, 532(sp)
+  lw       s1, 536(sp)
+  add      s0, s0, s1
+  sw       s0, 540(sp)
+  lw       s0, 540(sp)
+  sw       s0, 144(sp)
+  li       s0, 3
+  sw       s0, 544(sp)
+  lw       s0, 132(sp)
+  sw       s0, 548(sp)
+  lw       s0, 544(sp)
+  lw       s1, 548(sp)
+  add      s0, s0, s1
+  sw       s0, 552(sp)
+  lw       s0, 552(sp)
+  sw       s0, 148(sp)
+  li       s0, 4
+  sw       s0, 556(sp)
+  lw       s0, 136(sp)
+  sw       s0, 560(sp)
+  lw       s0, 556(sp)
+  lw       s1, 560(sp)
+  add      s0, s0, s1
+  sw       s0, 564(sp)
+  lw       s0, 564(sp)
+  sw       s0, 152(sp)
+  lw       s0, 0(sp)
+  sw       s0, 568(sp)
+  lw       s0, 4(sp)
+  sw       s0, 572(sp)
+  lw       s0, 568(sp)
+  lw       s1, 572(sp)
+  sub      s0, s0, s1
+  sw       s0, 576(sp)
+  li       s0, 10
+  sw       s0, 580(sp)
+  lw       s0, 576(sp)
+  lw       s1, 580(sp)
+  add      s0, s0, s1
+  sw       s0, 584(sp)
+  lw       s0, 584(sp)
+  sw       s0, 8(sp)
+  li       s0, 1
+  sw       s0, 588(sp)
+  lw       s0, 124(sp)
+  sw       s0, 592(sp)
+  lw       s0, 588(sp)
+  lw       s1, 592(sp)
+  add      s0, s0, s1
+  sw       s0, 596(sp)
+  lw       s0, 596(sp)
+  sw       s0, 140(sp)
+  li       s0, 2
+  sw       s0, 600(sp)
+  lw       s0, 128(sp)
+  sw       s0, 604(sp)
+  lw       s0, 600(sp)
+  lw       s1, 604(sp)
+  add      s0, s0, s1
+  sw       s0, 608(sp)
+  lw       s0, 608(sp)
+  sw       s0, 144(sp)
+  li       s0, 3
+  sw       s0, 612(sp)
+  lw       s0, 132(sp)
+  sw       s0, 616(sp)
+  lw       s0, 612(sp)
+  lw       s1, 616(sp)
+  add      s0, s0, s1
+  sw       s0, 620(sp)
+  lw       s0, 620(sp)
+  sw       s0, 148(sp)
+  li       s0, 4
+  sw       s0, 624(sp)
+  lw       s0, 136(sp)
+  sw       s0, 628(sp)
+  lw       s0, 624(sp)
+  lw       s1, 628(sp)
+  add      s0, s0, s1
+  sw       s0, 632(sp)
+  lw       s0, 632(sp)
+  sw       s0, 152(sp)
+  li       s0, 1
+  sw       s0, 636(sp)
+  lw       s0, 108(sp)
+  sw       s0, 640(sp)
+  lw       s0, 636(sp)
+  lw       s1, 640(sp)
+  add      s0, s0, s1
+  sw       s0, 644(sp)
+  lw       s0, 644(sp)
+  sw       s0, 124(sp)
+  li       s0, 2
+  sw       s0, 648(sp)
+  lw       s0, 112(sp)
+  sw       s0, 652(sp)
+  lw       s0, 648(sp)
+  lw       s1, 652(sp)
+  add      s0, s0, s1
+  sw       s0, 656(sp)
+  lw       s0, 656(sp)
+  sw       s0, 128(sp)
+  li       s0, 3
+  sw       s0, 660(sp)
+  lw       s0, 116(sp)
+  sw       s0, 664(sp)
+  lw       s0, 660(sp)
+  lw       s1, 664(sp)
+  add      s0, s0, s1
+  sw       s0, 668(sp)
+  lw       s0, 668(sp)
+  sw       s0, 132(sp)
+  li       s0, 4
+  sw       s0, 672(sp)
+  lw       s0, 120(sp)
+  sw       s0, 676(sp)
+  lw       s0, 672(sp)
+  lw       s1, 676(sp)
+  add      s0, s0, s1
+  sw       s0, 680(sp)
+  lw       s0, 680(sp)
+  sw       s0, 136(sp)
+  li       s0, 1
+  sw       s0, 684(sp)
+  lw       s0, 92(sp)
+  sw       s0, 688(sp)
+  lw       s0, 684(sp)
+  lw       s1, 688(sp)
+  add      s0, s0, s1
+  sw       s0, 692(sp)
+  lw       s0, 692(sp)
+  sw       s0, 108(sp)
+  li       s0, 2
+  sw       s0, 696(sp)
+  lw       s0, 96(sp)
+  sw       s0, 700(sp)
+  lw       s0, 696(sp)
+  lw       s1, 700(sp)
+  add      s0, s0, s1
+  sw       s0, 704(sp)
+  lw       s0, 704(sp)
+  sw       s0, 112(sp)
+  li       s0, 3
+  sw       s0, 708(sp)
+  lw       s0, 100(sp)
+  sw       s0, 712(sp)
+  lw       s0, 708(sp)
+  lw       s1, 712(sp)
+  add      s0, s0, s1
+  sw       s0, 716(sp)
+  lw       s0, 716(sp)
+  sw       s0, 116(sp)
+  li       s0, 4
+  sw       s0, 720(sp)
+  lw       s0, 104(sp)
+  sw       s0, 724(sp)
+  lw       s0, 720(sp)
+  lw       s1, 724(sp)
+  add      s0, s0, s1
+  sw       s0, 728(sp)
+  lw       s0, 728(sp)
+  sw       s0, 120(sp)
+  li       s0, 1
+  sw       s0, 732(sp)
+  lw       s0, 76(sp)
+  sw       s0, 736(sp)
+  lw       s0, 732(sp)
+  lw       s1, 736(sp)
+  add      s0, s0, s1
+  sw       s0, 740(sp)
+  lw       s0, 740(sp)
+  sw       s0, 92(sp)
+  li       s0, 2
+  sw       s0, 744(sp)
+  lw       s0, 80(sp)
+  sw       s0, 748(sp)
+  lw       s0, 744(sp)
+  lw       s1, 748(sp)
+  add      s0, s0, s1
+  sw       s0, 752(sp)
+  lw       s0, 752(sp)
+  sw       s0, 96(sp)
+  li       s0, 3
+  sw       s0, 756(sp)
+  lw       s0, 84(sp)
+  sw       s0, 760(sp)
+  lw       s0, 756(sp)
+  lw       s1, 760(sp)
+  add      s0, s0, s1
+  sw       s0, 764(sp)
+  lw       s0, 764(sp)
+  sw       s0, 100(sp)
+  li       s0, 4
+  sw       s0, 768(sp)
+  lw       s0, 88(sp)
+  sw       s0, 772(sp)
+  lw       s0, 768(sp)
+  lw       s1, 772(sp)
+  add      s0, s0, s1
+  sw       s0, 776(sp)
+  lw       s0, 776(sp)
+  sw       s0, 104(sp)
+  li       s0, 1
+  sw       s0, 780(sp)
+  lw       s0, 60(sp)
+  sw       s0, 784(sp)
+  lw       s0, 780(sp)
+  lw       s1, 784(sp)
+  add      s0, s0, s1
+  sw       s0, 788(sp)
+  lw       s0, 788(sp)
+  sw       s0, 76(sp)
+  li       s0, 2
+  sw       s0, 792(sp)
+  lw       s0, 64(sp)
+  sw       s0, 796(sp)
+  lw       s0, 792(sp)
+  lw       s1, 796(sp)
+  add      s0, s0, s1
+  sw       s0, 800(sp)
+  lw       s0, 800(sp)
+  sw       s0, 80(sp)
+  li       s0, 3
+  sw       s0, 804(sp)
+  lw       s0, 68(sp)
+  sw       s0, 808(sp)
+  lw       s0, 804(sp)
+  lw       s1, 808(sp)
+  add      s0, s0, s1
+  sw       s0, 812(sp)
+  lw       s0, 812(sp)
+  sw       s0, 84(sp)
+  li       s0, 4
+  sw       s0, 816(sp)
+  lw       s0, 72(sp)
+  sw       s0, 820(sp)
+  lw       s0, 816(sp)
+  lw       s1, 820(sp)
+  add      s0, s0, s1
+  sw       s0, 824(sp)
+  lw       s0, 824(sp)
+  sw       s0, 88(sp)
+  li       s0, 1
+  sw       s0, 828(sp)
+  lw       s0, 44(sp)
+  sw       s0, 832(sp)
+  lw       s0, 828(sp)
+  lw       s1, 832(sp)
+  add      s0, s0, s1
+  sw       s0, 836(sp)
+  lw       s0, 836(sp)
+  sw       s0, 60(sp)
+  li       s0, 2
+  sw       s0, 840(sp)
+  lw       s0, 48(sp)
+  sw       s0, 844(sp)
+  lw       s0, 840(sp)
+  lw       s1, 844(sp)
+  add      s0, s0, s1
+  sw       s0, 848(sp)
+  lw       s0, 848(sp)
+  sw       s0, 64(sp)
+  li       s0, 3
+  sw       s0, 852(sp)
+  lw       s0, 52(sp)
+  sw       s0, 856(sp)
+  lw       s0, 852(sp)
+  lw       s1, 856(sp)
+  add      s0, s0, s1
+  sw       s0, 860(sp)
+  lw       s0, 860(sp)
+  sw       s0, 68(sp)
+  li       s0, 4
+  sw       s0, 864(sp)
+  lw       s0, 56(sp)
+  sw       s0, 868(sp)
+  lw       s0, 864(sp)
+  lw       s1, 868(sp)
+  add      s0, s0, s1
+  sw       s0, 872(sp)
+  lw       s0, 872(sp)
+  sw       s0, 72(sp)
+  li       s0, 1
+  sw       s0, 876(sp)
+  lw       s0, 28(sp)
+  sw       s0, 880(sp)
+  lw       s0, 876(sp)
+  lw       s1, 880(sp)
+  add      s0, s0, s1
+  sw       s0, 884(sp)
+  lw       s0, 884(sp)
+  sw       s0, 44(sp)
+  li       s0, 2
+  sw       s0, 888(sp)
+  lw       s0, 32(sp)
+  sw       s0, 892(sp)
+  lw       s0, 888(sp)
+  lw       s1, 892(sp)
+  add      s0, s0, s1
+  sw       s0, 896(sp)
+  lw       s0, 896(sp)
+  sw       s0, 48(sp)
+  li       s0, 3
+  sw       s0, 900(sp)
+  lw       s0, 36(sp)
+  sw       s0, 904(sp)
+  lw       s0, 900(sp)
+  lw       s1, 904(sp)
+  add      s0, s0, s1
+  sw       s0, 908(sp)
+  lw       s0, 908(sp)
+  sw       s0, 52(sp)
+  li       s0, 4
+  sw       s0, 912(sp)
+  lw       s0, 40(sp)
+  sw       s0, 916(sp)
+  lw       s0, 912(sp)
+  lw       s1, 916(sp)
+  add      s0, s0, s1
+  sw       s0, 920(sp)
+  lw       s0, 920(sp)
+  sw       s0, 56(sp)
+  li       s0, 1
+  sw       s0, 924(sp)
+  lw       s0, 12(sp)
+  sw       s0, 928(sp)
+  lw       s0, 924(sp)
+  lw       s1, 928(sp)
+  add      s0, s0, s1
+  sw       s0, 932(sp)
+  lw       s0, 932(sp)
+  sw       s0, 28(sp)
+  li       s0, 2
+  sw       s0, 936(sp)
+  lw       s0, 16(sp)
+  sw       s0, 940(sp)
+  lw       s0, 936(sp)
+  lw       s1, 940(sp)
+  add      s0, s0, s1
+  sw       s0, 944(sp)
+  lw       s0, 944(sp)
+  sw       s0, 32(sp)
+  li       s0, 3
+  sw       s0, 948(sp)
+  lw       s0, 20(sp)
+  sw       s0, 952(sp)
+  lw       s0, 948(sp)
+  lw       s1, 952(sp)
+  add      s0, s0, s1
+  sw       s0, 956(sp)
+  lw       s0, 956(sp)
+  sw       s0, 36(sp)
+  li       s0, 4
+  sw       s0, 960(sp)
+  lw       s0, 24(sp)
+  sw       s0, 964(sp)
+  lw       s0, 960(sp)
+  lw       s1, 964(sp)
+  add      s0, s0, s1
+  sw       s0, 968(sp)
+  lw       s0, 968(sp)
+  sw       s0, 40(sp)
+  li       s0, 1
+  sw       s0, 972(sp)
+  lw       s0, 140(sp)
+  sw       s0, 976(sp)
+  lw       s0, 972(sp)
+  lw       s1, 976(sp)
+  add      s0, s0, s1
+  sw       s0, 980(sp)
+  lw       s0, 980(sp)
+  sw       s0, 12(sp)
+  li       s0, 2
+  sw       s0, 984(sp)
+  lw       s0, 144(sp)
+  sw       s0, 988(sp)
+  lw       s0, 984(sp)
+  lw       s1, 988(sp)
+  add      s0, s0, s1
+  sw       s0, 992(sp)
+  lw       s0, 992(sp)
+  sw       s0, 16(sp)
+  li       s0, 3
+  sw       s0, 996(sp)
+  lw       s0, 148(sp)
+  sw       s0, 1000(sp)
+  lw       s0, 996(sp)
+  lw       s1, 1000(sp)
+  add      s0, s0, s1
+  sw       s0, 1004(sp)
+  lw       s0, 1004(sp)
+  sw       s0, 20(sp)
+  li       s0, 4
+  sw       s0, 1008(sp)
+  lw       s0, 152(sp)
+  sw       s0, 1012(sp)
+  lw       s0, 1008(sp)
+  lw       s1, 1012(sp)
+  add      s0, s0, s1
+  sw       s0, 1016(sp)
+  lw       s0, 1016(sp)
+  sw       s0, 24(sp)
+  lw       s0, 8(sp)
+  sw       s0, 1020(sp)
+  lw       s0, 12(sp)
+  sw       s0, 1024(sp)
+  lw       s0, 1020(sp)
+  lw       s1, 1024(sp)
+  add      s0, s0, s1
+  sw       s0, 1028(sp)
+  lw       s0, 16(sp)
+  sw       s0, 1032(sp)
+  lw       s0, 1028(sp)
+  lw       s1, 1032(sp)
+  add      s0, s0, s1
+  sw       s0, 1036(sp)
+  lw       s0, 20(sp)
+  sw       s0, 1040(sp)
+  lw       s0, 1036(sp)
+  lw       s1, 1040(sp)
+  add      s0, s0, s1
+  sw       s0, 1044(sp)
+  lw       s0, 24(sp)
+  sw       s0, 1048(sp)
+  lw       s0, 1044(sp)
+  lw       s1, 1048(sp)
+  add      s0, s0, s1
+  sw       s0, 1052(sp)
+  lw       s0, 28(sp)
+  sw       s0, 1056(sp)
+  lw       s0, 1052(sp)
+  lw       s1, 1056(sp)
+  sub      s0, s0, s1
+  sw       s0, 1060(sp)
+  lw       s0, 32(sp)
+  sw       s0, 1064(sp)
+  lw       s0, 1060(sp)
+  lw       s1, 1064(sp)
+  sub      s0, s0, s1
+  sw       s0, 1068(sp)
+  lw       s0, 36(sp)
+  sw       s0, 1072(sp)
+  lw       s0, 1068(sp)
+  lw       s1, 1072(sp)
+  sub      s0, s0, s1
+  sw       s0, 1076(sp)
+  lw       s0, 40(sp)
+  sw       s0, 1080(sp)
+  lw       s0, 1076(sp)
+  lw       s1, 1080(sp)
+  sub      s0, s0, s1
+  sw       s0, 1084(sp)
+  lw       s0, 44(sp)
+  sw       s0, 1088(sp)
+  lw       s0, 1084(sp)
+  lw       s1, 1088(sp)
+  add      s0, s0, s1
+  sw       s0, 1092(sp)
+  lw       s0, 48(sp)
+  sw       s0, 1096(sp)
+  lw       s0, 1092(sp)
+  lw       s1, 1096(sp)
+  add      s0, s0, s1
+  sw       s0, 1100(sp)
+  lw       s0, 52(sp)
+  sw       s0, 1104(sp)
+  lw       s0, 1100(sp)
+  lw       s1, 1104(sp)
+  add      s0, s0, s1
+  sw       s0, 1108(sp)
+  lw       s0, 56(sp)
+  sw       s0, 1112(sp)
+  lw       s0, 1108(sp)
+  lw       s1, 1112(sp)
+  add      s0, s0, s1
+  sw       s0, 1116(sp)
+  lw       s0, 60(sp)
+  sw       s0, 1120(sp)
+  lw       s0, 1116(sp)
+  lw       s1, 1120(sp)
+  sub      s0, s0, s1
+  sw       s0, 1124(sp)
+  lw       s0, 64(sp)
+  sw       s0, 1128(sp)
+  lw       s0, 1124(sp)
+  lw       s1, 1128(sp)
+  sub      s0, s0, s1
+  sw       s0, 1132(sp)
+  lw       s0, 68(sp)
+  sw       s0, 1136(sp)
+  lw       s0, 1132(sp)
+  lw       s1, 1136(sp)
+  sub      s0, s0, s1
+  sw       s0, 1140(sp)
+  lw       s0, 72(sp)
+  sw       s0, 1144(sp)
+  lw       s0, 1140(sp)
+  lw       s1, 1144(sp)
+  sub      s0, s0, s1
+  sw       s0, 1148(sp)
+  lw       s0, 76(sp)
+  sw       s0, 1152(sp)
+  lw       s0, 1148(sp)
+  lw       s1, 1152(sp)
+  add      s0, s0, s1
+  sw       s0, 1156(sp)
+  lw       s0, 80(sp)
+  sw       s0, 1160(sp)
+  lw       s0, 1156(sp)
+  lw       s1, 1160(sp)
+  add      s0, s0, s1
+  sw       s0, 1164(sp)
+  lw       s0, 84(sp)
+  sw       s0, 1168(sp)
+  lw       s0, 1164(sp)
+  lw       s1, 1168(sp)
+  add      s0, s0, s1
+  sw       s0, 1172(sp)
+  lw       s0, 88(sp)
+  sw       s0, 1176(sp)
+  lw       s0, 1172(sp)
+  lw       s1, 1176(sp)
+  add      s0, s0, s1
+  sw       s0, 1180(sp)
+  lw       s0, 92(sp)
+  sw       s0, 1184(sp)
+  lw       s0, 1180(sp)
+  lw       s1, 1184(sp)
+  sub      s0, s0, s1
+  sw       s0, 1188(sp)
+  lw       s0, 96(sp)
+  sw       s0, 1192(sp)
+  lw       s0, 1188(sp)
+  lw       s1, 1192(sp)
+  sub      s0, s0, s1
+  sw       s0, 1196(sp)
+  lw       s0, 100(sp)
+  sw       s0, 1200(sp)
+  lw       s0, 1196(sp)
+  lw       s1, 1200(sp)
+  sub      s0, s0, s1
+  sw       s0, 1204(sp)
+  lw       s0, 104(sp)
+  sw       s0, 1208(sp)
+  lw       s0, 1204(sp)
+  lw       s1, 1208(sp)
+  sub      s0, s0, s1
+  sw       s0, 1212(sp)
+  lw       s0, 108(sp)
+  sw       s0, 1216(sp)
+  lw       s0, 1212(sp)
+  lw       s1, 1216(sp)
+  add      s0, s0, s1
+  sw       s0, 1220(sp)
+  lw       s0, 112(sp)
+  sw       s0, 1224(sp)
+  lw       s0, 1220(sp)
+  lw       s1, 1224(sp)
+  add      s0, s0, s1
+  sw       s0, 1228(sp)
+  lw       s0, 116(sp)
+  sw       s0, 1232(sp)
+  lw       s0, 1228(sp)
+  lw       s1, 1232(sp)
+  add      s0, s0, s1
+  sw       s0, 1236(sp)
+  lw       s0, 120(sp)
+  sw       s0, 1240(sp)
+  lw       s0, 1236(sp)
+  lw       s1, 1240(sp)
+  add      s0, s0, s1
+  sw       s0, 1244(sp)
+  lw       s0, 124(sp)
+  sw       s0, 1248(sp)
+  lw       s0, 1244(sp)
+  lw       s1, 1248(sp)
+  sub      s0, s0, s1
+  sw       s0, 1252(sp)
+  lw       s0, 128(sp)
+  sw       s0, 1256(sp)
+  lw       s0, 1252(sp)
+  lw       s1, 1256(sp)
+  sub      s0, s0, s1
+  sw       s0, 1260(sp)
+  lw       s0, 132(sp)
+  sw       s0, 1264(sp)
+  lw       s0, 1260(sp)
+  lw       s1, 1264(sp)
+  sub      s0, s0, s1
+  sw       s0, 1268(sp)
+  lw       s0, 136(sp)
+  sw       s0, 1272(sp)
+  lw       s0, 1268(sp)
+  lw       s1, 1272(sp)
+  sub      s0, s0, s1
+  sw       s0, 1276(sp)
+  lw       s0, 140(sp)
+  sw       s0, 1280(sp)
+  lw       s0, 1276(sp)
+  lw       s1, 1280(sp)
+  add      s0, s0, s1
+  sw       s0, 1284(sp)
+  lw       s0, 144(sp)
+  sw       s0, 1288(sp)
+  lw       s0, 1284(sp)
+  lw       s1, 1288(sp)
+  add      s0, s0, s1
+  sw       s0, 1292(sp)
+  lw       s0, 148(sp)
+  sw       s0, 1296(sp)
+  lw       s0, 1292(sp)
+  lw       s1, 1296(sp)
+  add      s0, s0, s1
+  sw       s0, 1300(sp)
+  lw       s0, 152(sp)
+  sw       s0, 1304(sp)
+  lw       s0, 1300(sp)
+  lw       s1, 1304(sp)
+  add      s0, s0, s1
+  sw       s0, 1308(sp)
+  lw       a0, 1308(sp)
+  lw       ra, 1324(sp)
+  addi     sp, sp, 1328
+ret
+  li       a0, -1
+  lw       ra, 1324(sp)
+  addi     sp, sp, 1328
+ret
+  .size    func, .-func
+  .text
+  .align   2
+  .global  main
+  .type    main, @function
+main:
+  addi     sp, sp, -48
+  sw       ra, 44(sp)
+  li       s0, 1
+  sw       s0, 8(sp)
+  lw       s0, 8(sp)
+  sw       s0, 0(sp)
+  lw       s0, 0(sp)
+  sw       s0, 12(sp)
+  li       s0, 2
+  sw       s0, 16(sp)
+  li       s0, 9
+  sw       s0, 20(sp)
+  lw       s0, 16(sp)
+  lw       s1, 20(sp)
+  mul      s0, s0, s1
+  sw       s0, 24(sp)
+  lw       s0, 12(sp)
+  lw       s1, 24(sp)
+  add      s0, s0, s1
+  sw       s0, 28(sp)
+  lw       s0, 28(sp)
+  sw       s0, 4(sp)
+  lw       s0, 0(sp)
+  sw       s0, 32(sp)
+  lw       s0, 4(sp)
+  sw       s0, 36(sp)
+  lw       s0, 32(sp)
+  mv       a0, s0
+  lw       s0, 36(sp)
+  mv       a1, s0
+  call     func
+  sw       a0, 40(sp)
+  lw       a0, 40(sp)
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  li       a0, -1
+  lw       ra, 44(sp)
+  addi     sp, sp, 48
+ret
+  .size    main, .-main
