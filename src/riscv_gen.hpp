@@ -111,28 +111,31 @@ void generateLW(std::ostream &os, int r1, int r2, int imm) {
 }
 
 void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
-    tigger::FuncPtr global, int label_init_id) {
-    // Header
-    if (func->name() != "$global$") {
-        os << "  .text" << std::endl;
-        os << "  .align   2" << std::endl;
-        os << "  .global  " << func->name() << std::endl;
-        os << "  .type    " << func->name() << ", @function" << std::endl;
-        os << func->name() << ":" << std::endl;
-        int int2 = func->stk_size();
-        int STK = (int2 / 4 + 1) * 16;
-        if (is_int12(-STK)) {
-            os << "  addi     sp, sp, " << -STK << std::endl;
-        } else {
-            os << "  li       t0, " << -STK << std::endl;
-            os << "  add      sp, sp, t0" << std::endl;
-        }
-        generateSW(os, 29, 28, STK-4);
+    int label_init_id) {
+    std::string name = func->name();
+    if (func->name() == "$global$") {
+        name = "main";
+    }
+    if (func->name() == "main") {
+        name = "__main__";
     }
 
-    if (func->name() == "main") {
-        generateRISCVCode(global, os, nullptr, 0);
+    // Header
+    os << "  .text" << std::endl;
+    os << "  .align   2" << std::endl;
+    os << "  .global  " << name << std::endl;
+    os << "  .type    " << name << ", @function" << std::endl;
+    os << name << ":" << std::endl;
+    int int2 = func->stk_size();
+    int STK = (int2 / 4 + 1) * 16;
+    if (is_int12(-STK)) {
+        os << "  addi     sp, sp, " << -STK << std::endl;
+    } else {
+        os << "  li       t0, " << -STK << std::endl;
+        os << "  add      sp, sp, t0" << std::endl;
     }
+    generateSW(os, 29, 28, STK-4);
+
     for (int i = 0; i < func->instNum(); ++i) {
         auto inst = func->insts()[i];
         for (int j = 0; j < func->labelNum(); ++j) {
@@ -211,7 +214,9 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
             os << "  j        .l" << ptr->label_ << std::endl;
         } else TEST_TYPE(inst, CallInst) {
             auto ptr = CAST_P(inst, CallInst);
-            os << "  call     " << ptr->func_ << std::endl;
+            auto name = ptr->func_;
+            if (name == "main") name = "__main__";
+            os << "  call     " << name << std::endl;
         } else TEST_TYPE(inst, ReturnInst) {
             int int2 = func->stk_size();
             int STK = (int2 / 4 + 1) * 16;
@@ -222,7 +227,7 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
                 os << "  li       t0, " << STK << std::endl;
                 os << "  add      sp, sp, t0" << std::endl;
             }
-            os << "ret" << std::endl;
+            os << "  ret" << std::endl;
         } else TEST_TYPE(inst, StackStoreInst) {
             auto ptr = CAST_P(inst, StackStoreInst);
             generateSW(os, 29, ptr->rs_, ptr->pos_*4);
@@ -260,10 +265,8 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
     }
 
     // Tailer
-    if (func->name() != "$global$") {
-        os << "  .size    " << func->name() << ", .-";
-        os << func->name() << std::endl;
-    }
+    os << "  .size    " << name << ", .-";
+    os << name << std::endl;
 }
 
 void translate_T2R(tigger::Program &src, std::ostream &os) {
@@ -271,7 +274,7 @@ void translate_T2R(tigger::Program &src, std::ostream &os) {
     for (auto x : src.global()) {
         if (x.second.first) {
             // Global Array
-            os << "  .comm v" << x.first << ", ";
+            os << "  .comm     v" << x.first << ", ";
             os << x.second.second << ", 4" << std::endl;
         } else {
             // Global Variable
@@ -287,12 +290,9 @@ void translate_T2R(tigger::Program &src, std::ostream &os) {
     }
 
     // FunctionDef
-    auto global = src.funcs()[0];
-    assert(global->name() == "$global$");
     int total_label = 0;
     for (auto &func : src.funcs()) {
-        if (func->name() == "$global$") continue;
-        generateRISCVCode(func, os, global, total_label);
+        generateRISCVCode(func, os, total_label);
         total_label += func->labelNum();
     }
 }

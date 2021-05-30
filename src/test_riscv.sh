@@ -16,7 +16,7 @@ do
         continue
     fi
     echo "[Info] Testing $name"
-    ./compiler -S "$TESTPATH/$name.sy" -o "../test/$name.SR"
+    ./compiler -S "$TESTPATH/$name.sy" -o "../test/$name.S"
     if [ $? != 0 ]; then
         echo "[Failed] Test $name"
         break

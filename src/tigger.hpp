@@ -203,7 +203,7 @@ public:
     void pushInst(InstPtr inst) {
         insts_.push_back(std::move(inst));
     }
-    void dumpCode(std::ostream &os, FuncPtr global, int label_init_id) const;
+    void dumpCode(std::ostream &os, int label_init_id) const;
     const std::vector<int> &label_pos() const { return label_pos_; }
     const InstList &insts() const { return insts_; }
 

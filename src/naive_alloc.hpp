@@ -14,7 +14,6 @@ static std::unordered_map<int, int> Tstart, tstart;
 static int global_num;
 static int param_pos;
 
-
 #define CAST_P(POINTER, TYPE) \
 dynamic_cast<eeyore::TYPE *>(POINTER.get())
 
@@ -22,62 +21,17 @@ dynamic_cast<eeyore::TYPE *>(POINTER.get())
 if (CAST_P(POINTER, TYPE) != nullptr)
 
 void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
-    if (func->name() == "$global$") {
-        tigger::FuncPtr t_func = std::make_shared<tigger::FunctionDef>
-            ("$global$", func->paramNum(), 0);
-        dst.pushFunction(t_func);
-        for (auto &var : func->native()) {
-            auto ptr = dynamic_cast<eeyore::NativeVar *>(var.get());
-            if (ptr->widths().size() == 0) {
-                int val;
-                if (ptr->getVal().has_value()) {
-                    val = ptr->getVal().value();
-                } else {
-                    val = 0;
-                }
-                dst.pushGlobal(global_num++, false, val);
-            } else {
-                int size = ptr->widths()[0] * 4;
-                dst.pushGlobal(global_num++, true, size);
-            }
-        }
-        
-        for (auto &inst : func->insts()) {
-            auto derived_ptr1 = CAST_P(inst, AssignInst);
-            // Variable Initial Value Already Defined
-            if (derived_ptr1 != nullptr) continue;
-            auto derived_ptr2 = CAST_P(inst, ArrayAssignInst);
-            // Array Initialization
-            if (derived_ptr2 != nullptr) {
-                int var = CAST_P(derived_ptr2->lhs_var_, NativeVar)->id_;
-                int pos = CAST_P(derived_ptr2->lhs_index_, IntValue)->val_;
-                int val = CAST_P(derived_ptr2->rhs_, IntValue)->val_;
-                // CASE: SYMBOL [ NUM ] = NUM
-                // i.e. var [ pos ] = val
-                // loadaddr var s0
-                // s1 = val
-                // s0[pos] = s1
-                t_func->pushInst(std::make_shared<tigger::VarAddrLoadInst>
-                                    (var, 1));
-                t_func->pushInst(std::make_shared<tigger::AssignIInst>
-                                    (2, val));
-                t_func->pushInst(std::make_shared<tigger::MemStoreInst>
-                                    (1, pos, 2));
-                continue;
-            }
-            assert(false);
-        }
-        return;
-    }
-    // Normal Function
+    tigger::FuncPtr t_func;
     int now_pos = func->paramNum();
-    for (auto &var : func->native()) {
-        auto ptr = CAST_P(var, NativeVar);
-        Tstart[ptr->id_] = now_pos;
-        if (ptr->widths_.size() == 0) {
-            ++now_pos;
-        } else {
-            now_pos += ptr->widths_[0];
+    if (func->name() != "$global$") {
+        for (auto &var : func->native()) {
+            auto ptr = CAST_P(var, NativeVar);
+            Tstart[ptr->id_] = now_pos;
+            if (ptr->widths_.size() == 0) {
+                ++now_pos;
+            } else {
+                now_pos += ptr->widths_[0];
+            }
         }
     }
     for (auto &var : func->temp()) {
@@ -85,7 +39,8 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
         tstart[ptr->id_] = now_pos;
         ++now_pos;
     }
-    tigger::FuncPtr t_func = std::make_shared<tigger::FunctionDef>
+    
+    t_func = std::make_shared<tigger::FunctionDef>
         (func->name(), func->paramNum(), now_pos);
     dst.pushFunction(t_func);
 
@@ -276,6 +231,24 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
 void translate_E2T(eeyore::Program &src, tigger::Program &dst) {
     Tstart.clear(); tstart.clear();
     global_num = param_pos = 0;
+    // Calculate global_num
+    assert(src.funcs().back()->name() == "$global$");
+    for (auto &var : src.funcs().back()->native()) {
+        auto ptr = dynamic_cast<eeyore::NativeVar *>(var.get());
+        if (ptr->widths().size() == 0) {
+            int val;
+            if (ptr->getVal().has_value()) {
+                val = ptr->getVal().value();
+            } else {
+                val = 0;
+            }
+            dst.pushGlobal(global_num++, false, val);
+        } else {
+            int size = ptr->widths()[0] * 4;
+            dst.pushGlobal(global_num++, true, size);
+        }
+    }
+    // Dump Functions
     for (auto &func : src.funcs()) {
         generateTiggerCode(func, dst);
     }

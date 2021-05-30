@@ -83,7 +83,10 @@ void JumpInst::dumpCode(std::ostream &os, int label_init_id) const {
 }
 
 void CallInst::dumpCode(std::ostream &os, int label_init_id) const {
-    os << "  call f_" << func_ << std::endl;
+    if (func_ == "main")
+        os << "  call f___main__" << std::endl;
+    else 
+        os << "  call f_" << func_ << std::endl;
 }
 
 void ReturnInst::dumpCode(std::ostream &os, int label_init_id) const {
@@ -120,15 +123,16 @@ void VarAddrLoadInst::dumpCode(std::ostream &os, int label_init_id) const {
     os << std::endl;
 }
 
-void FunctionDef::dumpCode(std::ostream &os, FuncPtr global, 
-    int label_init_id) const {
-    if (name_ != "$global$") {
-        os << "f_" << name_ << " [" << param_num_ << "] [" << stk_size_ << "]";
-        os << std::endl;
+void FunctionDef::dumpCode(std::ostream &os, int label_init_id) const {
+    std::string name = name_;
+    if (name_ == "$global$") {
+        name = "main";
     }
     if (name_ == "main") {
-        global->dumpCode(os, nullptr, 0);
+        name = "__main__";
     }
+    os << "f_" << name << " [" << param_num_ << "] [" << stk_size_ << "]";
+    os << std::endl;
     for (int i = 0; i < instNum(); ++i) {
         for (int j = 0; j < labelNum(); ++j) {
             if (i == label_pos_[j]) {
@@ -137,9 +141,7 @@ void FunctionDef::dumpCode(std::ostream &os, FuncPtr global,
         }
         insts_[i]->dumpCode(os, label_init_id);
     }
-    if (name_ != "$global$") {
-        os << "end f_" << name_ << std::endl;
-    }
+    os << "end f_" << name << std::endl;
 }
 
 void Program::dumpCode(std::ostream &os) const {
@@ -153,12 +155,9 @@ void Program::dumpCode(std::ostream &os) const {
         }
     }
     // FunctionDef
-    auto global = funcs_[0];
-    assert(global->name() == "$global$");
     int total_label = 0;
     for (auto &func : funcs_) {
-        if (func->name() == "$global$") continue;
-        func->dumpCode(os, global, total_label);
+        func->dumpCode(os, total_label);
         total_label += func->labelNum();
     }
 }

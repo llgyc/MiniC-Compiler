@@ -75,11 +75,17 @@ void AssignCallInst::dumpCode(std::ostream &os, int label_init_id) const {
     os << "  ";
     if (store_ == nullptr) {
         os << "call f_";
-        os << func_->name();
+        if (func_->name() == "main")
+            os << "__main__";
+        else 
+            os << func_->name();
     } else {
         store_->dumpCode(os);
         os << " = call f_";
-        os << func_->name();
+        if (func_->name() == "main")
+            os << "__main__";
+        else
+            os << func_->name();
     }
     os << std::endl;
 }
@@ -122,10 +128,13 @@ void TempVar::dumpVariableDeclaration(std::ostream &os) const {
     os << "  var t" << id_ << std::endl;
 }
 
-void FunctionDef::dumpVariableDeclarations(std::ostream &os) const {
+void FunctionDef::dumpNativeDeclarations(std::ostream &os) const {
     for (auto &nvar : native_) {
         nvar->dumpVariableDeclaration(os);
     }
+}
+
+void FunctionDef::dumpTempDeclarations(std::ostream &os) const {
     for (auto &tvar : temp_) {
         tvar->dumpVariableDeclaration(os);
     }
@@ -143,21 +152,28 @@ void FunctionDef::dumpInstructions(std::ostream &os) const {
 }
 
 void FunctionDef::dumpCode(std::ostream &os) const {
+    // Real Functions
+    std::string name = name_;
     if (name_ == "$global$") {
-        // Global Definition
-        dumpVariableDeclarations(os);
-        dumpInstructions(os);
-    } else {
-        // Real Functions
-        os << "f_" << name_ << " [" << paramNum() << "]" << std::endl;
-        dumpVariableDeclarations(os);
-        dumpInstructions(os);
-        os << "end f_" << name_ << std::endl;
+        name = "main";
+    } 
+    if (name_ == "main") {
+        name = "__main__";
     }
+    os << "f_" << name << " [" << paramNum() << "]" << std::endl;
+    if (name_ != "$global$") {
+        dumpNativeDeclarations(os);
+    }
+    dumpTempDeclarations(os);
+    dumpInstructions(os);
+    os << "end f_" << name << std::endl;
 }
 
 void Program::dumpCode(std::ostream &os) const {
     int label_num = 0;
+    assert(funcs_.back()->name() == "$global$");
+    // Global Variable
+    funcs_.back()->dumpNativeDeclarations(os);
     for (auto &func : funcs_) {
         func->setLabelInit(label_num);
         func->dumpCode(os);

@@ -163,7 +163,7 @@ public:
 // VarBase Subclass
 class NativeVar : public VarBase {
 public:
-    NativeVar(int id) : id_(id) {}
+    NativeVar(int id) : id_(id) { val_ = std::nullopt; }
     void putVal(int val) { val_ = val; }
     void putVal(int pos, int val) { pos2val_[pos] = val; }
     std::optional<int> getVal() { return val_; }
@@ -272,7 +272,8 @@ public:
             insts_[id]->updateGoto(label_pos_.size() - 1);
         }
     }
-    void dumpVariableDeclarations(std::ostream &os) const;
+    void dumpNativeDeclarations(std::ostream &os) const;
+    void dumpTempDeclarations(std::ostream &os) const;
     void dumpInstructions(std::ostream &os) const;
     void dumpCode(std::ostream &os) const;
     const std::string &name() const { return name_; }

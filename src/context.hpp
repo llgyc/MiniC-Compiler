@@ -45,6 +45,7 @@ public:
     Context() {
         newScope();
         eeyore::ParamPtr param;
+        global_var_num_ = 0;
         global_ctx_ = std::make_shared<eeyore::FunctionDef>("$global$", 0, false);
         cur_func_ = global_ctx_;
         cur_loop_ = nullptr;
@@ -164,8 +165,10 @@ public:
         std::cerr << message << std::endl;
         assert(false);
     }
+    int global_var_num() const { return global_var_num_; }
 
 private:
+    int global_var_num_;
     eeyore::FuncPtr global_ctx_;
     eeyore::FuncPtr cur_func_;
     WhileASTNode *cur_loop_;
