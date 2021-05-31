@@ -208,10 +208,10 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
             }
             os << hd;
             PRINT_REG2(ptr->rs1_, ptr->rs2_);
-            os << ", .l" << ptr->label_ << std::endl;
+            os << ", .l" << label_init_id + ptr->label_ << std::endl;
         } else TEST_TYPE(inst, JumpInst) {
             auto ptr = CAST_P(inst, JumpInst);
-            os << "  j        .l" << ptr->label_ << std::endl;
+            os << "  j        .l" << label_init_id + ptr->label_ << std::endl;
         } else TEST_TYPE(inst, CallInst) {
             auto ptr = CAST_P(inst, CallInst);
             auto name = ptr->func_;
