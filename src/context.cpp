@@ -139,19 +139,16 @@ void Context::typeCoercion(const ASTNodePtr &ast) {
 }
 
 void Context::generateEeyoreOn(CompUnitASTNode *ast, eeyore::Program &prog) {
-    // Calculate Global Variable Number First
+    // Declaration first
     for (auto &comp_unit : (*ast->comp_units())) {
         auto ptr = comp_unit.get();
         if (dynamic_cast<FuncDefASTNode *>(ptr) != nullptr) continue;
-        auto ptr1 = dynamic_cast<ConstDefListASTNode *>(ptr);
-        auto ptr2 = dynamic_cast<VarDefListASTNode *>(ptr);
-        if (ptr1 != nullptr) {
-            global_var_num_ += ptr1->const_defs()->size();
-        } else if (ptr2 != nullptr) {
-            global_var_num_ += ptr2->var_def_list()->size();
-        } else assert(false);
+        comp_unit->generateEeyoreCode(*this, prog);
     }
+    // Function second
     for (auto &comp_unit : (*ast->comp_units())) {
+        auto ptr = comp_unit.get();
+        if (dynamic_cast<FuncDefASTNode *>(ptr) == nullptr) continue;
         comp_unit->generateEeyoreCode(*this, prog);
     }
     auto main_ptr = lookUpFunction("main");
@@ -260,6 +257,20 @@ void Context::generateEeyoreOn(VarDefASTNode *ast, eeyore::Program &prog) {
         if (ast->init_val() == nullptr) {
             // Case: Not Initialized
             addVariable(name, nvar);
+        } else if (cur_func_ == global_ctx_) {
+            // Case: Toplayer Variable == Constant
+            std::optional<int> val = ast->init_val()->eval(*this);
+
+            nvar->putVal(val.value());
+            
+            // Add to symtab
+            addVariable(name, nvar);
+            
+            // Generate toplayer related
+            auto val_const = std::make_shared<eeyore::IntValue>(val.value());
+            auto inst = std::make_shared<eeyore::AssignInst>
+                            (nvar, std::move(val_const));
+            cur_func_->pushInst(std::move(inst));
         } else {
             // Case: Variable in functions
             // Add to symtab
@@ -288,21 +299,47 @@ void Context::generateEeyoreOn(VarDefASTNode *ast, eeyore::Program &prog) {
             auto &val_list_ptr =
                 dynamic_cast<InitValListASTNode *>(val_ptr)->init_val_list();
 
-            // Case: Variable in functions
-            ArrayVarList init_vals;
-            walkAndGetVar(widths, 0, val_list_ptr, init_vals, 1, prog);
+            if (cur_func_ == global_ctx_) {
+                // Case: Top Variable == Constant
+                ArrayConstList init_vals;
+                walkAndGetConst(widths, 0, val_list_ptr, init_vals, 1);
+                for (auto init_val : init_vals) {
+                    if (!init_val.second)
+                        LogError("[ERROR] Initial value of \""
+                                  + name + "\" is not a constant");
+                    nvar->putVal(init_val.first, init_val.second.value());
+                }
+             
+                // Add to symtab
+                addVariable(name, nvar);
     
-            // Add to symtab
-            addVariable(name, nvar);
-              
-            // Generate toplayer related
-            for (auto init_val : init_vals) {
-                auto index_const = std::make_shared<eeyore::IntValue>
-                    (init_val.first * 4);
-                auto temp_var = init_val.second;
-                auto inst = std::make_shared<eeyore::ArrayAssignInst>
-                    (nvar, std::move(index_const), std::move(temp_var));
-                cur_func_ -> pushInst(std::move(inst));
+                // Generate toplayer related
+                for (auto init_val : init_vals) {
+                    auto index_const = std::make_shared<eeyore::IntValue>
+                        (init_val.first * 4);
+                    auto val_const = std::make_shared<eeyore::IntValue>
+                        (init_val.second.value());
+                    auto inst = std::make_shared<eeyore::ArrayAssignInst>
+                        (nvar, std::move(index_const), std::move(val_const));
+                    cur_func_ -> pushInst(std::move(inst));
+                }
+            } else {
+                // Case: Variable in functions
+                ArrayVarList init_vals;
+                walkAndGetVar(widths, 0, val_list_ptr, init_vals, 1, prog);
+    
+                // Add to symtab
+                addVariable(name, nvar);
+                
+                // Generate toplayer related
+                for (auto init_val : init_vals) {
+                    auto index_const = std::make_shared<eeyore::IntValue>
+                        (init_val.first * 4);
+                    auto temp_var = init_val.second;
+                    auto inst = std::make_shared<eeyore::ArrayAssignInst>
+                        (nvar, std::move(index_const), std::move(temp_var));
+                    cur_func_ -> pushInst(std::move(inst));
+                }
             }
         }
     }
@@ -316,7 +353,7 @@ void Context::generateEeyoreOn(FuncDefASTNode *ast, eeyore::Program &prog) {
     auto name = ast->ident();
     auto &block = ast->block();
     cur_func_ = std::make_shared<eeyore::FunctionDef>
-                    (name, global_var_num_,
+                    (name, global_ctx_->nativeNum(),
                      ast->return_type() == ReturnType::kIntType);
     prog.pushFunction(cur_func_);    
     addFunction(name, cur_func_);
