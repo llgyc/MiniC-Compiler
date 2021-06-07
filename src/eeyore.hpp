@@ -1,6 +1,7 @@
 #ifndef __MINIC_EEYORE_HPP__
 #define __MINIC_EEYORE_HPP__
 
+#include <set>
 #include <string>
 #include <vector>
 #include <memory>
@@ -11,7 +12,15 @@
 
 #include "operator.hpp"
 
+namespace data_flow {
+    class Description;
+} // namespace data_flow
+
 namespace eeyore {
+
+class FunctionDef;
+using FuncPtr = std::shared_ptr<FunctionDef>;
+using FuncList = std::vector<FuncPtr>;
 
 class InstBase {
 public:
@@ -19,7 +28,15 @@ public:
     virtual void updateGoto(int id) {
         assert(false);
     }
+    virtual bool linkEdges(FunctionDef *func, int pos) {
+        return true;
+    }
     virtual void dumpCode(std::ostream &os, int label_init_id) const = 0;
+    
+    std::set<int> succ_;
+    std::set<int> pred_;
+    std::set<int> data_in_;
+    std::set<int> data_out_;
 };
 
 using InstPtr = std::shared_ptr<InstBase>;
@@ -36,10 +53,6 @@ public:
 
 using VarPtr = std::shared_ptr<VarBase>;
 using VarPtrList = std::vector<VarPtr>;
-
-class FunctionDef;
-using FuncPtr = std::shared_ptr<FunctionDef>;
-using FuncList = std::vector<FuncPtr>;
 
 // InstBase Subclass
 class AssignInst : public InstBase {
@@ -114,6 +127,7 @@ public:
     void updateGoto(int id) override {
         label_id_ = id;
     }
+    bool linkEdges(FunctionDef *func, int pos) override;
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
     Operator op_;
@@ -129,6 +143,7 @@ public:
     void updateGoto(int id) override {
         label_id_ = id;
     }
+    bool linkEdges(FunctionDef *func, int pos) override;
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
     int label_id_; 
@@ -155,6 +170,7 @@ public:
 class ReturnInst : public InstBase {
 public:
     ReturnInst(VarPtr ret = nullptr) : ret_(std::move(ret)) {}
+    bool linkEdges(FunctionDef *func, int pos) override;
     void dumpCode(std::ostream &os, int label_init_id) const override;
 
     VarPtr ret_;
@@ -272,6 +288,22 @@ public:
             insts_[id]->updateGoto(label_pos_.size() - 1);
         }
     }
+    void linkEdges() {
+        for (int i = 0; i < instNum(); ++i) {
+            insts_[i]->succ_.clear();
+            insts_[i]->pred_.clear();
+        }
+        for (int i = 0; i < instNum(); ++i) {
+            bool ret = insts_[i]->linkEdges(this, i);
+            if (i + 1 == instNum()) break;
+            if (!ret) continue;
+            insts_[i]->succ_.insert(i+1);
+            insts_[i+1]->pred_.insert(i);
+        }
+
+    }
+    void forwardAccess(data_flow::Description &desc);
+    void backwardAccess(data_flow::Description &desc);
     void dumpNativeDeclarations(std::ostream &os) const;
     void dumpTempDeclarations(std::ostream &os) const;
     void dumpInstructions(std::ostream &os) const;
@@ -283,7 +315,6 @@ public:
     const InstPtrList &insts() const { return insts_; }
     const std::vector<int> &label_pos() const { return label_pos_; }
     
-private:
     bool has_return_;
     std::string name_; 
     int native_init_id_;

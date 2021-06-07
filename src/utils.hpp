@@ -4,15 +4,12 @@
 #include <vector>
 #include <optional>
 
+#include "eeyore.hpp"
+
 std::optional<int> getIdFromIndex(const std::vector<int> &widths,
-                                  const std::vector<int> &index_list) {
-    if (widths.size() != index_list.size())
-        return std::nullopt;
-    int ret = 0;
-    for (unsigned i = 0; i + 1 < index_list.size(); ++i)
-        ret += index_list[i] * widths[i+1];
-    ret += index_list.back();
-    return ret;
-}
+                                  const std::vector<int> &index_list);
+
+void removeUnnecessary(eeyore::FuncPtr ptr, std::vector<int> pos);
+
 
 #endif // __MINIC_UTILS_HPP__

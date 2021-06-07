@@ -7,6 +7,8 @@
 #include "context.hpp"
 #include "tigger.hpp"
 #include "naive_alloc.hpp"
+#include "graph_coloring.hpp"
+#include "liveness.hpp"
 #include "riscv_gen.hpp"
 
 extern int yylineno;
@@ -39,10 +41,15 @@ void SysY_to_Eeyore(char *file, eeyore::Program &ir) {
     std::cerr << "[Success] Lexer and parser succeeded" << std::endl;
     ast_root->generateEeyoreCode(eeyore_generation_context, ir);
     std::cerr << "[Success] AST generation completed" << std::endl;
+    // Optional
+    liveness::optimize(ir);
+    std::cerr << "[Success] Analyze liveness info" << std::endl;
 }
 
 void Eeyore_to_Tigger(eeyore::Program &ir1, tigger::Program &ir2) {
+    // Various register allocation options:
     naive_alloc::translate_E2T(ir1, ir2);
+    // graph_coloring::translate_E2T(ir1, ir2);
     std::cerr << "[Success] Tigger translation completed" << std::endl;
 }
 
