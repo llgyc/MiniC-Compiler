@@ -36,10 +36,10 @@ int getID(eeyore::VarPtr var) {
         return ptr->id_ - numG;
     } else TEST_TYPE(var, TempVar) {
         auto ptr = CAST_P(var, TempVar);
-        return numN - numG + ptr->id_;
+        return numN + ptr->id_;
     } else TEST_TYPE(var, ParamVar) {
         auto ptr = CAST_P(var, ParamVar);
-        return numN + numT - numG + ptr->id_;
+        return numN + numT + ptr->id_;
     } else return -1;
 }
 
@@ -192,7 +192,7 @@ void optimize(eeyore::Program &ir) {
         numT = func->tempNum();
         numP = func->paramNum();
         int times = 5;
-        while (times--) {
+        while (--times) {
             func->backwardAccess(desc);
             reconstruct(func);
         }
