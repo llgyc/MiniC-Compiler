@@ -518,6 +518,8 @@ void Context::generateEeyoreOn(WhileASTNode *ast, eeyore::Program &prog) {
     auto temp_loop = cur_loop_;
     cur_loop_ = ast;
 
+    /* Textbook version */
+    /*
     int M1 = cur_func_->instNum();
     cond->generateEeyoreCode(*this, prog);
     typeCoercion(cond);
@@ -530,6 +532,23 @@ void Context::generateEeyoreOn(WhileASTNode *ast, eeyore::Program &prog) {
                             cond->false_list().end());
     auto inst = std::make_shared<eeyore::JumpInst>(cur_func_->lookUpLabel(M1));
     cur_func_->pushInst(std::move(inst));
+    */
+    
+    /* Beautiful version */
+    auto inst = std::make_shared<eeyore::JumpInst>();
+    cur_func_->pushInst(inst);
+    int M1 = cur_func_->instNum();
+    stmt->generateEeyoreCode(*this, prog);
+    int M2 = cur_func_->instNum();
+    cond->generateEeyoreCode(*this, prog);
+    typeCoercion(cond);
+    cur_func_->backpatch(stmt->next_list(), M2);
+    cur_func_->backpatch(cond->true_list(), M1);
+    inst->updateGoto(cur_func_->lookUpLabel(M2));
+    ast->next_list().insert(ast->next_list().end(),
+                            cond->false_list().begin(),
+                            cond->false_list().end());
+    
     // recover
     cur_loop_ = temp_loop;
 }

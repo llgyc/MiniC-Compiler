@@ -1,5 +1,4 @@
 #include <memory>
-#include <iostream>
 
 #include "utils.hpp"
 #include "eeyore.hpp"
@@ -192,8 +191,7 @@ void optimize(eeyore::Program &ir, int times) {
         numN = func->nativeNum();
         numT = func->tempNum();
         numP = func->paramNum();
-        int times_ = times;
-        while (times_--) {
+        while (times--) {
             func->backwardAccess(desc);
             reconstruct(func);
         }

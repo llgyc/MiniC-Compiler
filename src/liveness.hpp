@@ -7,7 +7,7 @@
 namespace liveness {
 
 void calculate(eeyore::Program &ir);
-void optimize(eeyore::Program &ir);
+void optimize(eeyore::Program &ir, int times = 1);
 
 } // namespace liveness
 

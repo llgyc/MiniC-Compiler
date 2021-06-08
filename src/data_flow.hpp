@@ -19,8 +19,8 @@ void mDifference(std::set<int> &, std::set<int>);
 
 class Description {
 public:
-    GenType gen1_;
-    GenType gen2_;
+    GenType gen_;
+    GenType kill_;
     InitType local_ident_;
     InitType block_init_;
     InitType global_init_;

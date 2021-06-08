@@ -234,9 +234,9 @@ void FunctionDef::backwardAccess(data_flow::Description &desc) {
         unsigned last_size = insts_[now]->data_in_.size();
         insts_[now]->data_in_ = insts_[now]->data_out_;
         data_flow::mDifference(insts_[now]->data_in_,
-            desc.gen2_(this, insts_[now]));
+            desc.kill_(this, insts_[now]));
         data_flow::mUnion(insts_[now]->data_in_,
-            desc.gen1_(this, insts_[now]));
+            desc.gen_(this, insts_[now]));
 
         if (insts_[now]->data_in_.size() != last_size) {
             for (auto nxt : insts_[now]->pred_) {
