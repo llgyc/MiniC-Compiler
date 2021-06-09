@@ -48,8 +48,8 @@ void SysY_to_Eeyore(char *file, eeyore::Program &ir) {
 
 void Eeyore_to_Tigger(eeyore::Program &ir1, tigger::Program &ir2) {
     // Various register allocation options:
-    naive_alloc::translate_E2T(ir1, ir2);
-    // graph_coloring::translate_E2T(ir1, ir2);
+    // naive_alloc::translate_E2T(ir1, ir2);
+    graph_coloring::translate_E2T(ir1, ir2);
     std::cerr << "[Success] Tigger translation completed" << std::endl;
 }
 

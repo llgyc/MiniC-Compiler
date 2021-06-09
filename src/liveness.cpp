@@ -1,5 +1,4 @@
 #include <memory>
-#include <iostream>
 
 #include "utils.hpp"
 #include "eeyore.hpp"
@@ -17,6 +16,11 @@ static int numG;
 static int numN;
 static int numT;
 static int numP;
+
+void setG(int x) { numG = x; }
+void setN(int x) { numN = x; }
+void setT(int x) { numT = x; }
+void setP(int x) { numP = x; }
 
 void local_ident(eeyore::FunctionDef *func, std::set<int> &s) {
     s.clear();
@@ -136,6 +140,7 @@ void calculate(eeyore::Program &ir) {
     numG = ir.funcs().back()->nativeNum();
     for (auto &func : ir.funcs()) {
         numN = func->nativeNum();
+        if (func->name() == "$global$") numN = 0;
         numT = func->tempNum();
         numP = func->paramNum();
         func->backwardAccess(desc);
@@ -190,12 +195,24 @@ void optimize(eeyore::Program &ir, int times) {
     numG = ir.funcs().back()->nativeNum();
     for (auto &func : ir.funcs()) {
         numN = func->nativeNum();
+        if (func->name() == "$global$") numN = 0;
         numT = func->tempNum();
         numP = func->paramNum();
-        int times_ = times;
-        while (times_--) {
-            func->backwardAccess(desc);
-            reconstruct(func);
+        if (times == -1) {
+            int last_num = func->instNum();
+            while (true) {
+                func->backwardAccess(desc);
+                reconstruct(func);
+                int this_num = func->instNum();
+                if (last_num == this_num) break;
+                last_num = this_num;
+            }
+        } else {
+            int times_ = times;
+            while (times_--) {
+                func->backwardAccess(desc);
+                reconstruct(func);
+            }
         }
     }
 }

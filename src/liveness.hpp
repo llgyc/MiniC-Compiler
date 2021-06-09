@@ -6,6 +6,14 @@
 
 namespace liveness {
 
+data_flow::GenType def;
+data_flow::GenType use;
+
+void setG(int);
+void setN(int);
+void setT(int);
+void setP(int);
+
 void calculate(eeyore::Program &ir);
 void optimize(eeyore::Program &ir, int times = 1);
 

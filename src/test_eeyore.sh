@@ -16,11 +16,11 @@ do
     #    continue
     #fi
     echo "[Info] Testing $name"
-    ./compiler -S -e "$TESTPATH/$name.sy" -o "../test/$name.S"
+    ./compiler -S -e "$TESTPATH/$name.sy" -o "../test/$name.e.S"
     if [ -f "$TESTPATH/$name.in" ]; then
-        $MINIVM "../test/$name.S" < "$TESTPATH/$name.in" > "../test/$name.out"
+        $MINIVM "../test/$name.e.S" < "$TESTPATH/$name.in" > "../test/$name.out"
     else
-        $MINIVM "../test/$name.S" > "../test/$name.out"
+        $MINIVM "../test/$name.e.S" > "../test/$name.out"
     fi
     ret=$?
     if [ -s "../test/$name.out" ]; then

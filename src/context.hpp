@@ -1,6 +1,7 @@
 #ifndef __MINIC_CONTEXT_HPP__
 #define __MINIC_CONTEXT_HPP__
 
+#include <set>
 #include <memory>
 #include <vector>
 #include <cassert>
@@ -89,6 +90,12 @@ public:
         lib_funcs_.insert({"stoptime",
             std::make_shared<eeyore::FunctionDef>("_sysy_stoptime", 0, false)});
         param = lib_funcs_["stoptime"]->addParam();
+
+        std::set<int> sys_reg 
+            { 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 };
+        for (auto &func : lib_funcs_) {
+            func.second->used_register_ = sys_reg;
+        }
     }
     void newScope() {
         auto ptr = std::make_unique<Scope>();
