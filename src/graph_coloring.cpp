@@ -5,7 +5,6 @@
 #include <vector>
 #include <cassert>
 #include <utility>
-#include <iostream>
 #include <algorithm>
 
 #include "loop.hpp"
@@ -87,12 +86,8 @@ void calculateWeight(eeyore::FuncPtr func) {
         std::set<int> temp;
         temp = liveness::def(func.get(), inst);
         addWeight(temp, level);
-        // for (auto x:temp) std::cerr<<x<<" ";
-        // std::cerr<<"\n"<<weight[0] <<" "<<weight[1]<<std::endl;
         temp = liveness::use(func.get(), inst);
         addWeight(temp, level);
-        // for (auto x:temp) std::cerr<<x<<" ";
-        // std::cerr<<"\n"<<weight[0] <<" "<<weight[1]<<std::endl;
     }
 }
 
@@ -212,13 +207,6 @@ void registerAllocation(eeyore::FuncPtr func) {
             }
         }
     }
-    /*
-    for (int i = 0; i < total_var; ++i) {
-        std::cerr<<i<<":";
-        for (auto x:edges[i]) std::cerr<<" "<<x;
-        std::cerr<<std::endl;
-    }
-    */
 
     // Coloring
     // First allocate register for variables
@@ -237,7 +225,6 @@ void registerAllocation(eeyore::FuncPtr func) {
                 break;
             }
         }
-        // std::cerr<<now<<std::endl;
         // Every node has degree >= kRegAvail
         if (now == -1) {
             int min_weight = kWeightMax + 1, min_var = -1;
@@ -254,7 +241,6 @@ void registerAllocation(eeyore::FuncPtr func) {
             // Spill this variable
             used[min_var] = true;
             var2reg[min_var].stk_pos = now_pos;
-            // std::cerr<<min_var<<" "<<now_pos<<std::endl;
             ++now_pos;
             continue;
         }
@@ -302,13 +288,6 @@ void registerAllocation(eeyore::FuncPtr func) {
         reg2stk[x] = now_pos;
         ++now_pos;
     }
-    /*
-    for (auto x : var2reg) {
-        auto info = x.second;
-        std::cerr<<x.first<<":"<<info.is_array<<" "<<info.in_reg<<" "<<info.reg_pos<<" "<<info.stk_pos <<std::endl;
-    }
-    std::cerr<<"now_pos:"<<now_pos<<std::endl;
-    */
 
     // Fully Calculated
 }
@@ -645,10 +624,19 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             // Save Register
             if (func->used_register_.find(20 + param_pos) != 
                 func->used_register_.end()) {
-                auto inst = std::make_shared<tigger::StackStoreInst>
-                    (20 + param_pos, reg2stk[20 + param_pos]);
-                PUSH_INST(inst);
-                already_saved.insert(20 + param_pos);
+                bool flag = false;
+                for (auto x : inst->data_out_) {
+                    if (!var2reg[x].in_reg) continue;
+                    if (var2reg[x].reg_pos != 20 + param_pos) continue;
+                    flag = true;
+                    break;
+                }
+                if (flag) {
+                    auto inst = std::make_shared<tigger::StackStoreInst>
+                        (20 + param_pos, reg2stk[20 + param_pos]);
+                    PUSH_INST(inst);
+                    already_saved.insert(20 + param_pos);
+                }
             }
 
             // Load Parameter into register 
@@ -686,10 +674,19 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             data_flow::mIntersect(need_save, temp_set);
             for (auto x : need_save) {
                 if (already_saved.find(x) != already_saved.end()) continue;
-                auto inst = std::make_shared<tigger::StackStoreInst>
-                    (x, reg2stk[x]);
-                PUSH_INST(inst);
-                already_saved.insert(x);
+                bool flag = false;
+                for (auto var : inst->data_in_) {
+                    if (!var2reg[var].in_reg) continue;
+                    if (var2reg[var].reg_pos != x) continue;
+                    flag = true;
+                    break;
+                }
+                if (flag) {
+                    auto inst = std::make_shared<tigger::StackStoreInst>
+                        (x, reg2stk[x]);
+                    PUSH_INST(inst);
+                    already_saved.insert(x);
+                }
             }
 
             // Function Call
@@ -786,29 +783,8 @@ void translate_E2T(eeyore::Program &src, tigger::Program &dst) {
         if (func->name() == "$global$") numN = 0;
         numT = func->tempNum();
         numP = func->paramNum();
-        /*std::cerr<<"Dataflow:\n";
-        for (auto &inst : func->insts()) {
-            std::cerr<<"in:";
-            for (auto x : inst->data_in_) {
-                std::cerr<<" "<<x;
-            }
-            std::cerr<<"\nout";
-            for (auto x : inst->data_out_) {
-                std::cerr<<" "<<x;
-            }
-            std::cerr<<"\n";
-        }*/
         calculateLoop(func);
-        /*std::cerr<<"Loop:\n";
-        for (auto x : func->loop_pos_) {
-            std::cerr<<x.first <<" "<<x.second<<std::endl;
-        }*/
-        
         calculateWeight(func);
-        /*std::cerr<<"Weight:\n";
-        for (int i = 0; i < total_var; ++i) {
-            std::cerr<<i<<": "<< weight[i]<<std::endl;
-        }*/
         registerAllocation(func);
         generateTiggerCode(func, dst);
     }
