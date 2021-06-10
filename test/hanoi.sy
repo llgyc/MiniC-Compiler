@@ -1,4 +1,4 @@
-int n = 3;
+int n;
 void toh(int no, int src, int dst, int spare) {
 	if (no == 1) {
 		putch(src);
@@ -7,10 +7,14 @@ void toh(int no, int src, int dst, int spare) {
 		return;
 	}
 	toh(no-1,src, spare, dst);
+        putch(src);
+        putch(dst);
+        putch(10);
 	toh(no-1,spare,dst,src);
 }
 int main() {
-	toh(3, 65, 66, 67);
+	n = getint();
+	toh(n, 65, 66, 67);
 	return 0;
 }
 	

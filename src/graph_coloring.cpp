@@ -435,6 +435,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
     }
     
     // Generate Instructions
+    std::set<int> already_saved;
     t_func->setLabelNum(func->labelNum());
     for (int i = 0; i < func->instNum(); ++i) {
         auto inst = func->insts_[i];
@@ -476,6 +477,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                         }
                     } else {
                         LOAD_SYMBOL(ptr->rhs_, var2reg[id].reg_pos);
+                        assert(macro_result == var2reg[id].reg_pos);
                     }
                 } else {
                     LOAD_SYMBOL(ptr->rhs_, 14);
@@ -533,33 +535,65 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 PUSH_INST(inst);
                 auto id = getID(ptr->lhs_);
                 if (id != -1 && var2reg[id].in_reg) {
-                    auto inst = std::make_shared<tigger::MemLoadInst>
+                    auto inst2 = std::make_shared<tigger::MemLoadInst>
                         (var2reg[id].reg_pos, 14, 0);
-                    PUSH_INST(inst);
+                    PUSH_INST(inst2);
                 } else {
-                    auto inst = std::make_shared<tigger::MemLoadInst>
+                    auto inst2 = std::make_shared<tigger::MemLoadInst>
                         (14, 14, 0);
-                    PUSH_INST(inst);
+                    PUSH_INST(inst2);
                     STORE_SYMBOL(ptr->lhs_, 14, 15);
                 }
             }
         } else TEST_TYPE(inst, BinaryInst) {
             // SYMBOL = RightValue BinOp RightValue
             auto ptr = CAST_P(inst, BinaryInst);
-            LOAD_SYMBOL(ptr->rhs_1_, 14);
-            int reg1 = macro_result;
-            LOAD_SYMBOL(ptr->rhs_2_, 15);
-            int reg2 = macro_result;
-            auto id = getID(ptr->lhs_);
-            if (id != -1 && var2reg[id].in_reg) {
-                auto inst = std::make_shared<tigger::BinaryRInst>
-                    (ptr->op_, var2reg[id].reg_pos, reg1, reg2);
-                PUSH_INST(inst);
+            TEST_TYPE(ptr->rhs_1_, IntValue) {
+                auto ptr2 = CAST_P(ptr->rhs_1_, IntValue);
+                LOAD_SYMBOL(ptr->rhs_2_, 14);
+                int reg1 = macro_result;
+                auto id = getID(ptr->lhs_);
+                if (id != -1 && var2reg[id].in_reg) {
+                    auto inst = std::make_shared<tigger::BinaryIInst>
+                        (ptr->op_, var2reg[id].reg_pos, reg1, ptr2->val_);
+                    PUSH_INST(inst);
+                } else {
+                    auto inst = std::make_shared<tigger::BinaryIInst>
+                        (ptr->op_, 14, reg1, ptr2->val_);
+                    PUSH_INST(inst);
+                    STORE_SYMBOL(ptr->lhs_, 14, 15);
+                }
+            } else TEST_TYPE(ptr->rhs_2_, IntValue) {
+                auto ptr2 = CAST_P(ptr->rhs_2_, IntValue);
+                LOAD_SYMBOL(ptr->rhs_1_, 14);
+                int reg1 = macro_result;
+                auto id = getID(ptr->lhs_);
+                if (id != -1 && var2reg[id].in_reg) {
+                    auto inst = std::make_shared<tigger::BinaryIInst>
+                        (ptr->op_, var2reg[id].reg_pos, reg1, ptr2->val_);
+                    PUSH_INST(inst);
+                } else {
+                    auto inst = std::make_shared<tigger::BinaryIInst>
+                        (ptr->op_, 14, reg1, ptr2->val_);
+                    PUSH_INST(inst);
+                    STORE_SYMBOL(ptr->lhs_, 14, 15);
+                }
             } else {
-                auto inst = std::make_shared<tigger::BinaryRInst>
-                    (ptr->op_, 14, reg1, reg2);
-                PUSH_INST(inst);
-                STORE_SYMBOL(ptr->lhs_, 14, 15);
+                LOAD_SYMBOL(ptr->rhs_1_, 14);
+                int reg1 = macro_result;
+                LOAD_SYMBOL(ptr->rhs_2_, 15);
+                int reg2 = macro_result;
+                auto id = getID(ptr->lhs_);
+                if (id != -1 && var2reg[id].in_reg) {
+                    auto inst = std::make_shared<tigger::BinaryRInst>
+                        (ptr->op_, var2reg[id].reg_pos, reg1, reg2);
+                    PUSH_INST(inst);
+                } else {
+                    auto inst = std::make_shared<tigger::BinaryRInst>
+                        (ptr->op_, 14, reg1, reg2);
+                    PUSH_INST(inst);
+                    STORE_SYMBOL(ptr->lhs_, 14, 15);
+                }
             }
         } else TEST_TYPE(inst, UnaryInst) {
             // SYMBOL = OP RightValue
@@ -602,16 +636,17 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 auto inst = std::make_shared<tigger::StackStoreInst>
                     (20 + param_pos, reg2stk[20 + param_pos]);
                 PUSH_INST(inst);
+                already_saved.insert(20 + param_pos);
             }
 
-            // temporarily store param
+            // Load Parameter into register 
             auto id = getID(ptr->param_);
             if (id != -1 && var2reg[id].in_reg) {
                 // In register
                 auto target = var2reg[id].reg_pos;
                 if (target == 20 + param_pos) {
                     // Do nothing!
-                } else if (target >= 20 && target < 20 + param_pos) {
+                } else if (already_saved.find(target) != already_saved.end()) {
                     // Already saved
                     auto inst = std::make_shared<tigger::StackLoadInst>
                         (reg2stk[target], 20 + param_pos);
@@ -625,6 +660,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             } else {
                 // In memory
                 LOAD_SYMBOL(ptr->param_, 20 + param_pos);
+                assert(macro_result == 20 + param_pos);
             }
             ++param_pos;
         } else TEST_TYPE(inst, AssignCallInst) {
@@ -634,13 +670,15 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             // Save Registers
             std::set<int> need_save = func->used_register_;
             std::set<int> temp_set = ptr->func_->used_register_;
-            for (int i = 0; i < param_pos; ++i) temp_set.insert(20 + i);
+            assert(param_pos == ptr->func_->paramNum());
+            for (int j = 0; j < param_pos; ++j) temp_set.insert(20 + j);
             data_flow::mIntersect(need_save, temp_set);
             for (auto x : need_save) {
-                if (x >= 20 && x < 20 + param_pos) continue;
+                if (already_saved.find(x) != already_saved.end()) continue;
                 auto inst = std::make_shared<tigger::StackStoreInst>
                     (x, reg2stk[x]);
                 PUSH_INST(inst);
+                already_saved.insert(x);
             }
 
             // Function Call
@@ -655,7 +693,10 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             }
 
             // Restore Registers
-            for (auto x : need_save) {
+            for (auto x : already_saved) {
+                assert(x != 13);
+                assert(x != 14);
+                assert(x != 15);
                 auto inst = std::make_shared<tigger::StackLoadInst>
                     (reg2stk[x], x);
                 PUSH_INST(inst);
@@ -673,6 +714,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             }
 
             param_pos = 0;
+            already_saved.clear();
         } else TEST_TYPE(inst, ReturnInst) {
             // return [RightValue]
             auto ptr = CAST_P(inst, ReturnInst);
@@ -688,10 +730,11 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     }
                 } else {
                     LOAD_SYMBOL(ptr->ret_, 20);
+                    assert(macro_result == 20);
                 }
             }
-            auto inst = std::make_shared<tigger::ReturnInst>();
-            PUSH_INST(inst);
+            auto inst2 = std::make_shared<tigger::ReturnInst>();
+            PUSH_INST(inst2);
         } else assert(false);
 
     }

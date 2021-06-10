@@ -9,7 +9,9 @@
 namespace riscv_gen {
 
 #define PRINT_REG(REG) \
-if (REG == 0) { \
+if (REG < 0) { \
+    assert(false); \
+} else if (REG == 0) { \
     os << "x0"; \
 } else if (REG < 13) { \
     os << "s" << (REG - 1); \
