@@ -314,6 +314,18 @@ void registerAllocation(eeyore::FuncPtr func) {
 }
 
 void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
+    func->used_register_union_ = func->used_register_;
+    for (int i = 0; i < func->paramNum(); ++i) {
+        func->used_register_union_.insert(20 + i);
+    }
+    for (auto &inst : func->insts()) {
+        TEST_TYPE(inst, AssignCallInst) {
+            auto ptr = CAST_P(inst, AssignCallInst);
+            data_flow::mUnion(func->used_register_union_,
+                ptr->func_->used_register_union_);
+        }
+    }
+
     auto t_func = std::make_shared<tigger::FunctionDef>
         (func->name(), func->paramNum(), now_pos);
     dst.pushFunction(t_func);
@@ -669,9 +681,8 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
 
             // Save Registers
             std::set<int> need_save = func->used_register_;
-            std::set<int> temp_set = ptr->func_->used_register_;
+            std::set<int> temp_set = ptr->func_->used_register_union_;
             assert(param_pos == ptr->func_->paramNum());
-            for (int j = 0; j < param_pos; ++j) temp_set.insert(20 + j);
             data_flow::mIntersect(need_save, temp_set);
             for (auto x : need_save) {
                 if (already_saved.find(x) != already_saved.end()) continue;

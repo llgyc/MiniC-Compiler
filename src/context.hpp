@@ -95,6 +95,7 @@ public:
             { 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 };
         for (auto &func : lib_funcs_) {
             func.second->used_register_ = sys_reg;
+            func.second->used_register_union_ = sys_reg;
         }
     }
     void newScope() {

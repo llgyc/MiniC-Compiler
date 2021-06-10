@@ -326,6 +326,7 @@ public:
     std::vector<int> label_pos_;
     std::vector<std::pair<int, int>> loop_pos_;
     std::set<int> used_register_;
+    std::set<int> used_register_union_;
 };
 
 // Whole Program
