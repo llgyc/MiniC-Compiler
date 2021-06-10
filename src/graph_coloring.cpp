@@ -307,7 +307,8 @@ void registerAllocation(eeyore::FuncPtr func) {
         auto info = x.second;
         std::cerr<<x.first<<":"<<info.is_array<<" "<<info.in_reg<<" "<<info.reg_pos<<" "<<info.stk_pos <<std::endl;
     }
-    std::cerr<<"now_pos:"<<now_pos<<std::endl;*/
+    std::cerr<<"now_pos:"<<now_pos<<std::endl;
+    */
 
     // Fully Calculated
 }
@@ -636,7 +637,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             for (int i = 0; i < param_pos; ++i) temp_set.insert(20 + i);
             data_flow::mIntersect(need_save, temp_set);
             for (auto x : need_save) {
-                if (x >= 20) continue;
+                if (x >= 20 && x < 20 + param_pos) continue;
                 auto inst = std::make_shared<tigger::StackStoreInst>
                     (x, reg2stk[x]);
                 PUSH_INST(inst);
