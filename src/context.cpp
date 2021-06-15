@@ -459,10 +459,17 @@ void Context::generateEeyoreOn(AssignASTNode *ast, eeyore::Program &prog) {
     if (index_list->empty()) {
         // Case: Variable
         auto lhs = lookUpVariable(ident);
-        ast->exp()->generateEeyoreCode(*this, prog);
-        auto rhs = cur_func_->getLastTemp();
-        auto inst = std::make_shared<eeyore::AssignInst>(lhs,rhs);
-        cur_func_->pushInst(std::move(inst));
+        auto val = ast->exp()->eval(*this);
+        if (!val) {
+            ast->exp()->generateEeyoreCode(*this, prog);
+            auto rhs = cur_func_->getLastTemp();
+            auto inst = std::make_shared<eeyore::AssignInst>(lhs, rhs);
+            cur_func_->pushInst(std::move(inst));
+        } else {
+            auto rhs = std::make_shared<eeyore::IntValue>(val.value());
+            auto inst = std::make_shared<eeyore::AssignInst>(lhs, rhs);
+            cur_func_->pushInst(std::move(inst));
+        }
     } else {
         // Case: Array
         auto lhs_var = lookUpVariable(ident);
@@ -474,11 +481,19 @@ void Context::generateEeyoreOn(AssignASTNode *ast, eeyore::Program &prog) {
         generateIndexEeyore(index_list, widths, prog);
         auto tvar_n = cur_func_->getLastTemp();
         // Index value is in tvar_n
-        ast->exp()->generateEeyoreCode(*this, prog);
-        auto rhs = cur_func_->getLastTemp();
-        auto inst_acc = std::make_shared<eeyore::ArrayAssignInst>
-                            (lhs_var, tvar_n, rhs);
-        cur_func_->pushInst(std::move(inst_acc));
+        auto val = ast->exp()->eval(*this);
+        if (!val) {
+            ast->exp()->generateEeyoreCode(*this, prog);
+            auto rhs = cur_func_->getLastTemp();
+            auto inst_acc = std::make_shared<eeyore::ArrayAssignInst>
+                                (lhs_var, tvar_n, rhs);
+            cur_func_->pushInst(std::move(inst_acc));
+        } else {
+            auto rhs = std::make_shared<eeyore::IntValue>(val.value());
+            auto inst_acc = std::make_shared<eeyore::ArrayAssignInst>
+                                (lhs_var, tvar_n, rhs);
+            cur_func_->pushInst(std::move(inst_acc));
+        }
     }
 }
 
@@ -583,10 +598,17 @@ void Context::generateEeyoreOn(ReturnASTNode *ast, eeyore::Program &prog) {
         auto inst = std::make_shared<eeyore::ReturnInst>();
         cur_func_->pushInst(std::move(inst));
     } else {
-        exp->generateEeyoreCode(*this, prog);
-        auto ret = cur_func_->getLastTemp();
-        auto inst = std::make_shared<eeyore::ReturnInst>(ret);
-        cur_func_->pushInst(std::move(inst));
+        auto val = exp->eval(*this);
+        if (!val) {
+            exp->generateEeyoreCode(*this, prog);
+            auto ret = cur_func_->getLastTemp();
+            auto inst = std::make_shared<eeyore::ReturnInst>(ret);
+            cur_func_->pushInst(std::move(inst));
+        } else {
+            auto ret = std::make_shared<eeyore::IntValue>(val.value());
+            auto inst = std::make_shared<eeyore::ReturnInst>(ret);
+            cur_func_->pushInst(std::move(inst));
+        }
     }
 }
 
