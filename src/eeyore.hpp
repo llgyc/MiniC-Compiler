@@ -179,7 +179,7 @@ public:
 // VarBase Subclass
 class NativeVar : public VarBase {
 public:
-    NativeVar(int id) : id_(id) { val_ = std::nullopt; }
+    NativeVar(int id) : id_(id), is_const_(false) { val_ = std::nullopt; }
     void putVal(int val) { val_ = val; }
     void putVal(int pos, int val) { pos2val_[pos] = val; }
     std::optional<int> getVal() { return val_; }
@@ -195,6 +195,7 @@ public:
     void dumpVariableDeclaration(std::ostream &os) const override;
 
     int id_;
+    bool is_const_;
     std::optional<int> val_;
     std::unordered_map<int, int> pos2val_;
     // info from SysY 

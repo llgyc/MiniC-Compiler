@@ -107,6 +107,7 @@ std::optional<int> LValASTNode::eval(Context &ctx) const {
     auto derived_ptr = dynamic_cast<eeyore::NativeVar *>(base_ptr);
     if (derived_ptr == nullptr)
         return std::nullopt;
+    if (!derived_ptr->is_const_) return std::nullopt;
     auto &widths = derived_ptr->widths();
     // Variable Case
     if (widths.size() == 0)

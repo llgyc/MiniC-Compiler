@@ -38,7 +38,7 @@ using ScopePtrList = std::vector<ScopePtr>;
 
 using ArrayConst = std::pair<int, std::optional<int> >;
 using ArrayConstList = std::vector<ArrayConst>;
-using ArrayVar = std::pair<int, eeyore::VarPtr>;
+using ArrayVar = std::pair<int, BaseASTNode *>;
 using ArrayVarList = std::vector<ArrayVar>;
 
 class Context {

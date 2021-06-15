@@ -40,9 +40,7 @@ void Context::walkAndGetVar(const std::vector<int> &widths, int now_pos,
         auto derived_ptr = dynamic_cast<InitValListASTNode *>(base_ptr);
         if (derived_ptr == nullptr) {
             // Value
-            elem->generateEeyoreCode(*this, prog);
-            auto temp_var = cur_func_->getLastTemp();
-            result.push_back(std::make_pair(now_pos++, std::move(temp_var)));
+            result.push_back(std::make_pair(now_pos++, base_ptr));
         } else {
             // List
             int next_pos = now_pos;
@@ -61,8 +59,7 @@ void Context::walkAndGetVar(const std::vector<int> &widths, int now_pos,
     }
     // Zero Padding
     for (int i = now_pos; i % widths[level-1] != 0; ++i) {
-        auto int_var = std::make_shared<eeyore::IntValue>(0);
-        result.push_back(std::make_pair(i, std::move(int_var)));
+        result.push_back(std::make_pair(i, nullptr));
     }
 }
 
@@ -179,6 +176,7 @@ void Context::generateEeyoreOn(ConstDefASTNode *ast, eeyore::Program &prog) {
     auto &index_list_ptr = 
         dynamic_cast<ConstIndexListASTNode *>(index_ptr)->const_exps();
     auto nvar = cur_func_->addNative(); 
+    nvar->is_const_ = true;
 
     if (index_list_ptr->empty()) {
         // Variable Case
@@ -335,7 +333,8 @@ void Context::generateEeyoreOn(VarDefASTNode *ast, eeyore::Program &prog) {
                 for (auto init_val : init_vals) {
                     auto index_const = std::make_shared<eeyore::IntValue>
                         (init_val.first * 4);
-                    auto temp_var = init_val.second;
+                    init_val.second->generateEeyoreCode(*this, prog);
+                    auto temp_var = cur_func_->getLastTemp();
                     auto inst = std::make_shared<eeyore::ArrayAssignInst>
                         (nvar, std::move(index_const), std::move(temp_var));
                     cur_func_ -> pushInst(std::move(inst));
