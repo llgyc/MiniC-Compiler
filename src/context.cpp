@@ -5,7 +5,8 @@ void Context::walkAndGetConst(const std::vector<int> &widths, int now_pos,
     for (auto &elem : (*ast)) {
         auto base_ptr = elem.get();
         auto derived_ptr = dynamic_cast<ConstInitValListASTNode *>(base_ptr);
-        if (derived_ptr == nullptr) {
+        auto derived_ptr2 = dynamic_cast<InitValListASTNode *>(base_ptr);
+        if (derived_ptr == nullptr && derived_ptr2 == nullptr) {
             // Value
             result.push_back(
                 std::make_pair(now_pos++, base_ptr->eval(*this))
@@ -21,8 +22,13 @@ void Context::walkAndGetConst(const std::vector<int> &widths, int now_pos,
                     break;
                 }
             } 
-            walkAndGetConst(widths, now_pos, derived_ptr->const_init_val_list(),
-                            result, next_level);
+            if (derived_ptr != nullptr) {
+                walkAndGetConst(widths, now_pos, 
+                    derived_ptr->const_init_val_list(), result, next_level);
+            } else {
+                walkAndGetConst(widths, now_pos,
+                    derived_ptr2->init_val_list(), result, next_level);
+            }
             now_pos = next_pos;
         }
     }
@@ -333,11 +339,18 @@ void Context::generateEeyoreOn(VarDefASTNode *ast, eeyore::Program &prog) {
                 for (auto init_val : init_vals) {
                     auto index_const = std::make_shared<eeyore::IntValue>
                         (init_val.first * 4);
-                    init_val.second->generateEeyoreCode(*this, prog);
-                    auto temp_var = cur_func_->getLastTemp();
-                    auto inst = std::make_shared<eeyore::ArrayAssignInst>
-                        (nvar, std::move(index_const), std::move(temp_var));
-                    cur_func_ -> pushInst(std::move(inst));
+                    if (init_val.second) {
+                        init_val.second->generateEeyoreCode(*this, prog);
+                        auto temp_var = cur_func_->getLastTemp();
+                        auto inst = std::make_shared<eeyore::ArrayAssignInst>
+                            (nvar, std::move(index_const), std::move(temp_var));
+                        cur_func_ -> pushInst(std::move(inst));
+                    } else {
+                        auto temp_var = std::make_shared<eeyore::IntValue>(0);
+                        auto inst = std::make_shared<eeyore::ArrayAssignInst>
+                            (nvar, std::move(index_const), std::move(temp_var));
+                        cur_func_ -> pushInst(std::move(inst));
+                    }
                 }
             }
         }
