@@ -337,6 +337,7 @@ class Program {
 public:
     void pushFunction(FuncPtr func) { funcs_.push_back(std::move(func)); }
     void dumpCode(std::ostream &os) const;
+    void optimize();
     const FuncList &funcs() const { return funcs_; }
 
 private:

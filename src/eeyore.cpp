@@ -4,6 +4,9 @@
 #include "utils.hpp"
 #include "eeyore.hpp"
 #include "data_flow.hpp"
+#include "liveness.hpp"
+#include "reaching.hpp"
+#include "peephole_eeyore.hpp"
 
 namespace eeyore {
 
@@ -300,6 +303,7 @@ void FunctionDef::eliminateDead() {
         int now = q.front(); q.pop();
         for (auto nxt : insts_[now]->succ_) {
             if (used.find(nxt) != used.end()) continue;
+            if (nxt >= instNum()) continue;
             used.insert(nxt);
             q.push(nxt);
         }
@@ -308,6 +312,15 @@ void FunctionDef::eliminateDead() {
     for (int i = 0; i < instNum(); ++i) {
         if (used.find(i) != used.end()) continue;
         erased.push_back(i);
+    }
+}
+
+void Program::optimize() {
+    int times = 5;
+    while (times--) {
+        reaching::optimize(*this);
+        peephole(*this);
+        liveness::optimize(*this, -1);
     }
 }
 

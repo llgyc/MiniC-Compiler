@@ -43,8 +43,8 @@ void SysY_to_Eeyore(char *file, eeyore::Program &ir) {
     ast_root->generateEeyoreCode(eeyore_generation_context, ir);
     std::cerr << "[Success] AST generation completed" << std::endl;
     // Optional
-    reaching::optimize(ir);
-    std::cerr << "[Success] Analyze reaching definition info" << std::endl;
+    ir.optimize();
+    std::cerr << "[Success] Applied several optimization" << std::endl;
 }
 
 void Eeyore_to_Tigger(eeyore::Program &ir1, tigger::Program &ir2) {
