@@ -316,7 +316,7 @@ void FunctionDef::eliminateDead() {
 }
 
 void Program::optimize() {
-    int times = 5;
+    int times = 20;
     while (times--) {
         reaching::optimize(*this);
         peephole(*this);

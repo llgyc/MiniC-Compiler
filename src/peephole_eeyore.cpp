@@ -327,10 +327,98 @@ void eliminateRedundantGoto(Program &ir) {
     }
 }
 
+void propagateCopy(Program &ir) {
+    for (auto &func : ir.funcs()) {
+        for (int i = 0; i + 1 < func->instNum(); ++i) {
+            auto inst = func->insts_[i];
+            auto inst2 = func->insts_[i+1];
+            bool flag = true;
+            for (auto x : func->label_pos_) {
+                if (x == i + 1) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (!flag) continue;
+            TEST_TYPE(inst, AssignInst) {
+                auto ptr = CAST_P(inst, AssignInst);
+                TEST_TYPE(inst2, AssignInst) {
+                    auto ptr2 = CAST_P(inst2, AssignInst);
+                    if (sameVar(ptr->lhs_, ptr2->rhs_)) {
+                        ptr2->rhs_ = ptr->rhs_;
+                    }
+                } else TEST_TYPE(inst2, ArrayAssignInst) {
+                    auto ptr2 = CAST_P(inst2, ArrayAssignInst);
+                    if (sameVar(ptr->lhs_, ptr2->lhs_var_)) {
+                        ptr2->lhs_var_ = ptr->rhs_;
+                    }
+                    if (sameVar(ptr->lhs_, ptr2->lhs_index_)) {
+                        ptr2->lhs_index_ = ptr->rhs_;
+                    }
+                    if (sameVar(ptr->lhs_, ptr2->rhs_)) {
+                        ptr2->rhs_ = ptr->rhs_;
+                    }
+                } else TEST_TYPE(inst2, AssignArrayInst) {
+                    // Do nothing!
+                } else TEST_TYPE(inst2, BinaryInst) {
+                    auto ptr2 = CAST_P(inst2, BinaryInst);
+                    if (sameVar(ptr->lhs_, ptr2->rhs_1_)) {
+                        ptr2->rhs_1_ = ptr->rhs_;
+                    }
+                    if (sameVar(ptr->lhs_, ptr2->rhs_2_)) {
+                        ptr2->rhs_2_ = ptr->rhs_;
+                    }
+                } else TEST_TYPE(inst2, UnaryInst) {
+                    auto ptr2 = CAST_P(inst2, UnaryInst);
+                    if (sameVar(ptr->lhs_, ptr2->rhs_)) {
+                        ptr2->rhs_ = ptr->rhs_;
+                    }
+                } else TEST_TYPE(inst2, CondInst) {
+                    auto ptr2 = CAST_P(inst2, CondInst);
+                    if (sameVar(ptr->lhs_, ptr2->cond_1_)) {
+                        ptr2->cond_1_ = ptr->rhs_;
+                    }
+                    if (sameVar(ptr->lhs_, ptr2->cond_2_)) {
+                        ptr2->cond_2_ = ptr->rhs_;
+                    }
+                } else TEST_TYPE(inst2, JumpInst) {
+                    // Do nothing!
+                } else TEST_TYPE(inst2, ParamInst) {
+                    auto ptr2 = CAST_P(inst2, ParamInst);
+                    if (sameVar(ptr->lhs_, ptr2->param_)) {
+                        ptr2->param_ = ptr->rhs_;
+                    }
+                } else TEST_TYPE(inst2, AssignCallInst) {
+                    // Do nothing!
+                } else TEST_TYPE(inst2, ReturnInst) {
+                    auto ptr2 = CAST_P(inst2, ReturnInst);
+                    if (ptr2->ret_ != nullptr) {
+                        if (sameVar(ptr->lhs_, ptr2->ret_)) {
+                            ptr2->ret_ = ptr->lhs_;
+                        }   
+                    }
+                } else assert(false);
+            } else TEST_TYPE(inst, ArrayAssignInst) {
+                auto ptr = CAST_P(inst, ArrayAssignInst);
+                TEST_TYPE(inst2, AssignArrayInst) {
+                    auto ptr2 = CAST_P(inst2, AssignArrayInst);
+                    if (sameVar(ptr->lhs_var_, ptr2->rhs_var_) &&
+                        sameVar(ptr->lhs_index_, ptr2->rhs_index_)) {
+                        auto inst = std::make_shared<AssignInst>
+                            (ptr2->lhs_, ptr->rhs_);
+                        func->insts_[i+1] = inst;
+                    }
+                }
+            }
+        }
+    }
+}
+
 void peephole(Program &ir) {
     global = ir.funcs().back();
     numG = global->nativeNum();
     precalculation(ir);
+    propagateCopy(ir);
     eliminateRedundantGoto(ir);
     eliminateDeadCode(ir);
 }
