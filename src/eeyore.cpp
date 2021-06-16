@@ -203,7 +203,47 @@ void Program::dumpCode(std::ostream &os) const {
 }
 
 void FunctionDef::forwardAccess(data_flow::Description &desc) {
-    assert(false);
+    linkEdges();
+    for (auto &inst : insts_) {
+        desc.block_init_(this, inst->data_out_);
+    }
+    std::set<int> entry_out;
+    desc.global_init_(this, entry_out);
+    std::set<int> used;
+    std::queue<int> q;
+    for (int i = 0; i < instNum(); ++i) {
+        used.insert(i);
+        q.push(i);
+    }
+    while (!q.empty()) {
+        int now = q.front(); q.pop();
+        used.erase(now);
+
+        desc.local_ident_(this, insts_[now]->data_in_);
+        for (auto nxt : insts_[now]->pred_) {
+            desc.meet_(insts_[now]->data_in_, insts_[nxt]->data_out_);
+        }
+        if (now == 1)
+            desc.meet_(insts_[now]->data_in_, entry_out);
+
+        unsigned last_size = insts_[now]->data_out_.size();
+        insts_[now]->data_out_ = insts_[now]->data_in_;
+        data_flow::mDifference(insts_[now]->data_out_,
+            desc.kill_(this, insts_[now]));
+        data_flow::mUnion(insts_[now]->data_out_,
+            desc.gen_(this, insts_[now]));
+
+        if (insts_[now]->data_out_.size() != last_size) {
+            for (auto nxt : insts_[now]->succ_) {
+                if (nxt == instNum()) continue;
+                if (used.find(nxt) == used.end()) {
+                    used.insert(nxt);
+                    q.push(nxt);
+                }
+            }
+        }
+
+    }
 }
 
 void FunctionDef::backwardAccess(data_flow::Description &desc) {

@@ -33,6 +33,7 @@ public:
     }
     virtual void dumpCode(std::ostream &os, int label_init_id) const = 0;
     
+    int def_id_;
     std::set<int> succ_;
     std::set<int> pred_;
     std::set<int> data_in_;

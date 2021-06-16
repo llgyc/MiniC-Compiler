@@ -692,13 +692,45 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
         ast->setValueType(ValueType::kBoolType);
     } else {
         // Arithmetic Operator
-        lhs->generateEeyoreCode(*this, prog);
-        auto lvar = cur_func_->getLastTemp();
-        rhs->generateEeyoreCode(*this, prog);
-        auto rvar = cur_func_->getLastTemp();
-        auto tvar = cur_func_->addTemp();
-        auto inst = std::make_shared<eeyore::BinaryInst>(op, tvar, lvar, rvar);
-        cur_func_->pushInst(std::move(inst));
+        // Old version:
+        // lhs->generateEeyoreCode(*this, prog);
+        // auto lvar = cur_func_->getLastTemp();
+        // rhs->generateEeyoreCode(*this, prog);
+        // auto rvar = cur_func_->getLastTemp();
+        // auto tvar = cur_func_->addTemp();
+        // auto inst = std::make_shared<eeyore::BinaryInst>(op, tvar, lvar, rvar);
+        // cur_func_->pushInst(std::move(inst));
+        auto val1 = lhs->eval(*this);
+        auto val2 = rhs->eval(*this);
+        if (!val1 && !val2) {
+            lhs->generateEeyoreCode(*this, prog);
+            auto lvar = cur_func_->getLastTemp();
+            rhs->generateEeyoreCode(*this, prog);
+            auto rvar = cur_func_->getLastTemp();
+            auto tvar = cur_func_->addTemp();
+            auto inst = std::make_shared<eeyore::BinaryInst>(op, tvar, lvar, rvar);
+            cur_func_->pushInst(std::move(inst));
+        } else if (val1 && !val2) {
+            auto lvar = std::make_shared<eeyore::IntValue>(val1.value());
+            rhs->generateEeyoreCode(*this, prog);
+            auto rvar = cur_func_->getLastTemp();
+            auto tvar = cur_func_->addTemp();
+            auto inst = std::make_shared<eeyore::BinaryInst>(op, tvar, lvar, rvar);
+            cur_func_->pushInst(std::move(inst));
+        } else if (!val1 && val2) {
+            lhs->generateEeyoreCode(*this, prog);
+            auto lvar = cur_func_->getLastTemp();
+            auto rvar = std::make_shared<eeyore::IntValue>(val2.value());
+            auto tvar = cur_func_->addTemp();
+            auto inst = std::make_shared<eeyore::BinaryInst>(op, tvar, lvar, rvar);
+            cur_func_->pushInst(std::move(inst));
+        } else {
+            auto lvar = std::make_shared<eeyore::IntValue>(val1.value());
+            auto rvar = std::make_shared<eeyore::IntValue>(val2.value());
+            auto tvar = cur_func_->addTemp();
+            auto inst = std::make_shared<eeyore::BinaryInst>(op, tvar, lvar, rvar);
+            cur_func_->pushInst(std::move(inst));
+        }
         ast->setValueType(ValueType::kIntType);
     }
 }

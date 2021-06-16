@@ -9,6 +9,7 @@
 #include "naive_alloc.hpp"
 #include "graph_coloring.hpp"
 #include "liveness.hpp"
+#include "reaching.hpp"
 #include "riscv_gen.hpp"
 
 extern int yylineno;
@@ -42,8 +43,8 @@ void SysY_to_Eeyore(char *file, eeyore::Program &ir) {
     ast_root->generateEeyoreCode(eeyore_generation_context, ir);
     std::cerr << "[Success] AST generation completed" << std::endl;
     // Optional
-    liveness::optimize(ir);
-    std::cerr << "[Success] Analyze liveness info" << std::endl;
+    reaching::optimize(ir);
+    std::cerr << "[Success] Analyze reaching definition info" << std::endl;
 }
 
 void Eeyore_to_Tigger(eeyore::Program &ir1, tigger::Program &ir2) {
