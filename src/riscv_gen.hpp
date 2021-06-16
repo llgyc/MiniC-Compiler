@@ -122,6 +122,14 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
         name = "__main__";
     }
 
+    bool leaf_flag = true;
+    for (auto &inst : func->insts()) {
+        TEST_TYPE(inst, CallInst) {
+            leaf_flag = false;
+            break;
+        }
+    }
+
     // Header
     os << "  .text" << std::endl;
     os << "  .align   2" << std::endl;
@@ -129,14 +137,17 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
     os << "  .type    " << name << ", @function" << std::endl;
     os << name << ":" << std::endl;
     int int2 = func->stk_size();
-    int STK = (int2 / 4 + 1) * 16;
-    if (is_int12(-STK)) {
+    int STK = leaf_flag ? (int2 + 3) / 4 * 16 : (int2 / 4 + 1) * 16;
+    if (STK == 0) {
+        // Do nothing!
+    } else if (is_int12(-STK)) {
         os << "  addi     sp, sp, " << -STK << std::endl;
     } else {
         os << "  li       t0, " << -STK << std::endl;
         os << "  add      sp, sp, t0" << std::endl;
     }
-    generateSW(os, 29, 28, STK-4);
+    if (!leaf_flag)
+        generateSW(os, 29, 28, STK-4);
 
     for (int i = 0; i < func->instNum(); ++i) {
         auto inst = func->insts()[i];
@@ -221,9 +232,12 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
             os << "  call     " << name << std::endl;
         } else TEST_TYPE(inst, ReturnInst) {
             int int2 = func->stk_size();
-            int STK = (int2 / 4 + 1) * 16;
-            generateLW(os, 28, 29, STK-4);
-            if (is_int12(STK)) {
+            int STK = leaf_flag ? (int2 + 3) / 4 * 16 : (int2 / 4 + 1) * 16;
+            if (!leaf_flag)
+                generateLW(os, 28, 29, STK-4);
+            if (STK == 0) {
+                // Do nothing!
+            } else if (is_int12(STK)) {
                 os << "  addi     sp, sp, " << STK << std::endl;
             } else {
                 os << "  li       t0, " << STK << std::endl;
