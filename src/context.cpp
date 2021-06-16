@@ -241,6 +241,8 @@ void Context::generateEeyoreOn(ConstDefASTNode *ast, eeyore::Program &prog) {
 
         // Generate toplayer related
         for (auto init_val : init_vals) {
+            if (cur_func_ == global_ctx_ && init_val.second.value() == 0)
+                continue;
             auto index_const = std::make_shared<eeyore::IntValue>
                 (init_val.first * 4);
             auto val_const = std::make_shared<eeyore::IntValue>
@@ -336,6 +338,7 @@ void Context::generateEeyoreOn(VarDefASTNode *ast, eeyore::Program &prog) {
     
                 // Generate toplayer related
                 for (auto init_val : init_vals) {
+                    if (init_val.second.value() == 0) continue;
                     auto index_const = std::make_shared<eeyore::IntValue>
                         (init_val.first * 4);
                     auto val_const = std::make_shared<eeyore::IntValue>
@@ -495,18 +498,20 @@ void Context::generateEeyoreOn(AssignASTNode *ast, eeyore::Program &prog) {
         if (ptr1 != nullptr) widths = ptr1->widths();
         auto ptr2 = dynamic_cast<eeyore::ParamVar *>(lhs_var.get());
         if (ptr2 != nullptr) widths = ptr2->widths();
-        generateIndexEeyore(index_list, widths, prog);
-        auto tvar_n = cur_func_->getLastTemp();
         // Index value is in tvar_n
         auto val = ast->exp()->eval(*this);
         if (!val) {
             ast->exp()->generateEeyoreCode(*this, prog);
             auto rhs = cur_func_->getLastTemp();
+            generateIndexEeyore(index_list, widths, prog);
+            auto tvar_n = cur_func_->getLastTemp();
             auto inst_acc = std::make_shared<eeyore::ArrayAssignInst>
                                 (lhs_var, tvar_n, rhs);
             cur_func_->pushInst(std::move(inst_acc));
         } else {
             auto rhs = std::make_shared<eeyore::IntValue>(val.value());
+            generateIndexEeyore(index_list, widths, prog);
+            auto tvar_n = cur_func_->getLastTemp();
             auto inst_acc = std::make_shared<eeyore::ArrayAssignInst>
                                 (lhs_var, tvar_n, rhs);
             cur_func_->pushInst(std::move(inst_acc));
