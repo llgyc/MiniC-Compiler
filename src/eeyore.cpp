@@ -1,6 +1,7 @@
 #include <set>
 #include <queue>
 
+#include "utils.hpp"
 #include "eeyore.hpp"
 #include "data_flow.hpp"
 
@@ -286,6 +287,27 @@ void FunctionDef::backwardAccess(data_flow::Description &desc) {
                 }
             }
         }
+    }
+}
+
+void FunctionDef::eliminateDead() {
+    linkEdges();
+    std::set<int> used;
+    std::queue<int> q;
+    used.insert(0);
+    q.push(0);
+    while (!q.empty()) {
+        int now = q.front(); q.pop();
+        for (auto nxt : insts_[now]->succ_) {
+            if (used.find(nxt) != used.end()) continue;
+            used.insert(nxt);
+            q.push(nxt);
+        }
+    }
+    std::vector<int> erased;
+    for (int i = 0; i < instNum(); ++i) {
+        if (used.find(i) != used.end()) continue;
+        erased.push_back(i);
     }
 }
 

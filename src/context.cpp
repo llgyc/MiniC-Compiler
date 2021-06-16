@@ -533,6 +533,8 @@ void Context::generateEeyoreOn(IfASTNode *ast, eeyore::Program &prog) {
                                 then->next_list().end());
     } else {
         // if (B) M1 S1 N else M2 S2
+        /* Textbook version */
+        /*
         cond->generateEeyoreCode(*this, prog);
         typeCoercion(cond);
         int M1 = cur_func_->instNum();
@@ -545,6 +547,25 @@ void Context::generateEeyoreOn(IfASTNode *ast, eeyore::Program &prog) {
         int M2 = cur_func_->instNum();
         else_then->generateEeyoreCode(*this, prog);
         
+        cur_func_->backpatch(cond->true_list(), M1);
+        cur_func_->backpatch(cond->false_list(), M2);
+        ast->next_list().insert(ast->next_list().end(),
+                                then->next_list().begin(),
+                                then->next_list().end());
+        ast->next_list().insert(ast->next_list().end(),
+                                else_then->next_list().begin(),
+                                else_then->next_list().end());
+        */
+        /* Beautiful version */
+        cond->generateEeyoreCode(*this, prog);
+        typeCoercion(cond);
+        int M2 = cur_func_->instNum();
+        else_then->generateEeyoreCode(*this, prog);
+        ast->next_list().push_back(cur_func_->instNum());
+        auto inst = std::make_shared<eeyore::JumpInst>();
+        cur_func_->pushInst(inst);
+        int M1 = cur_func_->instNum();
+        then->generateEeyoreCode(*this, prog);
         cur_func_->backpatch(cond->true_list(), M1);
         cur_func_->backpatch(cond->false_list(), M2);
         ast->next_list().insert(ast->next_list().end(),

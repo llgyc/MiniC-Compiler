@@ -304,6 +304,7 @@ public:
         }
 
     }
+    void eliminateDead();
     void forwardAccess(data_flow::Description &desc);
     void backwardAccess(data_flow::Description &desc);
     void dumpNativeDeclarations(std::ostream &os) const;
