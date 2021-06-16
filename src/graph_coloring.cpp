@@ -129,14 +129,14 @@ void dye(int var) {
         }
     }
     // Save parameters in their original place
-    /*if (var >= numN + numT) {
+    if (var >= numN + numT) {
         auto id = 20 + var - numN - numT;
         if (!used[id]) {
             var2reg[var].in_reg = true;
             var2reg[var].reg_pos = id;
             return;
         }
-    }*/
+    }
     // Save return value in a0
     if (ret_use.find(var) != ret_use.end()) {
         if (!used[20]) {
