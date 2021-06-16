@@ -2,7 +2,9 @@
 
 void Context::walkAndGetConst(const std::vector<int> &widths, int now_pos,
     const ASTPtrListPtr &ast, ArrayConstList &result, int level) {
+    bool flag = false;
     for (auto &elem : (*ast)) {
+        flag = true;
         auto base_ptr = elem.get();
         auto derived_ptr = dynamic_cast<ConstInitValListASTNode *>(base_ptr);
         auto derived_ptr2 = dynamic_cast<InitValListASTNode *>(base_ptr);
@@ -33,15 +35,24 @@ void Context::walkAndGetConst(const std::vector<int> &widths, int now_pos,
         }
     }
     // Zero Padding
-    for (int i = now_pos; i % widths[level-1] != 0; ++i) {
-        result.push_back(std::make_pair(i, 0));
+    if (flag) {
+        for (int i = now_pos; i % widths[level-1] != 0; ++i) {
+            result.push_back(std::make_pair(i, 0));
+        }
+    } else {
+        for (int i = 0; i < widths[level-1]; ++i) {
+            result.push_back(std::make_pair(now_pos + i, 0));
+        }
     }
+
 }
 
 void Context::walkAndGetVar(const std::vector<int> &widths, int now_pos,
     const ASTPtrListPtr &ast, ArrayVarList &result, int level,
     eeyore::Program &prog) {
+    bool flag = false;
     for (auto &elem : (*ast)) {
+        flag = true;
         auto base_ptr = elem.get();
         auto derived_ptr = dynamic_cast<InitValListASTNode *>(base_ptr);
         if (derived_ptr == nullptr) {
@@ -64,8 +75,14 @@ void Context::walkAndGetVar(const std::vector<int> &widths, int now_pos,
         }
     }
     // Zero Padding
-    for (int i = now_pos; i % widths[level-1] != 0; ++i) {
-        result.push_back(std::make_pair(i, nullptr));
+    if (flag) {
+        for (int i = now_pos; i % widths[level-1] != 0; ++i) {
+            result.push_back(std::make_pair(i, nullptr));
+        }
+    } else {
+        for (int i = 0; i < widths[level-1]; ++i) {
+            result.push_back(std::make_pair(now_pos + i, nullptr));
+        }
     }
 }
 
