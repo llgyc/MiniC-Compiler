@@ -120,6 +120,7 @@ std::map<int, int> reg2stk;
 std::vector<std::set<int>> edges;
 std::vector<int> degree;
 
+std::set<int> ret_use;
 void dye(int var) {
     bool used[28] = {};
     for (auto x : edges[var]) {
@@ -133,6 +134,14 @@ void dye(int var) {
         if (!used[id]) {
             var2reg[var].in_reg = true;
             var2reg[var].reg_pos = id;
+            return;
+        }
+    }
+    // Save return value in a0
+    if (ret_use.find(var) != ret_use.end()) {
+        if (!used[20]) {
+            var2reg[var].in_reg = true;
+            var2reg[var].reg_pos = 20;
             return;
         }
     }
@@ -155,6 +164,16 @@ void registerAllocation(eeyore::FuncPtr func) {
     for (int i = 0; i < total_var; ++i) {
         edges.push_back(empty_set);
         degree.push_back(0);
+    }
+    ret_use.clear();
+    for (auto &inst : func->insts()) {
+        TEST_TYPE(inst, ReturnInst) {
+            auto ptr = CAST_P(inst, ReturnInst);
+            if (ptr->ret_ != nullptr) {
+                auto id = getID(ptr->ret_);
+                if (id != -1) ret_use.insert(id);
+            }
+        }
     }
 
     // Variable preprocessing

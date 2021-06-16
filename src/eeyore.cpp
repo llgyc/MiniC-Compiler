@@ -293,7 +293,7 @@ void FunctionDef::backwardAccess(data_flow::Description &desc) {
     }
 }
 
-void FunctionDef::eliminateDead() {
+void FunctionDef::eliminateDead(FuncPtr func) {
     linkEdges();
     std::set<int> used;
     std::queue<int> q;
@@ -313,6 +313,7 @@ void FunctionDef::eliminateDead() {
         if (used.find(i) != used.end()) continue;
         erased.push_back(i);
     }
+    removeUnnecessary(func, erased);
 }
 
 void Program::optimize() {

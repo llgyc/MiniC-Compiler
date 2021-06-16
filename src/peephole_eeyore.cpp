@@ -270,7 +270,7 @@ bool sameVar(VarPtr var1, VarPtr var2) {
 
 void eliminateDeadCode(Program &ir) {
     for (auto &func : ir.funcs()) {
-        func->eliminateDead();
+        func->eliminateDead(func);
     }
     for (auto &func : ir.funcs()) {
         std::vector<int> erased;

@@ -192,16 +192,6 @@ int usable(eeyore::VarPtr var, std::set<int> &s, eeyore::VarPtr &ret) {
 void reconstruct(eeyore::FuncPtr func) {
     for (int i = 0; i < func->instNum(); ++i) {
         auto inst = func->insts_[i];
-        /*std::cerr<<i<<":\n";
-        std::cerr<<"data_in_:";
-        for (auto x : inst->data_in_) {
-            std::cerr<<" " <<x;
-        }
-        std::cerr<<"\ndata_out_:";
-        for (auto x : inst->data_out_) {
-            std::cerr<<" "<<x;
-        }
-        std::cerr<<"\n";*/
         eeyore::VarPtr res; 
         TEST_TYPE(inst, AssignInst) {
             auto ptr = CAST_P(inst, AssignInst);
@@ -283,7 +273,6 @@ void optimize(eeyore::Program &ir) {
     while (true) {
         for (auto &func : ir.funcs()) {
             cnt = 0;
-            // std::cerr<<func->instNum()<<std::endl;
             // Global variable and parameter have initial "unknown" values
             for (int i = 0; i < numG; ++i) {
                 auto inst = std::make_shared<eeyore::AssignInst>
@@ -298,7 +287,6 @@ void optimize(eeyore::Program &ir) {
                 inst->def_id_ = cnt++;
             }
             init_num = numG + func->paramNum();
-            // std::cerr<<init_num<<std::endl;
             for (auto &inst : func->insts()) {
                 TEST_TYPE(inst, AssignInst) {
                     id2inst[cnt] = inst;
