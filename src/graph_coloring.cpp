@@ -175,6 +175,13 @@ void registerAllocation(eeyore::FuncPtr func) {
             }
         }
     }
+    bool leaf_node = true;
+    for (auto &inst : func->insts()) {
+        TEST_TYPE(inst, AssignCallInst) {
+            leaf_node = false;
+            break;
+        }
+    }
 
     // Variable preprocessing
     // Allocate stack position for array but not variables
@@ -303,9 +310,11 @@ void registerAllocation(eeyore::FuncPtr func) {
 
     // Place for saving registers
     reg2stk.clear();
-    for (auto x : func->used_register_) {
-        reg2stk[x] = now_pos;
-        ++now_pos;
+    if (!leaf_node) {
+        for (auto x : func->used_register_) {
+            reg2stk[x] = now_pos;
+            ++now_pos;
+        }
     }
 
     // Fully Calculated
