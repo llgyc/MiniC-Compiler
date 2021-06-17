@@ -162,20 +162,26 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
             generateBinaryRInst(os, ptr->op_, ptr->rd_, ptr->rs1_, ptr->rs2_);
         } else TEST_TYPE(inst, BinaryIInst) {
             auto ptr = CAST_P(inst, BinaryIInst);
-            if (is_int12(ptr->imm_) && 
-                (ptr->op_ == Operator::kAdd ||
-                 ptr->op_ == Operator::kLess)) {
+            if (is_int12(ptr->imm_)) { 
                 if (ptr->op_ == Operator::kAdd) {
                     os << "  addi     ";
-                } else {
+                    PRINT_REG2(ptr->rd_, ptr->rs_);
+                    os << ", " << ptr->imm_ << std::endl;
+                    continue;
+                } else if (ptr->op_ == Operator::kLess) {
                     os << "  slti     ";
+                    PRINT_REG2(ptr->rd_, ptr->rs_);
+                    os << ", " << ptr->imm_ << std::endl;
+                    continue;
+                } else if (ptr->op_ == Operator::kShl) {
+                    os << "  slli     ";
+                    PRINT_REG2(ptr->rd_, ptr->rs_);
+                    os << ", " << ptr->imm_ << std::endl;
+                    continue;
                 }
-                PRINT_REG2(ptr->rd_, ptr->rs_);
-                os << ", " << ptr->imm_ << std::endl;
-            } else {
-                os << "  li       t0, " << ptr->imm_ << std::endl;
-                generateBinaryRInst(os, ptr->op_, ptr->rd_, ptr->rs_, 13);
             }
+            os << "  li       t0, " << ptr->imm_ << std::endl;
+            generateBinaryRInst(os, ptr->op_, ptr->rd_, ptr->rs_, 13);
         } else TEST_TYPE(inst, UnaryInst) {
             auto ptr = CAST_P(inst, UnaryInst);
             if (ptr->op_ == Operator::kSub) {

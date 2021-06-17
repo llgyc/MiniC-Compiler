@@ -311,6 +311,17 @@ void registerAllocation(eeyore::FuncPtr func) {
     // Fully Calculated
 }
 
+int isPow2(int val) {
+    int ret = 0;
+    if (val <= 0) return -1;
+    while (val != 1) {
+        ++ret;
+        if (val & 1) return -1;
+        val >>= 1;
+    }
+    return ret;
+}
+
 void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
     func->used_register_union_ = func->used_register_;
     for (int i = 0; i < func->paramNum(); ++i) {
@@ -559,6 +570,26 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             // SYMBOL = RightValue BinOp RightValue
             auto ptr = CAST_P(inst, BinaryInst);
             TEST_TYPE(ptr->rhs_1_, IntValue) {
+                if (ptr->op_ == Operator::kMul) {
+                    auto ptr2 = CAST_P(ptr->rhs_1_, IntValue);
+                    auto expo = isPow2(ptr2->val_);
+                    if (expo != -1) {
+                        LOAD_SYMBOL(ptr->rhs_2_, 14);
+                        int reg1 = macro_result;
+                        auto id = getID(ptr->lhs_);
+                        if (id != -1 && var2reg[id].in_reg) {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kShl, var2reg[id].reg_pos, reg1, expo);
+                            PUSH_INST(inst);
+                        } else {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kShl, 14, reg1, expo);
+                            PUSH_INST(inst);
+                            STORE_SYMBOL(ptr->lhs_, 14, 15);
+                        }
+                        continue;
+                    }
+                }
                 if (ptr->op_ == Operator::kAdd || ptr->op_ == Operator::kMul) {
                     auto ptr2 = CAST_P(ptr->rhs_1_, IntValue);
                     LOAD_SYMBOL(ptr->rhs_2_, 14);
@@ -578,6 +609,26 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 } 
             }
             TEST_TYPE(ptr->rhs_2_, IntValue) {
+                if (ptr->op_ == Operator::kMul) {
+                    auto ptr2 = CAST_P(ptr->rhs_2_, IntValue);
+                    auto expo = isPow2(ptr2->val_);
+                    if (expo != -1) {
+                        LOAD_SYMBOL(ptr->rhs_1_, 14);
+                        int reg1 = macro_result;
+                        auto id = getID(ptr->lhs_);
+                        if (id != -1 && var2reg[id].in_reg) {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kShl, var2reg[id].reg_pos, reg1, expo);
+                            PUSH_INST(inst);
+                        } else {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kShl, 14, reg1, expo);
+                            PUSH_INST(inst);
+                            STORE_SYMBOL(ptr->lhs_, 14, 15);
+                        }
+                        continue;
+                    }
+                }
                 auto ptr2 = CAST_P(ptr->rhs_2_, IntValue);
                 LOAD_SYMBOL(ptr->rhs_1_, 14);
                 int reg1 = macro_result;
