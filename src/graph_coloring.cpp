@@ -588,7 +588,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                                 (Operator::kAdd, var2reg[id].reg_pos, reg1, reg1);
                             PUSH_INST(inst);
                         } else {
-                            auto inst = std::make_shared<tigger::BinaryIInst>
+                            auto inst = std::make_shared<tigger::BinaryRInst>
                                 (Operator::kAdd, 14, reg1, reg1);
                             PUSH_INST(inst);
                             STORE_SYMBOL(ptr->lhs_, 14, 15);
@@ -633,8 +633,28 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                                 (Operator::kAdd, var2reg[id].reg_pos, reg1, reg1);
                             PUSH_INST(inst);
                         } else {
-                            auto inst = std::make_shared<tigger::BinaryIInst>
+                            auto inst = std::make_shared<tigger::BinaryRInst>
                                 (Operator::kAdd, 14, reg1, reg1);
+                            PUSH_INST(inst);
+                            STORE_SYMBOL(ptr->lhs_, 14, 15);
+                        }
+                        continue;
+                    }
+                }
+                if (ptr->op_ == Operator::kDiv) {
+                    auto ptr2 = CAST_P(ptr->rhs_2_, IntValue);
+                    auto expo = isPow2(ptr2->val_);
+                    if (expo != -1) {
+                        LOAD_SYMBOL(ptr->rhs_1_, 14);
+                        int reg1 = macro_result;
+                        auto id = getID(ptr->lhs_);
+                        if (id != -1 && var2reg[id].in_reg) {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kShr, var2reg[id].reg_pos, reg1, expo);
+                            PUSH_INST(inst);
+                        } else {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kShr, 14, reg1, expo);
                             PUSH_INST(inst);
                             STORE_SYMBOL(ptr->lhs_, 14, 15);
                         }

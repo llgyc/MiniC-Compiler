@@ -178,6 +178,11 @@ void generateRISCVCode(tigger::FuncPtr func, std::ostream &os,
                     PRINT_REG2(ptr->rd_, ptr->rs_);
                     os << ", " << ptr->imm_ << std::endl;
                     continue;
+                } else if (ptr->op_ == Operator::kShr) {
+                    os << "  srai     ";
+                    PRINT_REG2(ptr->rd_, ptr->rs_);
+                    os << ", " << ptr->imm_ << std::endl;
+                    continue;
                 }
             }
             os << "  li       t0, " << ptr->imm_ << std::endl;
