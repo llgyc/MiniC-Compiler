@@ -119,6 +119,19 @@ std::map<int, VarInfo> var2reg;
 std::map<int, int> reg2stk;
 std::vector<std::set<int>> edges;
 std::vector<int> degree;
+std::vector<int> father;
+std::vector<int> color;
+
+int getfather(int x) {
+    return (father[x] == x) ? x : (father[x] = getfather(father[x]));
+}
+
+void unify(int x, int y) {
+    if (x == -1 || y == -1) return;
+    int u = getfather(x), v = getfather(y);
+    if (u == v) return;
+    father[u] = v;
+}
 
 std::set<int> ret_use;
 void dye(int var) {
@@ -128,20 +141,33 @@ void dye(int var) {
             used[var2reg[x].reg_pos] = 1;
         }
     }
+
+    auto anc = getfather(var);
+    auto tmp = color[anc];
+
     // Save parameters in their original place
     if (var >= numN + numT) {
         auto id = 20 + var - numN - numT;
         if (!used[id]) {
             var2reg[var].in_reg = true;
             var2reg[var].reg_pos = id;
+            if (tmp == -1) color[anc] = id;
             return;
         }
     }
+
+    if (tmp != -1 && !used[tmp]) {
+        var2reg[var].in_reg = true;
+        var2reg[var].reg_pos = tmp;
+        return;
+    }
+
     // Save return value in a0
     if (ret_use.find(var) != ret_use.end()) {
         if (!used[20]) {
             var2reg[var].in_reg = true;
             var2reg[var].reg_pos = 20;
+            if (tmp == -1) color[anc] = 20;
             return;
         }
     }
@@ -152,6 +178,7 @@ void dye(int var) {
         if (used[i]) continue;
         var2reg[var].in_reg = true;
         var2reg[var].reg_pos = i;
+        if (tmp == -1) color[anc] = i;
         return;
     }
     assert(false);
@@ -180,6 +207,17 @@ void registerAllocation(eeyore::FuncPtr func) {
         TEST_TYPE(inst, AssignCallInst) {
             leaf_node = false;
             break;
+        }
+    }
+    father.clear(); color.clear();
+    for (int i = 0; i < total_var; ++i) {
+        father.push_back(i);
+        color.push_back(-1);
+    }
+    for (auto &inst : func->insts()) {
+        TEST_TYPE(inst, AssignInst) {
+            auto ptr = CAST_P(inst, AssignInst);
+            unify(getID(ptr->lhs_), getID(ptr->rhs_));
         }
     }
 
