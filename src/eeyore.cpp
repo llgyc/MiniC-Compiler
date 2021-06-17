@@ -313,7 +313,7 @@ void FunctionDef::eliminateDead(FuncPtr func) {
         if (used.find(i) != used.end()) continue;
         erased.push_back(i);
     }
-    removeUnnecessary(func, erased);
+    removeUnnecessary(func, erased, true);
 }
 
 void Program::optimize() {

@@ -11,19 +11,22 @@ std::optional<int> getIdFromIndex(const std::vector<int> &widths,
     return ret;
 }
 
-void removeUnnecessary(eeyore::FuncPtr ptr, std::vector<int> pos) {
+void removeUnnecessary(eeyore::FuncPtr ptr, std::vector<int> pos, 
+    bool radical) {
     eeyore::InstPtrList ret;
     std::vector<int> npos;
     unsigned p = 0;
     for (int i = 0; i < ptr->instNum(); ++i) {
         if (p < pos.size() && i == pos[p]) {
-            auto tmp = dynamic_cast<eeyore::AssignCallInst *>
-                (ptr->insts_[i].get());
-            if (tmp != nullptr) {
-                auto inst = std::make_shared<eeyore::AssignCallInst>
-                    (tmp->func_);
-                npos.push_back(i);
-                ret.push_back(inst);
+            if (!radical) {
+                auto tmp = dynamic_cast<eeyore::AssignCallInst *>
+                    (ptr->insts_[i].get());
+                if (tmp != nullptr) {
+                    auto inst = std::make_shared<eeyore::AssignCallInst>
+                        (tmp->func_);
+                    npos.push_back(i);
+                    ret.push_back(inst);
+                }
             }
             ++p; continue;
         }

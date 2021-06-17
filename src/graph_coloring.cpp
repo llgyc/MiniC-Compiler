@@ -851,7 +851,10 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                         PUSH_INST(inst);
                     }
                 } else {
+                    replace_flag = false;
                     LOAD_SYMBOL(ptr->ret_, 20);
+                    assert(macro_result == 20);
+                    replace_flag = true;
                 }
             }
             auto inst2 = std::make_shared<tigger::ReturnInst>();

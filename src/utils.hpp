@@ -9,7 +9,8 @@
 std::optional<int> getIdFromIndex(const std::vector<int> &widths,
                                   const std::vector<int> &index_list);
 
-void removeUnnecessary(eeyore::FuncPtr ptr, std::vector<int> pos);
+void removeUnnecessary(eeyore::FuncPtr ptr, std::vector<int> pos, 
+    bool radical = false);
 
 
 #endif // __MINIC_UTILS_HPP__
