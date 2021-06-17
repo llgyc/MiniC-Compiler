@@ -573,17 +573,23 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 if (ptr->op_ == Operator::kMul) {
                     auto ptr2 = CAST_P(ptr->rhs_1_, IntValue);
                     auto expo = isPow2(ptr2->val_);
-                    if (expo != -1) {
+                    if (expo == 1 || expo == 2) {
                         LOAD_SYMBOL(ptr->rhs_2_, 14);
                         int reg1 = macro_result;
+                        if (expo == 2) {
+                            auto inst = std::make_shared<tigger::BinaryRInst>
+                                (Operator::kAdd, 14, reg1, reg1);
+                            PUSH_INST(inst);
+                            reg1 = 14;
+                        }
                         auto id = getID(ptr->lhs_);
                         if (id != -1 && var2reg[id].in_reg) {
-                            auto inst = std::make_shared<tigger::BinaryIInst>
-                                (Operator::kShl, var2reg[id].reg_pos, reg1, expo);
+                            auto inst = std::make_shared<tigger::BinaryRInst>
+                                (Operator::kAdd, var2reg[id].reg_pos, reg1, reg1);
                             PUSH_INST(inst);
                         } else {
                             auto inst = std::make_shared<tigger::BinaryIInst>
-                                (Operator::kShl, 14, reg1, expo);
+                                (Operator::kAdd, 14, reg1, reg1);
                             PUSH_INST(inst);
                             STORE_SYMBOL(ptr->lhs_, 14, 15);
                         }
@@ -612,17 +618,23 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 if (ptr->op_ == Operator::kMul) {
                     auto ptr2 = CAST_P(ptr->rhs_2_, IntValue);
                     auto expo = isPow2(ptr2->val_);
-                    if (expo != -1) {
+                    if (expo == 1 || expo == 2) {
                         LOAD_SYMBOL(ptr->rhs_1_, 14);
                         int reg1 = macro_result;
+                        if (expo == 2) {
+                            auto inst = std::make_shared<tigger::BinaryRInst>
+                                (Operator::kAdd, 14, reg1, reg1);
+                            PUSH_INST(inst);
+                            reg1 = 14;
+                        }
                         auto id = getID(ptr->lhs_);
                         if (id != -1 && var2reg[id].in_reg) {
-                            auto inst = std::make_shared<tigger::BinaryIInst>
-                                (Operator::kShl, var2reg[id].reg_pos, reg1, expo);
+                            auto inst = std::make_shared<tigger::BinaryRInst>
+                                (Operator::kAdd, var2reg[id].reg_pos, reg1, reg1);
                             PUSH_INST(inst);
                         } else {
                             auto inst = std::make_shared<tigger::BinaryIInst>
-                                (Operator::kShl, 14, reg1, expo);
+                                (Operator::kAdd, 14, reg1, reg1);
                             PUSH_INST(inst);
                             STORE_SYMBOL(ptr->lhs_, 14, 15);
                         }
