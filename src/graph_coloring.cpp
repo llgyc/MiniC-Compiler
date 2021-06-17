@@ -396,13 +396,18 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                         (_ptr->id_, REG); \
                     PUSH_INST(_inst); \
                 } \
+                macro_result = REG; \
             } else TEST_TYPE(SYMBOL, IntValue) { \
                 auto _ptr = CAST_P(SYMBOL, IntValue); \
-                auto _inst = std::make_shared<tigger::AssignIInst> \
-                    (REG, _ptr->val_); \
-                PUSH_INST(_inst); \
+                if (replace_flag &&_ptr->val_ == 0) { \
+                    macro_result = 0; \
+                } else { \
+                    auto _inst = std::make_shared<tigger::AssignIInst> \
+                        (REG, _ptr->val_); \
+                    PUSH_INST(_inst); \
+                    macro_result = REG; \
+                } \
             } else assert(false); \
-            macro_result = REG; \
         } else { \
             auto _info = var2reg[_id]; \
             if (!_info.in_reg) { \
@@ -469,6 +474,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
 
         // Normal Instruction
         int macro_result;
+        bool replace_flag = true;
         TEST_TYPE(inst, AssignInst) {
             // SYMBOL = RightValue
             auto ptr = CAST_P(inst, AssignInst);
@@ -765,8 +771,10 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 }
             } else {
                 // In memory
+                replace_flag = false;
                 LOAD_SYMBOL(ptr->param_, 20 + param_pos);
                 assert(macro_result == 20 + param_pos);
+                replace_flag = true;
             }
             ++param_pos;
         } else TEST_TYPE(inst, AssignCallInst) {
@@ -844,7 +852,6 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     }
                 } else {
                     LOAD_SYMBOL(ptr->ret_, 20);
-                    assert(macro_result == 20);
                 }
             }
             auto inst2 = std::make_shared<tigger::ReturnInst>();
