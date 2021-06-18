@@ -143,6 +143,16 @@ void Context::generateIndexEeyore(const ASTPtrListPtr &ast,
     cur_func_->pushInst(std::move(inst_final));
 }
 
+Operator reverseOp(Operator op) {
+    if (op == Operator::kEq) return Operator::kNeq;
+    if (op == Operator::kNeq) return Operator::kEq;
+    if (op == Operator::kLess) return Operator::kGreaterEq;
+    if (op == Operator::kGreaterEq) return Operator::kLess;
+    if (op == Operator::kGreater) return Operator::kLessEq;
+    if (op == Operator::kLessEq) return Operator::kGreater;
+    assert(false);
+}
+
 void Context::typeCoercion(const ASTNodePtr &ast) {
     if (ast->value_type() != ValueType::kBoolType) {
         auto cond_1 = cur_func_->getLastTemp();
@@ -150,8 +160,9 @@ void Context::typeCoercion(const ASTNodePtr &ast) {
         auto M = cur_func_->instNum();
         ast->true_list().push_back(M);
         ast->false_list().push_back(M+1);
+        auto op = (reverse_flag_) ? Operator::kEq : Operator::kNeq;
         auto inst1 = std::make_shared<eeyore::CondInst>
-            (Operator::kNeq, cond_1, cond_2);
+            (op, cond_1, cond_2);
         cur_func_->pushInst(std::move(inst1));
         auto inst2 = std::make_shared<eeyore::JumpInst>();
         cur_func_->pushInst(std::move(inst2));
@@ -525,6 +536,8 @@ void Context::generateEeyoreOn(IfASTNode *ast, eeyore::Program &prog) {
     auto &else_then = ast->else_then();
     if (else_then == nullptr) {
         // if (B) M S1
+        /* Textbook version */
+        /*
         cond->generateEeyoreCode(*this, prog);
         typeCoercion(cond);
         int M = cur_func_->instNum();
@@ -536,6 +549,21 @@ void Context::generateEeyoreOn(IfASTNode *ast, eeyore::Program &prog) {
         ast->next_list().insert(ast->next_list().end(),
                                 then->next_list().begin(),
                                 then->next_list().end());
+        */
+        reverse_flag_ = true;
+        cond->generateEeyoreCode(*this, prog);
+        typeCoercion(cond);
+        assert(reverse_flag_ == false);
+        int M = cur_func_->instNum();
+        then->generateEeyoreCode(*this, prog);
+        cur_func_->backpatch(cond->false_list(), M);
+        ast->next_list().insert(ast->next_list().end(),
+                                cond->true_list().begin(),
+                                cond->true_list().end());
+        ast->next_list().insert(ast->next_list().end(),
+                                then->next_list().begin(),
+                                then->next_list().end());
+
     } else {
         // if (B) M1 S1 N else M2 S2
         /* Textbook version */
@@ -694,6 +722,26 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
     auto &lhs = ast->lhs();
     auto &rhs = ast->rhs();
     if (op == Operator::kAnd) {
+        bool flag = reverse_flag_; reverse_flag_ = false;
+        if (flag) {
+            reverse_flag_ = true;
+            lhs->generateEeyoreCode(*this, prog);
+            typeCoercion(lhs);
+            assert(reverse_flag_ == false);
+            reverse_flag_ = true;
+            int M = cur_func_->instNum();
+            rhs->generateEeyoreCode(*this, prog);
+            typeCoercion(rhs);
+            assert(reverse_flag_ == false);
+            cur_func_->backpatch(lhs->false_list(), M);
+            ast->true_list() = lhs->true_list();
+            ast->true_list().insert(ast->true_list().end(),
+                                    rhs->true_list().begin(),
+                                    rhs->true_list().end());
+            ast->false_list() = rhs->false_list();
+            ast->setValueType(ValueType::kBoolType);
+            return;
+        }
         lhs->generateEeyoreCode(*this, prog);
         typeCoercion(lhs);
         int M = cur_func_->instNum();
@@ -707,6 +755,26 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
                                  rhs->false_list().end());
         ast->setValueType(ValueType::kBoolType);
     } else if (op == Operator::kOr) {
+        bool flag = reverse_flag_; reverse_flag_ = false;
+        if (flag) {
+            reverse_flag_ = true;
+            lhs->generateEeyoreCode(*this, prog);
+            typeCoercion(lhs);
+            assert(reverse_flag_ == false);
+            int M = cur_func_->instNum();
+            reverse_flag_ = true;
+            rhs->generateEeyoreCode(*this, prog);
+            typeCoercion(rhs);
+            assert(reverse_flag_ == false);
+            cur_func_->backpatch(lhs->true_list(), M);
+            ast->true_list() = rhs->true_list();
+            ast->false_list() = lhs->false_list();
+            ast->false_list().insert(ast->false_list().end(),
+                                     rhs->false_list().begin(),
+                                     rhs->false_list().end());
+            ast->setValueType(ValueType::kBoolType);
+            return;
+        }
         lhs->generateEeyoreCode(*this, prog);
         typeCoercion(lhs);
         int M = cur_func_->instNum();
@@ -720,6 +788,7 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
         ast->false_list() = rhs->false_list();
         ast->setValueType(ValueType::kBoolType);
     } else if (Operator::kEq <= op && op <= Operator::kGreaterEq) {
+        bool flag = reverse_flag_; reverse_flag_ = false;
         // Relation Operator
         lhs->generateEeyoreCode(*this, prog);
         auto lvar = cur_func_->getLastTemp();
@@ -728,7 +797,8 @@ void Context::generateEeyoreOn(BinaryExpASTNode *ast, eeyore::Program &prog) {
         int M = cur_func_->instNum();
         ast->true_list().push_back(M);
         ast->false_list().push_back(M+1);
-        auto inst1 = std::make_shared<eeyore::CondInst>(op, lvar, rvar);
+        auto new_op = flag ? reverseOp(op) : op;
+        auto inst1 = std::make_shared<eeyore::CondInst>(new_op, lvar, rvar);
         cur_func_->pushInst(std::move(inst1));
         auto inst2 = std::make_shared<eeyore::JumpInst>();
         cur_func_->pushInst(std::move(inst2));

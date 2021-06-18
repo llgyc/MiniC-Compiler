@@ -49,6 +49,7 @@ public:
         global_ctx_ = std::make_shared<eeyore::FunctionDef>("$global$", 0, false);
         cur_func_ = global_ctx_;
         cur_loop_ = nullptr;
+        reverse_flag_ = false;
         
         // int getint()
         lib_funcs_.insert({"getint", 
@@ -174,6 +175,7 @@ public:
     }
 
 private:
+    bool reverse_flag_;
     int global_var_num_;
     eeyore::FuncPtr global_ctx_;
     eeyore::FuncPtr cur_func_;
