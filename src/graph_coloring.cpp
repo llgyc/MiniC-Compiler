@@ -96,8 +96,8 @@ void calculateWeight(eeyore::FuncPtr func) {
 // 0 - zero register
 // 13(t0) - left for RISC-V
 // 14(t1) - left for partial result
-// 15(t2) - left for partial result
-const int kRegAvail = 24;
+// 15(t2) - left for partial result (?)
+const int kRegAvail = 25;
 
 // For array
 // - in_reg = address in register
@@ -174,7 +174,7 @@ void dye(int var) {
     for (int i = 1; i <= 27; ++i) {
         if (i == 13) continue;
         if (i == 14) continue;
-        if (i == 15) continue;
+        // if (i == 15) continue;
         if (used[i]) continue;
         var2reg[var].in_reg = true;
         var2reg[var].reg_pos = i;
@@ -335,7 +335,7 @@ void registerAllocation(eeyore::FuncPtr func) {
     for (int i = 1; i <= 27; ++i) {
         if (i == 13) continue;
         if (i == 14) continue;
-        if (i == 15) continue;
+        // if (i == 15) continue;
         if (func->used_register_.find(i) != func->used_register_.end())
             continue;
         remain_regs.push_back(i);
@@ -534,7 +534,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     PUSH_INST(inst);
                 } else {
                     LOAD_SYMBOL(ptr->rhs_, 14);
-                    STORE_SYMBOL(ptr->lhs_, macro_result, 15);
+                    STORE_SYMBOL(ptr->lhs_, macro_result, 13);
                 }
             } else {
                 auto id = getID(ptr->lhs_);
@@ -555,7 +555,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     }
                 } else {
                     LOAD_SYMBOL(ptr->rhs_, 14);
-                    STORE_SYMBOL(ptr->lhs_, macro_result, 15);
+                    STORE_SYMBOL(ptr->lhs_, macro_result, 13);
                 }
             }
         } else TEST_TYPE(inst, ArrayAssignInst) {
@@ -566,18 +566,18 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             int reg1 = macro_result;
             TEST_TYPE(ptr->lhs_index_, IntValue) {
                 auto ptr2 = CAST_P(ptr->lhs_index_, IntValue);
-                LOAD_SYMBOL(ptr->rhs_, 15);
+                LOAD_SYMBOL(ptr->rhs_, 13);
                 int reg2 = macro_result;
                 auto inst = std::make_shared<tigger::MemStoreInst>
                     (reg1, ptr2->val_, reg2);
                 PUSH_INST(inst);
             } else {
-                LOAD_SYMBOL(ptr->lhs_index_, 15);
+                LOAD_SYMBOL(ptr->lhs_index_, 13);
                 int reg2 = macro_result;
                 auto inst = std::make_shared<tigger::BinaryRInst>
                     (Operator::kAdd, 14, reg1, reg2);
                 PUSH_INST(inst);
-                LOAD_SYMBOL(ptr->rhs_, 15);
+                LOAD_SYMBOL(ptr->rhs_, 13);
                 int reg3 = macro_result;
                 auto inst2 = std::make_shared<tigger::MemStoreInst>
                     (14, 0, reg3);
@@ -599,10 +599,10 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     auto inst = std::make_shared<tigger::MemLoadInst>
                         (14, reg1, ptr2->val_);
                     PUSH_INST(inst);
-                    STORE_SYMBOL(ptr->lhs_, 14, 15);
+                    STORE_SYMBOL(ptr->lhs_, 14, 13);
                 }
             } else {
-                LOAD_SYMBOL(ptr->rhs_index_, 15);
+                LOAD_SYMBOL(ptr->rhs_index_, 13);
                 int reg2 = macro_result;
                 auto inst = std::make_shared<tigger::BinaryRInst>
                     (Operator::kAdd, 14, reg1, reg2);
@@ -616,7 +616,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     auto inst2 = std::make_shared<tigger::MemLoadInst>
                         (14, 14, 0);
                     PUSH_INST(inst2);
-                    STORE_SYMBOL(ptr->lhs_, 14, 15);
+                    STORE_SYMBOL(ptr->lhs_, 14, 13);
                 }
             }
         } else TEST_TYPE(inst, BinaryInst) {
@@ -644,7 +644,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                             auto inst = std::make_shared<tigger::BinaryRInst>
                                 (Operator::kAdd, 14, reg1, reg1);
                             PUSH_INST(inst);
-                            STORE_SYMBOL(ptr->lhs_, 14, 15);
+                            STORE_SYMBOL(ptr->lhs_, 14, 13);
                         }
                         continue;
                     }
@@ -662,7 +662,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                         auto inst = std::make_shared<tigger::BinaryIInst>
                             (ptr->op_, 14, reg1, ptr2->val_);
                         PUSH_INST(inst);
-                        STORE_SYMBOL(ptr->lhs_, 14, 15);
+                        STORE_SYMBOL(ptr->lhs_, 14, 13);
                     }
                     continue;
                 } 
@@ -689,7 +689,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                             auto inst = std::make_shared<tigger::BinaryRInst>
                                 (Operator::kAdd, 14, reg1, reg1);
                             PUSH_INST(inst);
-                            STORE_SYMBOL(ptr->lhs_, 14, 15);
+                            STORE_SYMBOL(ptr->lhs_, 14, 13);
                         }
                         continue;
                     }
@@ -709,7 +709,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                             auto inst = std::make_shared<tigger::BinaryIInst>
                                 (Operator::kShr, 14, reg1, expo);
                             PUSH_INST(inst);
-                            STORE_SYMBOL(ptr->lhs_, 14, 15);
+                            STORE_SYMBOL(ptr->lhs_, 14, 13);
                         }
                         continue;
                     }
@@ -726,12 +726,12 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     auto inst = std::make_shared<tigger::BinaryIInst>
                         (ptr->op_, 14, reg1, ptr2->val_);
                     PUSH_INST(inst);
-                    STORE_SYMBOL(ptr->lhs_, 14, 15);
+                    STORE_SYMBOL(ptr->lhs_, 14, 13);
                 }
             } else {
                 LOAD_SYMBOL(ptr->rhs_1_, 14);
                 int reg1 = macro_result;
-                LOAD_SYMBOL(ptr->rhs_2_, 15);
+                LOAD_SYMBOL(ptr->rhs_2_, 13);
                 int reg2 = macro_result;
                 auto id = getID(ptr->lhs_);
                 if (id != -1 && var2reg[id].in_reg) {
@@ -742,7 +742,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                     auto inst = std::make_shared<tigger::BinaryRInst>
                         (ptr->op_, 14, reg1, reg2);
                     PUSH_INST(inst);
-                    STORE_SYMBOL(ptr->lhs_, 14, 15);
+                    STORE_SYMBOL(ptr->lhs_, 14, 13);
                 }
             }
         } else TEST_TYPE(inst, UnaryInst) {
@@ -758,14 +758,14 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                 auto inst = std::make_shared<tigger::UnaryInst>
                     (ptr->op_, 14, macro_result);
                 PUSH_INST(inst);
-                STORE_SYMBOL(ptr->lhs_, 14, 15);
+                STORE_SYMBOL(ptr->lhs_, 14, 13);
             }
         } else TEST_TYPE(inst, CondInst) {
             // if RightValue LOGICOP RightValue goto LABEL
             auto ptr = CAST_P(inst, CondInst);
             LOAD_SYMBOL(ptr->cond_1_, 14);
             int reg1 = macro_result;
-            LOAD_SYMBOL(ptr->cond_2_, 15);
+            LOAD_SYMBOL(ptr->cond_2_, 13);
             int reg2 = macro_result;
             auto inst = std::make_shared<tigger::CondInst>
                 (ptr->op_, reg1, reg2, ptr->label_id_);
@@ -865,7 +865,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
             for (auto x : already_saved) {
                 assert(x != 13);
                 assert(x != 14);
-                assert(x != 15);
+                // assert(x != 15);
                 auto inst = std::make_shared<tigger::StackLoadInst>
                     (reg2stk[x], x);
                 PUSH_INST(inst);
@@ -878,7 +878,7 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                         (var2reg[id].reg_pos, 14);
                     PUSH_INST(inst);
                 } else {
-                    STORE_SYMBOL(ptr->store_, 14, 15);
+                    STORE_SYMBOL(ptr->store_, 14, 13);
                 }
             }
 
