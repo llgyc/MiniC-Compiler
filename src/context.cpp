@@ -161,6 +161,7 @@ void Context::typeCoercion(const ASTNodePtr &ast) {
         ast->true_list().push_back(M);
         ast->false_list().push_back(M+1);
         auto op = (reverse_flag_) ? Operator::kEq : Operator::kNeq;
+        reverse_flag_ = false;
         auto inst1 = std::make_shared<eeyore::CondInst>
             (op, cond_1, cond_2);
         cur_func_->pushInst(std::move(inst1));
