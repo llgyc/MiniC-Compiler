@@ -714,6 +714,26 @@ void generateTiggerCode(eeyore::FuncPtr func, tigger::Program &dst) {
                         continue;
                     }
                 }
+                if (ptr->op_ == Operator::kMod) {
+                    auto ptr2 = CAST_P(ptr->rhs_2_, IntValue);
+                    auto expo = isPow2(ptr2->val_);
+                    if (expo != -1) {
+                        LOAD_SYMBOL(ptr->rhs_1_, 14);
+                        int reg1 = macro_result;
+                        auto id = getID(ptr->lhs_);
+                        if (id != -1 && var2reg[id].in_reg) {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kAnd, var2reg[id].reg_pos, reg1, ptr2->val_ - 1);
+                            PUSH_INST(inst);
+                        } else {
+                            auto inst = std::make_shared<tigger::BinaryIInst>
+                                (Operator::kAnd, 14, reg1, ptr2->val_ - 1);
+                            PUSH_INST(inst);
+                            STORE_SYMBOL(ptr->lhs_, 14, 13);
+                        }
+                        continue;
+                    }
+                }
                 auto ptr2 = CAST_P(ptr->rhs_2_, IntValue);
                 LOAD_SYMBOL(ptr->rhs_1_, 14);
                 int reg1 = macro_result;
