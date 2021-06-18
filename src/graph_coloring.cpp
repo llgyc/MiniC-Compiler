@@ -155,12 +155,13 @@ void dye(int var) {
             return;
         }
     }
-
+    /*
     if (tmp != -1 && !used[tmp]) {
         var2reg[var].in_reg = true;
         var2reg[var].reg_pos = tmp;
         return;
     }
+    */
 
     // Save return value in a0
     if (ret_use.find(var) != ret_use.end()) {
